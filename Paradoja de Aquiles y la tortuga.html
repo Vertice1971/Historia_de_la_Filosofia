@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paradoja de Zenón: Aquiles y la Tortuga</title>
+    <style>
+        /* Estilos comunes */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            position: relative;
+        }
+        h1 {
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+        .slider-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .slider {
+            width: 300px;
+        }
+        button {
+            margin-top: 10px;
+        }
+        .race-track {
+            position: relative;
+            width: 100%;
+            height: 10px;
+            background-color: lightgray;
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
+        .runner {
+            position: absolute;
+            top: -20px;
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            line-height: 40px;
+            font-weight: bold;
+            font-size: 40px;
+        }
+        .achilles {
+            right: 0;
+        }
+        .turtle {
+            right: 50%;
+        }
+
+        /* Estilos para los telones */
+        .full-screen {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            font-size: 5vw;
+            text-align: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: black;
+            color: white;
+            z-index: 1000; /* Asegurar que los telones estén por encima */
+        }
+        .small-text {
+            font-size: 1.5vw;  /* Texto más pequeño en griego */
+            margin-top: 20px;
+        }
+        .greek-text {
+            font-family: 'Alfa Slab One', cursive;
+        }
+        .hidden {
+            display: none;
+        }
+        .continue-btn, .restart-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            position: fixed;
+            bottom: 80px; /* Ajusta la distancia desde la parte inferior de la pantalla */
+            left: 50%; /* Centra el botón horizontalmente */
+            transform: translateX(-50%); /* Asegura que esté perfectamente centrado */
+            z-index: 1001; /* Garantiza que el botón esté visible sobre otros elementos */
+        }
+        .continue-btn:hover, .restart-btn:hover {
+            background-color: #45a049;
+        }
+
+        /* Estilos específicos para la segunda fase */
+        .marker {
+            position: absolute;
+            left: 50%;
+            top: -40px;
+            height: 60px;
+            width: 2px;
+            background-color: black;
+        }
+        .distance {
+            text-align: center;
+            font-size: 24px;
+            margin-top: 20px;
+        }
+        .button-blinking {
+            display: none;
+            position: fixed; /* Cambiado de absolute a fixed */
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 5px;
+            animation: blinking 1s infinite;
+            z-index: 1001; /* Asegurar que esté por encima de otros elementos */
+        }
+        .accept-button {
+            display: none;
+            position: fixed; /* Cambiado de absolute a fixed */
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #FFA500;
+            color: black;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 5px;
+            z-index: 1001; /* Asegurar que esté por encima de otros elementos */
+        }
+        @keyframes blinking {
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Telón 1: Español con griego debajo -->
+    <div id="cartel1" class="full-screen greek-text">
+        LA PARADOJA DE AQUILES Y LA TORTUGA SEGÚN ZENÓN DE ELEA
+        <div class="small-text">(Η παραδοξία του Αχιλλέα και της χελώνας κατά τον Ζήνωνα τον Ελεάτη)</div>
+        <button class="continue-btn" onclick="Phases.phase1.goToNextTelon()">Continuar</button>
+    </div>
+    
+    <!-- Telón 2: Español con griego debajo -->
+    <div id="cartel2" class="full-screen greek-text hidden">
+        A CONTINUACIÓN, LO QUE LA VÍA DE LA DOXA PRETENDE HACERNOS CREER...
+        <div class="small-text">(Στη συνέχεια, αυτό που η οδός της δόξας θέλει να μας κάνει να πιστέψουμε...)</div>
+        <button class="continue-btn" onclick="Phases.phase1.startRacePhase()">Continuar</button>
+    </div>
+    
+    <!-- Contenedor de la Primera Fase -->
+    <div id="phase1-content" class="container hidden">
+        <div class="slider-container">
+            <label for="phase1-turtleSpeed">Velocidad de la tortuga (1-3 km/h):</label>
+            <input type="range" id="phase1-turtleSpeed" class="slider" min="1" max="3" step="0.1" value="1.5" oninput="Phases.phase1.updateSpeed('turtle')">
+            <span id="phase1-turtleSpeedValue">1.5 km/h</span>
+            <button id="phase1-turtleLock" onclick="Phases.phase1.lockSpeed('turtle')">Listo</button>
+        </div>
+
+        <div class="slider-container">
+            <label for="phase1-achillesSpeed">Velocidad de Aquiles (4-20 km/h):</label>
+            <input type="range" id="phase1-achillesSpeed" class="slider" min="4" max="20" step="0.1" value="12" oninput="Phases.phase1.updateSpeed('achilles')">
+            <span id="phase1-achillesSpeedValue">12 km/h</span>
+            <button id="phase1-achillesLock" onclick="Phases.phase1.lockSpeed('achilles')">Listo</button>
+        </div>
+    </div>
+    
+    <!-- La pista de carrera de la Primera Fase -->
+    <div class="race-track hidden" id="phase1-race-track">
+        <div id="phase1-achilles" class="runner achilles">🏃‍♂️</div>
+        <div id="phase1-turtle" class="runner turtle">🐢</div>
+    </div>
+    
+    <!-- Botón de transición a la Segunda Fase -->
+    <button id="phase1-restartButton" class="restart-btn hidden" onclick="Phases.phase1.transitionToPhase2()">Pulsar aquí para descubrir la Vía de la Razón</button>
+    
+    <!-- Contenedor de la Segunda Fase -->
+    <div id="phase2-content" class="container hidden">
+        <div class="slider-container">
+            <label for="phase2-turtleSpeed">Velocidad de la tortuga (1-3 km/h):</label>
+            <input type="range" id="phase2-turtleSpeed" class="slider" min="1" max="3" step="0.1" value="1.5" oninput="Phases.phase2.updateSpeed('turtle')">
+            <span id="phase2-turtleSpeedValue">1.5 km/h</span>
+            <button id="phase2-turtleLock" onclick="Phases.phase2.lockSpeed('turtle')">Listo</button>
+        </div>
+
+        <div class="slider-container">
+            <label for="phase2-achillesSpeed">Velocidad de Aquiles (4-20 km/h):</label>
+            <input type="range" id="phase2-achillesSpeed" class="slider" min="4" max="20" step="0.1" value="12" oninput="Phases.phase2.updateSpeed('achilles')">
+            <span id="phase2-achillesSpeedValue">12 km/h</span>
+            <button id="phase2-achillesLock" onclick="Phases.phase2.lockSpeed('achilles')">Listo</button>
+        </div>
+    </div>
+    
+    <!-- La pista de carrera de la Segunda Fase con marcador -->
+    <div class="race-track hidden" id="phase2-race-track">
+        <div class="marker"></div> <!-- Línea negra en el punto de partida de la tortuga -->
+        <div id="phase2-achilles" class="runner achilles">🏃‍♂️</div>
+        <div id="phase2-turtle" class="runner turtle">🐢</div>
+    </div>
+    
+    <!-- Marcador de distancia en la Segunda Fase -->
+    <div id="phase2-distanceMarker" class="distance hidden">Distancia entre Aquiles y la tortuga: 500 metros</div>
+    
+    <!-- Botón parpadeante durante la carrera de la Segunda Fase -->
+    <button id="phase2-blinkingButton" class="button-blinking">Descubriendo la verdad mediante la Vía de la Razón</button>
+    
+    <!-- Botón naranja para finalizar en la Segunda Fase -->
+    <button id="phase2-acceptButton" class="accept-button" onclick="Phases.phase2.endProgram()">Pulsa aquí cuando hayas aceptado que tus sentidos te engañan y que Aquiles jamás alcanzará a la tortuga</button>
+    
+    <!-- Script para manejar ambas fases -->
+    <script>
+        const Phases = {
+            phase1: (function() {
+                let turtleSpeed = 1.5; // Velocidad inicial de la tortuga
+                let achillesSpeed = 12; // Velocidad inicial de Aquiles
+                let raceInterval;
+                let phase1Timeout1; // Timeout para ocultar cartel1 y mostrar cartel2
+                let phase1Timeout2; // Timeout para iniciar la carrera
+
+                // Función para avanzar al siguiente telón o la carrera después de 10 segundos
+                phase1Timeout1 = setTimeout(() => {
+                    document.getElementById('cartel1').classList.add('hidden');
+                    document.getElementById('cartel2').classList.remove('hidden');
+                }, 10000); // Después de 10 segundos
+
+                // Función para pasar del primer telón al segundo
+                function goToNextTelon() {
+                    clearTimeout(phase1Timeout1); // Cancelar timeout si se hace clic antes
+                    document.getElementById('cartel1').classList.add('hidden');
+                    document.getElementById('cartel2').classList.remove('hidden');
+                    phase1Timeout2 = setTimeout(startRacePhase, 10000); // Pasar automáticamente a la carrera después de otros 10 segundos
+                }
+
+                // Función para iniciar la Fase 1 - La carrera
+                function startRacePhase() {
+                    document.getElementById('cartel2').classList.add('hidden');
+                    document.getElementById('phase1-content').classList.remove('hidden');
+                    document.getElementById('phase1-race-track').classList.remove('hidden');
+                }
+
+                // Actualizar la velocidad de la tortuga y Aquiles
+                function updateSpeed(runner) {
+                    if (runner === 'turtle') {
+                        turtleSpeed = document.getElementById('phase1-turtleSpeed').value;
+                        document.getElementById('phase1-turtleSpeedValue').textContent = turtleSpeed + " km/h";
+                    } else if (runner === 'achilles') {
+                        achillesSpeed = document.getElementById('phase1-achillesSpeed').value;
+                        document.getElementById('phase1-achillesSpeedValue').textContent = achillesSpeed + " km/h";
+                    }
+                }
+
+                function lockSpeed(runner) {
+                    if (runner === 'turtle') {
+                        document.getElementById('phase1-turtleSpeed').disabled = true;
+                        document.getElementById('phase1-turtleLock').disabled = true;
+                        document.getElementById('phase1-turtleLock').textContent = "Bloqueado";
+                    } else if (runner === 'achilles') {
+                        document.getElementById('phase1-achillesSpeed').disabled = true;
+                        document.getElementById('phase1-achillesLock').disabled = true;
+                        document.getElementById('phase1-achillesLock').textContent = "Bloqueado";
+                    }
+
+                    if (document.getElementById('phase1-turtleSpeed').disabled && document.getElementById('phase1-achillesSpeed').disabled) {
+                        startRace();
+                    }
+                }
+
+                function startRace() {
+                    const achilles = document.getElementById('phase1-achilles');
+                    const turtle = document.getElementById('phase1-turtle');
+                    const restartButton = document.getElementById('phase1-restartButton');
+                    
+                    let achillesPosition = 0;
+                    let turtlePosition = 50; // Posición inicial de la tortuga al 50%
+    
+                    const totalDistance = 100; // Representa el 100% del ancho de la pista.
+    
+                    // Multiplica las velocidades por 3 para hacer la carrera más rápida
+                    const achillesStep = (achillesSpeed / 100) * 3;
+                    const turtleStep = (turtleSpeed / 100) * 3;
+    
+                    raceInterval = setInterval(() => {
+                        achillesPosition += achillesStep;
+                        turtlePosition += turtleStep;
+    
+                        achilles.style.right = achillesPosition + '%';
+                        turtle.style.right = turtlePosition + '%';
+    
+                        // Chequea si se encuentran o si uno de los dos llega al final (0%)
+                        if (achillesPosition >= turtlePosition || achillesPosition >= totalDistance || turtlePosition >= totalDistance) {
+                            clearInterval(raceInterval);
+                            restartButton.classList.remove('hidden'); // Mostrar el botón al terminar la carrera
+                        }
+                    }, 100);
+                }
+
+                // Función para transicionar a la Segunda Fase
+                function transitionToPhase2() {
+                    // Cancelar cualquier timeout pendiente
+                    clearTimeout(phase1Timeout1);
+                    clearTimeout(phase1Timeout2);
+    
+                    // Ocultar ambos telones para evitar que se muestren nuevamente
+                    document.getElementById('cartel1').classList.add('hidden');
+                    document.getElementById('cartel2').classList.add('hidden');
+    
+                    // Ocultar elementos de la Primera Fase
+                    document.getElementById('phase1-race-track').classList.add('hidden');
+                    document.getElementById('phase1-content').classList.add('hidden');
+                    document.getElementById('phase1-restartButton').classList.add('hidden');
+    
+                    // Reiniciar posiciones de la Primera Fase
+                    document.getElementById('phase1-achilles').style.right = '0%';
+                    document.getElementById('phase1-turtle').style.right = '50%';
+    
+                    // Mostrar elementos de la Segunda Fase
+                    document.getElementById('phase2-content').classList.remove('hidden');
+                    document.getElementById('phase2-race-track').classList.remove('hidden');
+                    document.getElementById('phase2-distanceMarker').classList.remove('hidden');
+                }
+
+                return {
+                    goToNextTelon,
+                    startRacePhase,
+                    updateSpeed,
+                    lockSpeed,
+                    transitionToPhase2
+                };
+            })(),
+
+            phase2: (function() {
+                let turtleSpeed = 1.5; // Velocidad inicial de la tortuga
+                let achillesSpeed = 12; // Velocidad inicial de Aquiles
+                let raceInterval;
+                let initialDistance = 500; // Distancia inicial entre los dos personajes en metros
+                let newDistance; // Variable para almacenar la nueva distancia
+
+                // Actualizar la velocidad de la tortuga y Aquiles
+                function updateSpeed(runner) {
+                    if (runner === 'turtle') {
+                        turtleSpeed = document.getElementById('phase2-turtleSpeed').value;
+                        document.getElementById('phase2-turtleSpeedValue').textContent = turtleSpeed + " km/h";
+                    } else if (runner === 'achilles') {
+                        achillesSpeed = document.getElementById('phase2-achillesSpeed').value;
+                        document.getElementById('phase2-achillesSpeedValue').textContent = achillesSpeed + " km/h";
+                    }
+                }
+
+                function lockSpeed(runner) {
+                    if (runner === 'turtle') {
+                        document.getElementById('phase2-turtleSpeed').disabled = true;
+                        document.getElementById('phase2-turtleLock').disabled = true;
+                        document.getElementById('phase2-turtleLock').textContent = "Bloqueado";
+                    } else if (runner === 'achilles') {
+                        document.getElementById('phase2-achillesSpeed').disabled = true;
+                        document.getElementById('phase2-achillesLock').disabled = true;
+                        document.getElementById('phase2-achillesLock').textContent = "Bloqueado";
+                    }
+
+                    if (document.getElementById('phase2-turtleSpeed').disabled && document.getElementById('phase2-achillesSpeed').disabled) {
+                        startRace();
+                    }
+                }
+
+                function startRace() {
+                    const achilles = document.getElementById('phase2-achilles');
+                    const turtle = document.getElementById('phase2-turtle');
+                    const blinkingButton = document.getElementById('phase2-blinkingButton');
+                    const distanceMarker = document.getElementById('phase2-distanceMarker');
+                    const acceptButton = document.getElementById('phase2-acceptButton');
+                    
+                    let achillesPosition = 0;
+                    let turtlePosition = 50; // Posición inicial de la tortuga al 50%
+
+                    const totalDistance = 100;
+                    const markerPosition = 50; // Posición de la línea negra (50%)
+
+                    const achillesStep = (achillesSpeed / 100) * 3;
+                    const turtleStep = (turtleSpeed / 100) * 3;
+
+                    blinkingButton.style.display = 'block'; // Mostrar el botón parpadeante al comenzar la carrera
+                    distanceMarker.classList.remove('hidden'); // Asegurar que el marcador de distancia esté visible
+
+                    raceInterval = setInterval(() => {
+                        achillesPosition += achillesStep;
+                        turtlePosition += turtleStep;
+
+                        achilles.style.right = achillesPosition + '%';
+                        turtle.style.right = turtlePosition + '%';
+
+                        // Actualizar el marcador de distancia
+                        let currentDistance = initialDistance * ((turtlePosition - achillesPosition) / 50);
+                        distanceMarker.textContent = `Distancia entre Aquiles y la tortuga: ${formatDistance(currentDistance)}`;
+
+                        // Mostrar el botón naranja si la distancia es menor a 0.0001 m
+                        if (currentDistance < 0.0001) {
+                            acceptButton.style.display = 'block';
+                        }
+
+                        // Detener la carrera si Aquiles está justo antes de cruzar la línea negra
+                        if (achillesPosition + achillesStep >= markerPosition) {
+                            achilles.style.right = (markerPosition - achillesStep) + '%'; // Detener justo antes de la línea
+                            clearInterval(raceInterval);
+                            blinkingButton.style.display = 'none'; // Ocultar el botón al finalizar la carrera
+                            
+                            // Calcular nueva distancia
+                            newDistance = currentDistance; // Guardamos la nueva distancia
+
+                            distanceMarker.innerHTML = `Aquiles ha alcanzado la línea de partida de la tortuga.<br>Nueva distancia: ${formatDistance(newDistance)}`;
+                            
+                            // Reiniciar la carrera con la nueva distancia
+                            initialDistance = newDistance;
+                            setTimeout(() => resetRace(), 3000); // Reiniciamos la carrera después de 3 segundos
+                        }
+                    }, 100);
+                }
+
+                function resetRace() {
+                    // Reiniciamos posiciones y comenzamos una nueva carrera con la nueva distancia
+                    const achilles = document.getElementById('phase2-achilles');
+                    const turtle = document.getElementById('phase2-turtle');
+                    
+                    achilles.style.right = '0%';
+                    turtle.style.right = '50%';
+
+                    // Reiniciar botones y marcadores
+                    document.getElementById('phase2-blinkingButton').style.display = 'none';
+                    document.getElementById('phase2-acceptButton').style.display = 'none';
+                    document.getElementById('phase2-distanceMarker').innerHTML = `Distancia entre Aquiles y la tortuga: ${formatDistance(initialDistance)}`;
+                    
+                    startRace(); // Comienza la carrera nuevamente con la nueva distancia
+                }
+
+                function formatDistance(distance) {
+                    if (distance >= 1) {
+                        return `${Math.round(distance)} metros`;
+                    } else if (distance > 0) {
+                        // Aumentar el número de decimales conforme el número se hace más pequeño
+                        const decimals = Math.ceil(Math.abs(Math.log10(distance)));
+                        return `${distance.toFixed(decimals)} m`;
+                    } else {
+                        return `0 m`;
+                    }
+                }
+
+                function endProgram() {
+                    // Detener la carrera y ocultar todos los elementos
+                    clearInterval(raceInterval);
+                    document.body.innerHTML = `
+                        <div class="full-screen">
+                            <h1>Programa Finalizado</h1>
+                            <p>Gracias por participar en la demostración de la Paradoja de Zenón.</p>
+                        </div>
+                    `;
+                }
+
+                return {
+                    updateSpeed,
+                    lockSpeed,
+                    startRace,
+                    endProgram
+                };
+            })()
+        };
+    </script>
+
+</body>
+</html>
