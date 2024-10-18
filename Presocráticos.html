@@ -116,7 +116,7 @@
             ["Anaximandro propuso el ápeiron como el origen indefinido de todas las cosas.", true],
             ["Heráclito pensaba que el fuego era el arjé y símbolo del cambio constante.", true],
             ["Parménides afirmaba que el Ser es inmutable y eterno.", true],
-            ["Zenón usó paradojas para mostrar que el movimiento no existía.", true],
+            ["Zenón usó paradojas para demostrar que el movimiento no existía y que Heráclito tenía razón.", false],
             ["Los atomistas creían que todo estaba compuesto por átomos y vacío.", true],
             ["Empédocles sostenía que el mundo se componía de los cuatro elementos: fuego, aire, tierra y agua.", true],
             ["Anaxágoras introdujo el Nous como un principio ordenante del universo.", true],
@@ -139,8 +139,6 @@
             ["Heráclito afirmaba que todo fluye y nada permanece igual.", true],
             ["Parménides sostenía que el no-ser no existe.", true],
             ["La filosofía griega incluyó tanto la ciencia como la ética y la política.", true],
-            ["Sócrates fue condenado a muerte por impiedad.", true],
-            ["La paradoja de Aquiles y la tortuga fue propuesta por Zenón.", true],
             ["Los atomistas creían que los átomos eran indivisibles y eternos.", true],
             ["Los pitagóricos promovían una vida ascética y disciplinada.", true],
             ["Los primeros filósofos griegos también estudiaron temas científicos.", true],
@@ -171,14 +169,9 @@
             ["Los filósofos jónicos rechazaban las explicaciones sobrenaturales de los fenómenos naturales.", true],
             ["La filosofía griega influyó en la medicina, la política y la ciencia.", true],
             ["La observación y la razón eran las herramientas principales de los primeros filósofos griegos.", true],
-            ["Los sofistas promovían la idea de que la verdad es relativa.", true],
-            ["Sócrates creía en la existencia de verdades universales.", true],
-            ["Platón fundó la Academia en Atenas.", true],
-            ["Aristóteles fue alumno de Platón y tutor de Alejandro Magno.", true],
-            ["La dialéctica es un método de razonamiento utilizado por Sócrates.", true],
             ["El \"arjé\" es un término que significa \"principio\" u \"origen\" en griego.", true],
             ["La mitología griega dejó de tener influencia después del surgimiento de la filosofía.", false],
-            ["La lógica fue desarrollada como disciplina por Aristóteles.", true],
+            ["La inquietud filosófica ha existido desde que existe humanidad.", true],
             ["La ética es una rama de la filosofía que estudia la moral y el comportamiento humano.", true],
             ["Los filósofos griegos buscaban explicar el mundo a través de la razón y la experiencia.", true],
             ["El \"logos\" representa la razón o el principio racional del universo.", true],
@@ -240,6 +233,8 @@
 
                 quizContainer.appendChild(questionDiv);
             });
+
+            document.getElementById('submit-btn').style.display = 'inline-block';
         }
 
         document.getElementById('submit-btn').addEventListener('click', function() {
@@ -269,6 +264,12 @@
 
             resultDiv.textContent = `Has acertado ${aciertos} de ${preguntasSeleccionadas.length} preguntas.`;
             feedbackDiv.innerHTML = feedback;
+
+            // Ocultar el botón de enviar
+            document.getElementById('submit-btn').style.display = 'none';
+
+            // Desplazar la página hacia los resultados
+            resultDiv.scrollIntoView({ behavior: 'smooth' });
         });
 
         document.getElementById('retry-btn').addEventListener('click', function() {
