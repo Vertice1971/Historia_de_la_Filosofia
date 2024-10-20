@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examen Tipo Test: Sofistas y Sócrates</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+            text-align: center;
+        }
+        .feedback {
+            margin-top: 20px;
+            font-size: 1em;
+        }
+        .correct {
+            color: green;
+        }
+        .incorrect {
+            color: red;
+        }
+        .unanswered {
+            color: orange;
+        }
+        button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 1em;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Examen Tipo Test: Sofistas y Sócrates</h1>
+
+    <!-- Contenedor donde se mostrará el quiz -->
+    <div id="quiz-container">
+        <!-- Las preguntas se insertarán aquí dinámicamente -->
+    </div>
+
+    <!-- Botones para enviar respuestas y reiniciar -->
+    <button id="submit-btn" style="display:none;">Enviar respuestas</button>
+    <button id="retry-btn" style="display:none;">Intentar de nuevo</button>
+
+    <!-- Resultados y retroalimentación -->
+    <div id="result" class="result"></div>
+    <div id="feedback" class="feedback"></div>
+
+    <script>
+        const preguntas = [
+            {
+                "texto": "¿En qué siglos antes de nuestra era se desarrolló la filosofía griega enfocada en Atenas?",
+                "opciones": {
+                    "a": "III y II a.C.",
+                    "b": "V y IV a.C.",
+                    "c": "II y I a.C."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Qué conflicto histórico marca el inicio del periodo filosófico ateniense?",
+                "opciones": {
+                    "a": "Las Guerras Púnicas.",
+                    "b": "Las Guerras Médicas.",
+                    "c": "La Guerra del Peloponeso."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Cuál fue el resultado de las Guerras Médicas para las ciudades griegas?",
+                "opciones": {
+                    "a": "Perdieron su independencia frente a Persia.",
+                    "b": "Ganaron el derecho a permanecer libres e independientes del imperio persa.",
+                    "c": "Fueron unificadas bajo el dominio de Esparta."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Qué forma de organización política prevalecía en las ciudades griegas durante el apogeo de Atenas?",
+                "opciones": {
+                    "a": "Imperios centralizados.",
+                    "b": "Monarquías absolutas.",
+                    "c": "Polis, ciudades-Estado independientes."
+                },
+                "respuesta": "c"
+            },
+            {
+                "texto": "¿Quién implementó las reformas que llevaron a la génesis de la democracia ateniense?",
+                "opciones": {
+                    "a": "Sócrates.",
+                    "b": "Platón.",
+                    "c": "Pericles."
+                },
+                "respuesta": "c"
+            },
+            {
+                "texto": "¿Qué significan los términos 'isonomía' e 'isegoría' en el contexto de la democracia ateniense?",
+                "opciones": {
+                    "a": "Isonomía: igualdad ante la ley; Isegoría: derecho a la palabra.",
+                    "b": "Isonomía: igualdad económica; Isegoría: igualdad social.",
+                    "c": "Isonomía: separación de poderes; Isegoría: libertad de prensa."
+                },
+                "respuesta": "a"
+            },
+            {
+                "texto": "¿Quiénes no podían participar en la democracia ateniense?",
+                "opciones": {
+                    "a": "Hombres libres nativos.",
+                    "b": "Esclavos, metecos, mujeres y jóvenes.",
+                    "c": "Propietarios de tierras."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Qué tendencia peligrosa presentaba la democracia ateniense según el contexto histórico?",
+                "opciones": {
+                    "a": "Autoritarismo.",
+                    "b": "Demagogia.",
+                    "c": "Anarquía."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Qué cambio de enfoque caracteriza a la nueva filosofía griega en Atenas?",
+                "opciones": {
+                    "a": "De lo social a lo natural.",
+                    "b": "De lo natural a lo social.",
+                    "c": "De lo político a lo religioso."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Quiénes fueron los principales filósofos antes de Platón que centraron su estudio en cuestiones sociales y políticas?",
+                "opciones": {
+                    "a": "Presocráticos.",
+                    "b": "Sofistas y Sócrates.",
+                    "c": "Epicúreos."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Qué era el principal objetivo de los sofistas en su enseñanza?",
+                "opciones": {
+                    "a": "Descubrir la verdad universal.",
+                    "b": "Enseñar retórica para persuadir en cualquier litigio.",
+                    "c": "Estudiar la naturaleza del universo."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Cómo eran percibidos los sofistas por Sócrates y Platón?",
+                "opciones": {
+                    "a": "Como buscadores de la verdad.",
+                    "b": "Como embaucadores hábiles y mentirosos.",
+                    "c": "Como científicos naturales."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Qué método utilizaban los sofistas en sus argumentaciones?",
+                "opciones": {
+                    "a": "Método dialéctico para buscar la verdad.",
+                    "b": "Método dialéctico para evidenciar incoherencias.",
+                    "c": "Método empírico basado en la observación."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Qué concepto filosófico defendían los sofistas respecto al conocimiento?",
+                "opciones": {
+                    "a": "Existencia de verdades universales.",
+                    "b": "Relativismo y escepticismo.",
+                    "c": "Materialismo estricto."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Qué sostenían los sofistas sobre las normas sociales y morales?",
+                "opciones": {
+                    "a": "Que eran universales y naturales.",
+                    "b": "Que eran convenciones humanas y relativas.",
+                    "c": "Que provenían directamente de los dioses."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Cómo se denominaba la asamblea donde se reunían los ciudadanos en Atenas?",
+                "opciones": {
+                    "a": "Boulé.",
+                    "b": "Ecclesia.",
+                    "c": "Areópago."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Qué papel jugó Pericles en la democracia ateniense?",
+                "opciones": {
+                    "a": "Fue un líder militar sin influencia política.",
+                    "b": "Implementó reformas que fortalecieron la democracia.",
+                    "c": "Derrocó la democracia para establecer una oligarquía."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Qué característica distinguía a la democracia ateniense respecto a una democracia actual?",
+                "opciones": {
+                    "a": "Era completamente inclusiva.",
+                    "b": "Limitaba la participación a una minoría de la población.",
+                    "c": "No tenía instituciones representativas."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Qué evento llevó al declive de Atenas al final del siglo V a.C.?",
+                "opciones": {
+                    "a": "La invasión persa.",
+                    "b": "La Guerra del Peloponeso y el gobierno de los Treinta Tiranos.",
+                    "c": "La peste que afectó la ciudad."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Cómo influyó la Guerra del Peloponeso en la filosofía de Platón?",
+                "opciones": {
+                    "a": "Lo llevó a adoptar una postura democrática más fuerte.",
+                    "b": "Desencadenó su rechazo hacia la democracia y desarrolló sus planteamientos filosófico-políticos.",
+                    "c": "No tuvo ninguna influencia en su pensamiento."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Qué muerte significativa ocurrió en Atenas en 399 a.C.?",
+                "opciones": {
+                    "a": "La muerte de Pericles.",
+                    "b": "La ejecución de Sócrates.",
+                    "c": "La muerte de Platón."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Cuál es la diferencia fundamental entre 'nomos' y 'fisis' según los sofistas?",
+                "opciones": {
+                    "a": "Nomos: leyes naturales; Fisis: leyes humanas.",
+                    "b": "Nomos: leyes humanas; Fisis: leyes naturales.",
+                    "c": "Nomos: leyes divinas; Fisis: leyes sociales."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Qué término describe la idea de que las leyes son producto de decisiones humanas y no tienen una base natural?",
+                "opciones": {
+                    "a": "Iusnaturalismo.",
+                    "b": "Positivismo Jurídico.",
+                    "c": "Universalismo."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Qué opinión tenían los sofistas sobre la monarquía?",
+                "opciones": {
+                    "a": "La consideraban la forma natural de gobierno.",
+                    "b": "La veían como una convención arbitraria establecida por la sociedad.",
+                    "c": "Creían que era superior a la democracia."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Qué papel desempeñaron los sofistas en la vida pública de Atenas?",
+                "opciones": {
+                    "a": "Eran líderes políticos.",
+                    "b": "Eran embajadores y profesores de retórica.",
+                    "c": "No tenían participación en la vida pública."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Cómo influían los sofistas en los jóvenes de las familias ricas?",
+                "opciones": {
+                    "a": "Les enseñaban filosofía natural.",
+                    "b": "Les impartían el arte de la persuasión y retórica.",
+                    "c": "No tenían acceso a los jóvenes de familias ricas."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Qué obra de teatro de Sófocles ilustra el conflicto entre leyes humanas y leyes divinas?",
+                "opciones": {
+                    "a": "Edipo Rey.",
+                    "b": "Antígona.",
+                    "c": "Prometeo Encadenado."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Qué término se utiliza para describir la atribución de características humanas a animales?",
+                "opciones": {
+                    "a": "Antropocentrismo.",
+                    "b": "Antropomorfización.",
+                    "c": "Biocentrismo."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Qué significado tiene el término 'homomensura' en el contexto filosófico ateniense?",
+                "opciones": {
+                    "a": "La medida del universo.",
+                    "b": "El análisis de cuestiones hechas a medida del ser humano.",
+                    "c": "La perfección de la medida humana."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Qué es el 'iusnaturalismo jurídico'?",
+                "opciones": {
+                    "a": "La idea de que las leyes humanas son superiores a las naturales.",
+                    "b": "La creencia en normas jurídicas universales e inmutables basadas en el orden natural.",
+                    "c": "La teoría de que todas las leyes son convenciones sociales."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Qué característica destacada tienen las esculturas del periodo clásico griego?",
+                "opciones": {
+                    "a": "Proporciones corporales perfectas y idealización de las figuras.",
+                    "b": "Alta expresividad emocional y dramatismo.",
+                    "c": "Uso predominante de materiales preciosos."
+                },
+                "respuesta": "a"
+            },
+            {
+                "texto": "¿Cuál fue una consecuencia cultural de la democracia y el anfiteatro en Atenas?",
+                "opciones": {
+                    "a": "El declive de las artes escénicas.",
+                    "b": "El desarrollo del teatro como laboratorio político.",
+                    "c": "La desaparición de la literatura lírica."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Qué distingue al positivismo jurídico respecto al iusnaturalismo?",
+                "opciones": {
+                    "a": "El positivismo jurídico reconoce leyes naturales.",
+                    "b": "El positivismo jurídico considera que las leyes son creaciones humanas sin base natural.",
+                    "c": "El positivismo jurídico cree en la inmutabilidad de las leyes."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Quién fue el escultor encargado de engrandecer la Acrópolis durante el gobierno de Pericles?",
+                "opciones": {
+                    "a": "Mirón.",
+                    "b": "Fidias.",
+                    "c": "Policleto."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Cuál es la famosa declaración que resume el principio del relativismo de Protágoras?",
+                "opciones": {
+                    "a": "La verdad es absoluta.",
+                    "b": "El hombre es la medida de todas las cosas.",
+                    "c": "Solo los fuertes sobreviven."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Qué sostiene el relativismo cognitivo de Protágoras?",
+                "opciones": {
+                    "a": "Que existen verdades universales e inmutables.",
+                    "b": "Que la percepción y el conocimiento son relativos al sujeto que percibe.",
+                    "c": "Que la realidad es objetiva y accesible a través de la razón."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Cómo afecta el relativismo de Protágoras a los juicios morales?",
+                "opciones": {
+                    "a": "Los juicios morales son universales y absolutos.",
+                    "b": "Los juicios morales son relativos y dependen de los estándares individuales.",
+                    "c": "Los juicios morales están determinados por la naturaleza."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Qué son las 'Antilogías' según Protágoras?",
+                "opciones": {
+                    "a": "Verdades universales y absolutas.",
+                    "b": "Pruebas de que no hay una verdad definitiva debido a argumentos opuestos.",
+                    "c": "Métodos para descubrir la verdad objetiva."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Qué afirma Gorgias sobre la existencia?",
+                "opciones": {
+                    "a": "Nada existe.",
+                    "b": "Todo existe y es comprensible.",
+                    "c": "Sólo los dioses existen."
+                },
+                "respuesta": "a"
+            },
+            {
+                "texto": "Según Gorgias, si algo existe, ¿qué se puede decir sobre su comprensión?",
+                "opciones": {
+                    "a": "Es fácilmente comprensible.",
+                    "b": "Es completamente incomprensible.",
+                    "c": "Es parcialmente comprensible."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Qué sostiene Gorgias sobre la comunicación de la comprensión?",
+                "opciones": {
+                    "a": "Es posible comunicar completamente cualquier comprensión.",
+                    "b": "Es imposible comunicar o explicar comprensiones a otros.",
+                    "c": "Solo se puede comunicar a través del arte."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Cómo se relaciona el escepticismo de Gorgias con sus afirmaciones filosóficas?",
+                "opciones": {
+                    "a": "Apoya la existencia de verdades universales.",
+                    "b": "Desafía la capacidad de conocer y comunicar la verdad.",
+                    "c": "Promueve la búsqueda incansable de conocimiento."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Quién es Calicles en los diálogos de Platón?",
+                "opciones": {
+                    "a": "Un filósofo presocrático.",
+                    "b": "Un personaje ficticio que representa una visión ética particular.",
+                    "c": "Un maestro de Sócrates."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Qué sostiene el naturalismo moral de Calicles?",
+                "opciones": {
+                    "a": "Que todos los seres vivos merecen igual respeto moral.",
+                    "b": "Que los más fuertes y capaces deben dominar sobre los más débiles.",
+                    "c": "Que la moralidad es una construcción social arbitraria."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Cuál es la crítica principal de Calicles hacia la moralidad convencional?",
+                "opciones": {
+                    "a": "Que las normas morales son naturales e inmutables.",
+                    "b": "Que las normas morales son construcciones humanas diseñadas para proteger a los débiles.",
+                    "c": "Que las normas morales provienen directamente de los dioses."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Cómo describe Calicles la ley de la naturaleza?",
+                "opciones": {
+                    "a": "Como una ley divina e inmutable.",
+                    "b": "Como una convención humana arbitraria.",
+                    "c": "Como una ley que favorece a los más fuertes y aptos."
+                },
+                "respuesta": "c"
+            },
+            {
+                "texto": "¿Qué postura filosófica defiende Sócrates en contraste con los sofistas?",
+                "opciones": {
+                    "a": "Relativismo.",
+                    "b": "Universalismo y búsqueda de verdades universales.",
+                    "c": "Escepticismo radical."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Qué método utiliza Sócrates para llegar a las definiciones universales?",
+                "opciones": {
+                    "a": "Método empírico basado en la observación.",
+                    "b": "Método dialéctico mediante el diálogo y la confrontación de ideas.",
+                    "c": "Método de enseñanza memorística."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Cuál es la finalidad de la ironía en el método socrático?",
+                "opciones": {
+                    "a": "Enseñar conocimientos específicos.",
+                    "b": "Desconcertar al alumno y exponer sus contradicciones.",
+                    "c": "Divertir durante el aprendizaje."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Qué significa 'mayéutica' en el contexto del método socrático?",
+                "opciones": {
+                    "a": "Dar a luz ideas innatas a través del diálogo.",
+                    "b": "Enseñar retórica para persuadir.",
+                    "c": "Imponer verdades universales sin cuestionamiento."
+                },
+                "respuesta": "a"
+            },
+            {
+                "texto": "¿Cómo relaciona Sócrates el conocimiento con la virtud?",
+                "opciones": {
+                    "a": "Considera que el conocimiento y la virtud son independientes.",
+                    "b": "Afirma que el conocimiento lleva necesariamente a la virtud.",
+                    "c": "Cree que la virtud es superior al conocimiento."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "Según Sócrates, ¿por qué actúa alguien mal?",
+                "opciones": {
+                    "a": "Porque tiene una inclinación natural hacia la maldad.",
+                    "b": "Porque es ignorante y no ha alcanzado el conocimiento y la virtud.",
+                    "c": "Porque las leyes lo obligan a hacerlo."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Qué implica el dictum 'conócete a ti mismo' en el método socrático?",
+                "opciones": {
+                    "a": "Que el conocimiento exterior es más importante que el interior.",
+                    "b": "Que el autoconocimiento es fundamental para alcanzar la verdad y la virtud.",
+                    "c": "Que la introspección es inútil para el aprendizaje."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Cómo describe Platón el mundo de las Ideas en relación con las definiciones universales?",
+                "opciones": {
+                    "a": "Como una extensión del mundo físico.",
+                    "b": "Como el plano donde residen las definiciones universales y perfectas.",
+                    "c": "Como una mera construcción humana sin existencia real."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Qué caracteriza a las esculturas del periodo clásico griego?",
+                "opciones": {
+                    "a": "Alta expresividad emocional y dramatismo.",
+                    "b": "Proporciones corporales perfectas y idealización de las figuras.",
+                    "c": "Uso predominante de materiales preciosos."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Qué papel jugó el teatro en la democracia ateniense?",
+                "opciones": {
+                    "a": "Fue un entretenimiento sin relevancia política.",
+                    "b": "Funcionó como un laboratorio político para los ciudadanos.",
+                    "c": "Fue utilizado exclusivamente por la élite para propaganda."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Quiénes fueron los principales autores de tragedias en el teatro griego del siglo V a.C.?",
+                "opciones": {
+                    "a": "Esquilo, Sófocles y Eurípides.",
+                    "b": "Aristófanes y Píndaro.",
+                    "c": "Platón y Aristóteles."
+                },
+                "respuesta": "a"
+            },
+            {
+                "texto": "¿Qué distingue la tragedia de la comedia en el teatro griego?",
+                "opciones": {
+                    "a": "La tragedia se centra en temas cómicos y la comedia en temas serios.",
+                    "b": "La tragedia aborda temas serios y la comedia se enfoca en el humor y la sátira.",
+                    "c": "No hay distinción entre tragedia y comedia."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Qué evento finalizó el esplendor de Atenas en el siglo V a.C.?",
+                "opciones": {
+                    "a": "Las Guerras Médicas.",
+                    "b": "La Guerra del Peloponeso y el gobierno de los Treinta Tiranos.",
+                    "c": "La invasión de Alejandro Magno."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Qué representa la 'Ley de la Naturaleza' según Calicles?",
+                "opciones": {
+                    "a": "Un conjunto de leyes divinas inmutables.",
+                    "b": "Convenciones humanas arbitrarias.",
+                    "c": "La dominación de los más fuertes sobre los más débiles."
+                },
+                "respuesta": "c"
+            },
+            {
+                "texto": "¿Cómo veía Calicles la relación entre fuerza y justicia?",
+                "opciones": {
+                    "a": "La justicia debe prevalecer sobre la fuerza.",
+                    "b": "La fuerza determina lo que es justo.",
+                    "c": "Ambas son independientes y no se relacionan."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Qué método utiliza Sócrates para ayudar a sus alumnos a encontrar la verdad?",
+                "opciones": {
+                    "a": "Enseñanza magistral.",
+                    "b": "Diálogo y confrontación crítica de respuestas.",
+                    "c": "Uso de metáforas y alegorías."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Qué crítica realiza Sócrates al relativismo de los sofistas?",
+                "opciones": {
+                    "a": "Que carecen de habilidades retóricas.",
+                    "b": "Que rechazan la existencia de verdades universales.",
+                    "c": "Que no promueven la educación entre los jóvenes."
+                },
+                "respuesta": "b"
+            },
+            {
+                "texto": "¿Cómo describe Sócrates la relación entre conocimiento y moralidad?",
+                "opciones": {
+                    "a": "Son independientes y no se influyen mutuamente.",
+                    "b": "El conocimiento lleva necesariamente a la moralidad y la virtud.",
+                    "c": "La moralidad precede al conocimiento."
+                },
+                "respuesta": "b"
+            }
+            // Asegúrate de que todas las preguntas estén incluidas aquí
+        ];
+
+        let selectedPreguntas = [];
+
+        // Función para seleccionar 20 preguntas al azar sin repetición
+        function getRandomQuestions(count) {
+            const shuffled = preguntas.slice(); // Copia del arreglo original
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled.slice(0, count);
+        }
+
+        function generarQuiz(preguntasSeleccionadas) {
+            const quizContainer = document.getElementById('quiz-container');
+            quizContainer.innerHTML = '';
+            preguntasSeleccionadas.forEach((pregunta, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.classList.add('question');
+
+                // Crear y añadir el texto de la pregunta
+                const label = document.createElement('label');
+                label.textContent = `${index + 1}. ${pregunta.texto}`;
+                questionDiv.appendChild(label);
+                questionDiv.appendChild(document.createElement('br'));  // Añade un salto de línea
+
+                // Crear las opciones a, b, c
+                for (let opcion in pregunta.opciones) {
+                    const optionInput = document.createElement('input');
+                    optionInput.type = 'radio';
+                    optionInput.name = `pregunta${index}`;
+                    optionInput.value = opcion;
+
+                    const optionLabel = document.createElement('label');
+                    optionLabel.textContent = ` ${opcion}. ${pregunta.opciones[opcion]}`;
+
+                    questionDiv.appendChild(optionInput);
+                    questionDiv.appendChild(optionLabel);
+                    questionDiv.appendChild(document.createElement('br'));  // Salto de línea entre opciones
+                }
+
+                quizContainer.appendChild(questionDiv);
+            });
+
+            document.getElementById('submit-btn').style.display = 'block';
+            document.getElementById('retry-btn').style.display = 'block';
+        }
+
+        function evaluarRespuestas() {
+            const resultDiv = document.getElementById('result');
+            const feedbackDiv = document.getElementById('feedback');
+            let aciertos = 0;
+            let feedback = '';
+
+            selectedPreguntas.forEach((pregunta, index) => {
+                const respuesta = document.querySelector(`input[name="pregunta${index}"]:checked`);
+                const preguntaTexto = pregunta.texto;
+                const respuestaCorrecta = pregunta.respuesta;
+                const opciones = pregunta.opciones;
+
+                if (respuesta) {
+                    const respuestaUsuario = respuesta.value;
+                    const esCorrecto = respuestaUsuario === respuestaCorrecta;
+
+                    if (esCorrecto) {
+                        aciertos++;
+                        feedback += `<p class="correct">${index + 1}. ${preguntaTexto} - Correcto. Tu respuesta: ${opciones[respuestaUsuario]}</p>`;
+                    } else {
+                        feedback += `<p class="incorrect">${index + 1}. ${preguntaTexto} - Incorrecto. Tu respuesta: ${opciones[respuestaUsuario]}. Respuesta correcta: ${opciones[respuestaCorrecta]}</p>`;
+                    }
+                } else {
+                    feedback += `<p class="unanswered">${index + 1}. ${preguntaTexto} - Sin respuesta. Respuesta correcta: ${opciones[respuestaCorrecta]}</p>`;
+                }
+            });
+
+            resultDiv.textContent = `Has acertado ${aciertos} de ${selectedPreguntas.length} preguntas.`;
+            feedbackDiv.innerHTML = feedback;
+        }
+
+        document.getElementById('submit-btn').addEventListener('click', evaluarRespuestas);
+
+        document.getElementById('retry-btn').addEventListener('click', function() {
+            selectedPreguntas = getRandomQuestions(20);
+            generarQuiz(selectedPreguntas);
+            document.getElementById('result').textContent = '';
+            document.getElementById('feedback').innerHTML = '';
+            window.scrollTo(0, 0);
+        });
+
+        // Generar el quiz al cargar la página
+        window.onload = function() {
+            selectedPreguntas = getRandomQuestions(20);
+            generarQuiz(selectedPreguntas);
+        };
+    </script>
+
+</body>
+</html>
