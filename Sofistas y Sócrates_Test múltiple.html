@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Examen Tipo Test: Sofistas y Sócrates</title>
+    <title>Repaso de Sofistas y Sócrates</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,6 +11,14 @@
         }
         h1 {
             text-align: center;
+        }
+        .selection-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .selection-container label {
+            font-size: 1.2em;
+            margin-right: 10px;
         }
         .question {
             margin-bottom: 20px;
@@ -35,25 +43,38 @@
             color: orange;
         }
         button {
-            display: block;
-            margin: 20px auto;
+            display: inline-block;
+            margin: 10px;
             padding: 10px 20px;
             font-size: 1em;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
 
-    <h1>Examen Tipo Test: Sofistas y Sócrates</h1>
+    <h1>Repaso de Sofistas y Sócrates</h1>
+
+    <!-- Contenedor para la selección del número de preguntas -->
+    <div class="selection-container" id="selection-container">
+        <label for="num-questions">Selecciona el número de preguntas (máximo 20):</label>
+        <select id="num-questions">
+            <!-- Opciones del 1 al 20 -->
+            <!-- Generadas dinámicamente en JavaScript -->
+        </select>
+        <button id="start-quiz-btn">Iniciar Examen</button>
+    </div>
 
     <!-- Contenedor donde se mostrará el quiz -->
-    <div id="quiz-container">
+    <div id="quiz-container" style="display:none;">
         <!-- Las preguntas se insertarán aquí dinámicamente -->
     </div>
 
     <!-- Botones para enviar respuestas y reiniciar -->
-    <button id="submit-btn" style="display:none;">Enviar respuestas</button>
-    <button id="retry-btn" style="display:none;">Intentar de nuevo</button>
+    <div id="buttons-container" style="display:none; text-align: center;">
+        <button id="submit-btn">Enviar respuestas</button>
+        <button id="retry-btn">Intentar de nuevo</button>
+    </div>
 
     <!-- Resultados y retroalimentación -->
     <div id="result" class="result"></div>
@@ -637,12 +658,21 @@
                 },
                 "respuesta": "b"
             }
-            // Asegúrate de que todas las preguntas estén incluidas aquí
+            // Asegúrate de que todas las preguntas estén incluidas aquí, excepto la de 'Biocentrismo'
         ];
 
         let selectedPreguntas = [];
 
-        // Función para seleccionar 20 preguntas al azar sin repetición
+        // Inicializar el selector de número de preguntas
+        const numQuestionsSelect = document.getElementById('num-questions');
+        for (let i = 1; i <= 20; i++) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.textContent = i;
+            numQuestionsSelect.appendChild(option);
+        }
+
+        // Función para seleccionar preguntas aleatorias
         function getRandomQuestions(count) {
             const shuffled = preguntas.slice(); // Copia del arreglo original
             for (let i = shuffled.length - 1; i > 0; i--) {
@@ -652,6 +682,7 @@
             return shuffled.slice(0, count);
         }
 
+        // Función para generar el quiz
         function generarQuiz(preguntasSeleccionadas) {
             const quizContainer = document.getElementById('quiz-container');
             quizContainer.innerHTML = '';
@@ -663,7 +694,7 @@
                 const label = document.createElement('label');
                 label.textContent = `${index + 1}. ${pregunta.texto}`;
                 questionDiv.appendChild(label);
-                questionDiv.appendChild(document.createElement('br'));  // Añade un salto de línea
+                questionDiv.appendChild(document.createElement('br'));  // Salta de línea
 
                 // Crear las opciones a, b, c
                 for (let opcion in pregunta.opciones) {
@@ -677,16 +708,17 @@
 
                     questionDiv.appendChild(optionInput);
                     questionDiv.appendChild(optionLabel);
-                    questionDiv.appendChild(document.createElement('br'));  // Salto de línea entre opciones
+                    questionDiv.appendChild(document.createElement('br'));  // Salta de línea entre opciones
                 }
 
                 quizContainer.appendChild(questionDiv);
             });
 
-            document.getElementById('submit-btn').style.display = 'block';
-            document.getElementById('retry-btn').style.display = 'block';
+            // Mostrar los botones de enviar y reiniciar
+            document.getElementById('buttons-container').style.display = 'block';
         }
 
+        // Función para evaluar las respuestas
         function evaluarRespuestas() {
             const resultDiv = document.getElementById('result');
             const feedbackDiv = document.getElementById('feedback');
@@ -718,20 +750,44 @@
             feedbackDiv.innerHTML = feedback;
         }
 
-        document.getElementById('submit-btn').addEventListener('click', evaluarRespuestas);
-
-        document.getElementById('retry-btn').addEventListener('click', function() {
-            selectedPreguntas = getRandomQuestions(20);
+        // Evento para iniciar el quiz
+        document.getElementById('start-quiz-btn').addEventListener('click', function() {
+            const num = parseInt(numQuestionsSelect.value);
+            selectedPreguntas = getRandomQuestions(num);
             generarQuiz(selectedPreguntas);
+            // Ocultar la selección y mostrar el quiz
+            document.getElementById('selection-container').style.display = 'none';
+            document.getElementById('quiz-container').style.display = 'block';
             document.getElementById('result').textContent = '';
             document.getElementById('feedback').innerHTML = '';
-            window.scrollTo(0, 0);
         });
 
-        // Generar el quiz al cargar la página
+        // Evento para enviar respuestas
+        document.getElementById('submit-btn').addEventListener('click', function() {
+            evaluarRespuestas();
+            // Deshabilitar los inputs para evitar cambios después de enviar
+            const inputs = document.querySelectorAll('#quiz-container input[type="radio"]');
+            inputs.forEach(input => input.disabled = true);
+            // Deshabilitar el botón de enviar para evitar múltiples envíos
+            this.disabled = true;
+        });
+
+        // Evento para reiniciar el quiz
+        document.getElementById('retry-btn').addEventListener('click', function() {
+            // Reiniciar la interfaz
+            document.getElementById('selection-container').style.display = 'block';
+            document.getElementById('quiz-container').style.display = 'none';
+            document.getElementById('buttons-container').style.display = 'none';
+            document.getElementById('result').textContent = '';
+            document.getElementById('feedback').innerHTML = '';
+            // Rehabilitar el botón de enviar
+            document.getElementById('submit-btn').disabled = false;
+        });
+
+        // Ocultar el contenedor del quiz al cargar la página
         window.onload = function() {
-            selectedPreguntas = getRandomQuestions(20);
-            generarQuiz(selectedPreguntas);
+            document.getElementById('quiz-container').style.display = 'none';
+            document.getElementById('buttons-container').style.display = 'none';
         };
     </script>
 
