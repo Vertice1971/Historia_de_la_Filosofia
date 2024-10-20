@@ -1,0 +1,31 @@
+{
+    "preguntas": [
+        {
+            "texto": "¿Cuál es el principio fundamental de todas las cosas según Heráclito?",
+            "opciones": {
+                "a": "El fuego",
+                "b": "El agua",
+                "c": "El aire"
+            },
+            "respuesta": "a"
+        },
+        {
+            "texto": "¿Qué afirmaba Anaximandro que era el arjé?",
+            "opciones": {
+                "a": "El número",
+                "b": "El ápeiron",
+                "c": "El átomo"
+            },
+            "respuesta": "b"
+        },
+        {
+            "texto": "¿Qué simboliza el paso del mito al logos en la filosofía griega?",
+            "opciones": {
+                "a": "La permanencia del pensamiento mágico",
+                "b": "El surgimiento de nuevas mitologías",
+                "c": "El inicio del pensamiento racional"
+            },
+            "respuesta": "c"
+        }
+    ]
+}
