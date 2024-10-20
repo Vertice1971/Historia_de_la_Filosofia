@@ -1,0 +1,338 @@
+{
+    "preguntas": [
+      {
+        "texto": "¿Cuál fue el cambio de mentalidad en Grecia que favoreció la aparición de la filosofía?",
+        "opciones": {
+          "a": "La aceptación ciega de creencias religiosas",
+          "b": "El inicio de un análisis coherente del mundo y el ser humano",
+          "c": "La abolición de la religión"
+        },
+        "respuesta": "b"
+      },
+      {
+        "texto": "¿Qué establecieron los dóricos en Grecia?",
+        "opciones": {
+          "a": "La unificación de Grecia bajo un solo Estado",
+          "b": "El modelo de organización política y social de la polis",
+          "c": "Una economía basada en la agricultura"
+        },
+        "respuesta": "b"
+      },
+      {
+        "texto": "¿Qué propiciaba la reflexión sobre distintos modelos sociales en Grecia?",
+        "opciones": {
+          "a": "La existencia de múltiples polis independientes",
+          "b": "La falta de leyes en las polis",
+          "c": "La imposición de un único modelo social"
+        },
+        "respuesta": "a"
+      },
+      {
+        "texto": "¿Cómo relativizaban los griegos las creencias tradicionales?",
+        "opciones": {
+          "a": "Aceptando sin crítica las creencias de sus padres",
+          "b": "Comparando diferentes modelos sociales y costumbres",
+          "c": "Imponiendo un solo modelo a todas las polis"
+        },
+        "respuesta": "b"
+      },
+      {
+        "texto": "¿Qué permitió el nacimiento de una economía de mercado en Grecia?",
+        "opciones": {
+          "a": "La invención de la escritura y la moneda acuñada",
+          "b": "El auge de la agricultura",
+          "c": "La creación de un sistema religioso"
+        },
+        "respuesta": "a"
+      },
+      {
+        "texto": "¿Qué actividad era común en el ágora de las polis griegas?",
+        "opciones": {
+          "a": "Solo actividades religiosas",
+          "b": "Negocios, diálogos y pensamientos",
+          "c": "Ceremonias de sacrificios"
+        },
+        "respuesta": "b"
+      },
+      {
+        "texto": "¿Por qué los griegos fundaban colonias en Asia Menor y el sur de Italia?",
+        "opciones": {
+          "a": "Porque las tierras del continente griego no ofrecían muchas oportunidades agrícolas",
+          "b": "Para difundir su religión",
+          "c": "Para evitar el comercio"
+        },
+        "respuesta": "a"
+      },
+      {
+        "texto": "¿Qué consecuencia tuvo la navegación y el comercio griego?",
+        "opciones": {
+          "a": "El aislamiento cultural",
+          "b": "El intercambio de información y conocimientos",
+          "c": "La prohibición de otras culturas"
+        },
+        "respuesta": "b"
+      },
+      {
+        "texto": "¿Qué tipo de sociedad permitió el surgimiento de la clase ociosa en Grecia?",
+        "opciones": {
+          "a": "Una sociedad feudal",
+          "b": "Una sociedad esclavista",
+          "c": "Una sociedad agrícola autosuficiente"
+        },
+        "respuesta": "b"
+      },
+      {
+        "texto": "¿Qué característica era común en los filósofos presocráticos?",
+        "opciones": {
+          "a": "Se enfocaban exclusivamente en cuestiones éticas",
+          "b": "Buscaban una explicación racional de la naturaleza (physis)",
+          "c": "Rechazaban toda idea de arjé"
+        },
+        "respuesta": "b"
+      },
+      {
+        "texto": "¿Qué significa el término 'arjé' según los presocráticos?",
+        "opciones": {
+          "a": "El fin de todas las cosas",
+          "b": "El principio originario y constitutivo de todas las cosas",
+          "c": "El caos del universo"
+        },
+        "respuesta": "b"
+      },
+      {
+        "texto": "¿Qué representaba el agua para Tales de Mileto?",
+        "opciones": {
+          "a": "Un elemento más en el universo",
+          "b": "El principio de todas las cosas",
+          "c": "Una fuerza destructiva"
+        },
+        "respuesta": "b"
+      },
+      {
+        "texto": "¿Qué propuso Anaximandro como el arjé?",
+        "opciones": {
+          "a": "El fuego",
+          "b": "El ápeiron, una realidad indefinida",
+          "c": "El aire"
+        },
+        "respuesta": "b"
+      },
+      {
+        "texto": "¿Qué elemento consideró Anaxímenes como el arjé?",
+        "opciones": {
+          "a": "El fuego",
+          "b": "El agua",
+          "c": "El aire"
+        },
+        "respuesta": "c"
+      },
+      {
+        "texto": "¿Qué simboliza el fuego en la filosofía de Heráclito?",
+        "opciones": {
+          "a": "La destrucción eterna",
+          "b": "El cambio constante en el universo",
+          "c": "Un dios todopoderoso"
+        },
+        "respuesta": "b"
+      },
+      {
+        "texto": "¿Qué frase representa mejor la visión de Heráclito sobre el cambio?",
+        "opciones": {
+          "a": "'El mundo es inmóvil'",
+          "b": "'Todo fluye'",
+          "c": "'La nada es lo que es'"
+        },
+        "respuesta": "b"
+      },
+      {
+        "texto": "¿Qué simbolizaba el paso del mito al logos en la Grecia antigua?",
+        "opciones": {
+          "a": "La aparición de explicaciones racionales frente a las míticas",
+          "b": "La desaparición de toda creencia religiosa",
+          "c": "El auge del politeísmo"
+        },
+        "respuesta": "a"
+      },
+      {
+        "texto": "¿Qué afirmaba Parménides sobre el Ser?",
+        "opciones": {
+          "a": "Que el Ser cambia constantemente",
+          "b": "Que el Ser es inmutable y eterno",
+          "c": "Que el Ser no existe"
+        },
+        "respuesta": "b"
+      },
+      {
+        "texto": "¿Cómo explicaba Zenón la paradoja de Aquiles y la tortuga?",
+        "opciones": {
+          "a": "Que Aquiles alcanzará fácilmente a la tortuga",
+          "b": "Que la tortuga siempre estará por delante de Aquiles",
+          "c": "Que Aquiles corre más rápido pero pierde"
+        },
+        "respuesta": "b"
+      },
+      {
+        "texto": "¿Cuál fue el aporte de los atomistas como Leucipo y Demócrito?",
+        "opciones": {
+          "a": "Que las cosas están compuestas por átomos indivisibles",
+          "b": "Que todo está compuesto de fuego y aire",
+          "c": "Que el vacío no existe"
+        },
+        "respuesta": "a"
+      },
+      {
+        "texto": "¿Qué sostenían los pitagóricos sobre la estructura del universo?",
+        "opciones": {
+          "a": "Que todo está basado en relaciones numéricas",
+          "b": "Que el universo es caótico y sin orden",
+          "c": "Que el universo es solo una ilusión"
+        },
+        "respuesta": "a"
+      },
+      {
+        "texto": "¿Qué influencia tuvo Pitágoras en Platón?",
+        "opciones": {
+          "a": "Su doctrina sobre la inmortalidad del alma",
+          "b": "Su teoría política",
+          "c": "Su negación del arjé"
+        },
+        "respuesta": "a"
+      },
+      {
+        "texto": "¿Qué concepto griego representaba el 'cosmos' según los primeros filósofos?",
+        "opciones": {
+          "a": "Desorden",
+          "b": "Orden y regularidad",
+          "c": "Destrucción y caos"
+        },
+        "respuesta": "b"
+      },
+      {
+        "texto": "¿Qué afirmaba Anaxágoras sobre el 'Nous'?",
+        "opciones": {
+          "a": "Es el caos del universo",
+          "b": "Es la inteligencia que ordena el cosmos",
+          "c": "Es un dios que castiga a los humanos"
+        },
+        "respuesta": "b"
+      },
+      {
+        "texto": "¿Qué caracteriza la paradoja de la flecha de Zenón?",
+        "opciones": {
+          "a": "Que la flecha está en movimiento perpetuo",
+          "b": "Que la flecha nunca se mueve en realidad",
+          "c": "Que la flecha desaparece en el aire"
+        },
+        "respuesta": "b"
+      },
+      {
+        "texto": "¿Qué elemento consideró Empédocles como arjé?",
+        "opciones": {
+          "a": "El fuego",
+          "b": "Los cuatro elementos: fuego, aire, tierra y agua",
+          "c": "El éter"
+        },
+        "respuesta": "b"
+      },
+      {
+        "texto": "¿Cómo definió Anaxágoras el principio de la naturaleza?",
+        "opciones": {
+          "a": "La combinación de elementos naturales",
+          "b": "El ápeiron",
+          "c": "El Nous o inteligencia"
+        },
+        "respuesta": "c"
+      },
+      {
+        "texto": "¿Qué concepto introdujo Anaxágoras para explicar el movimiento y orden del universo?",
+        "opciones": {
+          "a": "El éter",
+          "b": "El Nous",
+          "c": "El caos"
+        },
+        "respuesta": "b"
+      },
+      {
+        "texto": "¿Qué afirmaba Parménides sobre el no Ser?",
+        "opciones": {
+          "a": "El no Ser es igual al Ser",
+          "b": "El no Ser no existe",
+          "c": "El no Ser puede transformarse en Ser"
+        },
+        "respuesta": "b"
+      },
+      {
+        "texto": "¿Cómo explicó Demócrito la percepción sensible?",
+        "opciones": {
+          "a": "A través de la influencia divina",
+          "b": "Por la emisión de imágenes de los objetos que penetran en los sentidos",
+          "c": "A través del Nous"
+        },
+        "respuesta": "b"
+      },
+      {
+        "texto": "¿Qué sostiene la paradoja de la flecha de Zenón?",
+        "opciones": {
+          "a": "Que la flecha está siempre en reposo",
+          "b": "Que la flecha nunca alcanza su destino",
+          "c": "Que la flecha desaparece"
+        },
+        "respuesta": "a"
+      },
+      {
+        "texto": "¿Qué influencias externas tuvo Pitágoras en sus viajes?",
+        "opciones": {
+          "a": "Egipto y Zoroastro",
+          "b": "China y la India",
+          "c": "Roma y Cartago"
+        },
+        "respuesta": "a"
+      },
+      {
+        "texto": "¿Qué elemento era considerado el principio del universo según Anaxímenes?",
+        "opciones": {
+          "a": "El agua",
+          "b": "El aire",
+          "c": "El fuego"
+        },
+        "respuesta": "b"
+      },
+      {
+        "texto": "¿Qué idea sobre el alma compartían los atomistas?",
+        "opciones": {
+          "a": "El alma está compuesta por átomos más sutiles",
+          "b": "El alma es eterna e inmaterial",
+          "c": "El alma no existe"
+        },
+        "respuesta": "a"
+      },
+      {
+        "texto": "¿Cómo entendían los atomistas el vacío?",
+        "opciones": {
+          "a": "Como algo inexistente",
+          "b": "Como una separación necesaria entre los átomos",
+          "c": "Como el éter que todo lo llena"
+        },
+        "respuesta": "b"
+      },
+      {
+        "texto": "¿Qué aportó Hipócrates a la medicina griega?",
+        "opciones": {
+          "a": "La curación por medio de rituales mágicos",
+          "b": "El estudio empírico de los síntomas",
+          "c": "La explicación de las enfermedades como castigos divinos"
+        },
+        "respuesta": "b"
+      },
+      {
+        "texto": "¿Qué planteó Parménides sobre la realidad?",
+        "opciones": {
+          "a": "La realidad es múltiple y cambiante",
+          "b": "La realidad es única e inmutable",
+          "c": "La realidad depende de los dioses"
+        },
+        "respuesta": "b"
+      }
+    ]
+  }
+  
