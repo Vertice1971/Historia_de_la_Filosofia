@@ -1,0 +1,44 @@
+{
+  "preguntas": [
+    {
+      "texto": "Sócrates fue maestro de Platón.",
+      "respuesta": true
+    },
+    {
+      "texto": "Sócrates dejó escritos filosóficos importantes.",
+      "respuesta": false
+    },
+    {
+      "texto": "La mayéutica es el método de enseñanza basado en preguntas utilizado por Sócrates.",
+      "respuesta": true
+    },
+    {
+      "texto": "Sócrates fue condenado a muerte por corrupción de la juventud y por impiedad.",
+      "respuesta": true
+    },
+    {
+      "texto": "La acusación de los sofistas llevó a la condena de Sócrates.",
+      "respuesta": false
+    },
+    {
+      "texto": "Sócrates nació en Atenas en el siglo V a.C.",
+      "respuesta": true
+    },
+    {
+      "texto": "Sócrates creía que la sabiduría consistía en reconocer la propia ignorancia.",
+      "respuesta": true
+    },
+    {
+      "texto": "El oráculo de Delfos declaró que Sócrates era el hombre más sabio de Atenas.",
+      "respuesta": true
+    },
+    {
+      "texto": "Sócrates se oponía a la democracia ateniense.",
+      "respuesta": false
+    },
+    {
+      "texto": "La principal fuente de conocimiento sobre Sócrates proviene de los diálogos escritos por Aristóteles.",
+      "respuesta": false
+    }
+  ]
+}
