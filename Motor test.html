@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz Dinámico</title>
+    <title>Test Verdadero/Falso</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -48,7 +48,7 @@
 </head>
 <body>
 
-    <h1>Quiz Dinámico</h1>
+    <h1>Test Verdadero/Falso</h1>
 
     <!-- Input para cargar el archivo JSON -->
     <label for="file-input">Selecciona el archivo JSON:</label>
@@ -170,12 +170,13 @@
                 const respuestaCorrecta = pregunta.respuesta;
 
                 if (respuesta) {
+                    const respuestaUsuario = respuesta.value === 'true' ? 'Verdadero' : 'Falso';
                     const esCorrecto = (respuesta.value === 'true') === respuestaCorrecta;
                     if (esCorrecto) {
                         aciertos++;
-                        feedback += `<p class="correct">${index + 1}. ${preguntaTexto} - Correcto</p>`;
+                        feedback += `<p class="correct">${index + 1}. ${preguntaTexto} - Has respondido que es ${respuestaUsuario} y es correcto.</p>`;
                     } else {
-                        feedback += `<p class="incorrect">${index + 1}. ${preguntaTexto} - Incorrecto</p>`;
+                        feedback += `<p class="incorrect">${index + 1}. ${preguntaTexto} - Has respondido que es ${respuestaUsuario} y es incorrecto.</p>`;
                     }
                 } else {
                     feedback += `<p class="unanswered">${index + 1}. ${preguntaTexto} - Sin respuesta</p>`;
