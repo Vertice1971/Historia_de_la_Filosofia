@@ -36,7 +36,9 @@
 <body>
 
 <h1>Cuantificando lo Universal</h1>
-<p>Introduce seis ideas universales únicas y el número de alumnos en clase.</p>
+<div id="intro-text">
+  <p>Introduce seis ideas universales únicas y el número de alumnos en clase.</p>
+</div>
 
 <div id="input-section">
   <label>Ideas Universales (seis diferentes):</label><br>
@@ -111,6 +113,7 @@
       return;
     }
 
+    document.getElementById('intro-text').style.display = "none"; // Oculta el texto introductorio
     ratingsPerIdea = Array(ideas.length).fill(0).map(() => []);
     document.getElementById('input-section').style.display = "none";
     document.getElementById('rating-section').style.display = "block";
