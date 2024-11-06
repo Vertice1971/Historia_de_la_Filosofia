@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Puzzle de la Línea Platónica</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        #controls {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        #word-pool, .dropzone-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .word {
+            background-color: #ffffff;
+            border: 2px solid #333333;
+            border-radius: 5px;
+            padding: 10px 15px;
+            margin: 5px;
+            cursor: grab;
+            user-select: none;
+        }
+        .dropzone {
+            background-color: #ffffff;
+            border: 2px dashed #666666;
+            border-radius: 5px;
+            width: 200px;
+            min-height: 100px;
+            margin: 10px;
+            padding: 10px;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        .dropzone.over {
+            border-color: #0000ff;
+            background-color: #e0e0ff;
+        }
+        .columns {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+        .column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .column h3 {
+            margin-bottom: 10px;
+        }
+        #score {
+            text-align: center;
+            font-size: 1.2em;
+            margin-top: 20px;
+            display: none;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+        @media (max-width: 800px) {
+            .dropzone, .word {
+                width: 45%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Puzzle de la Línea Platónica</h1>
+    <div id="controls">
+        <button id="start-btn">Iniciar Juego</button>
+        <button id="check-btn" disabled>Verificar Puntuación</button>
+        <button id="reset-btn" disabled>Volver a Jugar</button>
+    </div>
+
+    <h2>Palabras Disponibles</h2>
+    <div id="word-pool"></div>
+
+    <div class="columns">
+        <div class="column">
+            <h3>Eikasia</h3>
+            <div class="dropzone" id="eikasia-dropzone"></div>
+        </div>
+        <div class="column">
+            <h3>Pistis</h3>
+            <div class="dropzone" id="pistis-dropzone"></div>
+        </div>
+        <div class="column">
+            <h3>Dianoia</h3>
+            <div class="dropzone" id="dianoia-dropzone"></div>
+        </div>
+        <div class="column">
+            <h3>Noesis</h3>
+            <div class="dropzone" id="noesis-dropzone"></div>
+        </div>
+    </div>
+
+    <div id="score"></div>
+
+    <script>
+        // Listas de ejemplos actualizados y más concretos
+        const eikasia = [
+            "Creer en noticias falsas en redes sociales",
+            "Interpretar mal gráficos engañosos en publicidad",
+            "Confiar en rumores sin verificar en WhatsApp",
+            "Pensar que los reality shows reflejan la vida real",
+            "Creer en estafas en línea que parecen legítimas",
+            "Ver rostros en las nubes (pareidolia)",
+            "Engaños de magia en espectáculos en vivo",
+            "Creer que videos deepfake son reales",
+            "Dejarse llevar por estereotipos en medios de comunicación",
+            "Fotos editadas que distorsionan la realidad",
+            "Filtrar la realidad con filtros de Instagram",
+            "Pensar que los videojuegos reflejan la vida cotidiana",
+            "Confiar en titulares sensacionalistas",
+            "Aceptar teorías conspirativas sin pruebas",
+            "Creer en mitos urbanos sin fundamento",
+            "Tomar publicidad exagerada como verdad",
+            "Ver hologramas y pensar que son objetos reales",
+            "Interpretar mal sueños como premoniciones",
+            "Creer en horóscopos como predicciones exactas",
+            "Confundir personajes de ficción con personas reales"
+        ];
+
+        const pistis = [
+            "Confiar en que el sol saldrá cada mañana",
+            "Usar recetas para cocinar una comida",
+            "Seguir señales de tráfico al conducir",
+            "Creer en las leyes de la física básicas",
+            "Usar medicamentos recetados por un médico",
+            "Confiar en la estructura de un edificio",
+            "Plantar semillas esperando que crezcan",
+            "Creer en la eficacia del ejercicio físico",
+            "Observar el cambio de estaciones",
+            "Usar mapas para navegar en una ciudad",
+            "Confiar en la electricidad al encender una luz",
+            "Creer en la gravedad al ver caer objetos",
+            "Aceptar el ciclo del agua en la naturaleza",
+            "Usar herramientas para construir algo",
+            "Seguir instrucciones para armar un mueble",
+            "Creer en la información de un libro de texto",
+            "Observar comportamientos animales en la naturaleza",
+            "Confiar en pronósticos del clima basados en patrones",
+            "Usar dispositivos tecnológicos diariamente",
+            "Medir ingredientes para hornear un pastel"
+        ];
+
+        const dianoia = [
+            "Resolver ecuaciones algebraicas",
+            "Probar teoremas geométricos",
+            "Analizar datos estadísticos para conclusiones",
+            "Programar algoritmos complejos",
+            "Desarrollar modelos para predecir tendencias económicas",
+            "Formular hipótesis científicas y probarlas",
+            "Crear pruebas en cálculo matemático",
+            "Diseñar experimentos para testear teorías",
+            "Entender principios avanzados de física",
+            "Explorar conceptos abstractos en matemáticas",
+            "Planificar estrategias con contingencias",
+            "Usar lógica para resolver acertijos",
+            "Conducir investigaciones y analizar resultados",
+            "Aplicar modelos matemáticos en ingeniería",
+            "Desarrollar aplicaciones de software",
+            "Debatir argumentos filosóficos con lógica",
+            "Crear algoritmos de encriptación",
+            "Modelar escenarios de cambio climático",
+            "Diseñar circuitos complejos",
+            "Explorar conceptos teóricos en física cuántica"
+        ];
+
+        const noesis = [
+            "Contemplar la naturaleza misma de la justicia",
+            "Entender el concepto de belleza más allá de lo físico",
+            "Aprehender la idea de igualdad como forma abstracta",
+            "Reflexionar sobre la esencia de la bondad",
+            "Comprender la naturaleza de la verdad",
+            "Entender el concepto de infinito",
+            "Contemplar el significado de la existencia",
+            "Aprehender la esencia del amor como forma",
+            "Entender la naturaleza del ser",
+            "Reflexionar sobre la idea de perfección",
+            "Comprender los principios universales de ética",
+            "Entender el concepto abstracto del tiempo",
+            "Aprehender la esencia de la conciencia",
+            "Contemplar la idea de la sociedad ideal",
+            "Entender la naturaleza de las verdades matemáticas",
+            "Reflexionar sobre la esencia del conocimiento en sí",
+            "Aprehender las leyes universales de la lógica",
+            "Entender la forma de la belleza en el arte y la naturaleza",
+            "Contemplar la realidad última más allá de las apariencias",
+            "Aprehender la interconexión de todas las cosas"
+        ];
+
+        // Variables para almacenar las palabras seleccionadas
+        let selectedWords = [];
+        let correctAssignments = {};
+        let score = 0;
+
+        // Elementos del DOM
+        const startBtn = document.getElementById('start-btn');
+        const checkBtn = document.getElementById('check-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const wordPool = document.getElementById('word-pool');
+        const scoreDiv = document.getElementById('score');
+
+        const dropzones = {
+            'eikasia': document.getElementById('eikasia-dropzone'),
+            'pistis': document.getElementById('pistis-dropzone'),
+            'dianoia': document.getElementById('dianoia-dropzone'),
+            'noesis': document.getElementById('noesis-dropzone')
+        };
+
+        // Función para seleccionar aleatoriamente n elementos de una lista
+        function getRandomElements(arr, n) {
+            const shuffled = arr.slice(0);
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled.slice(0, n);
+        }
+
+        // Función para inicializar el juego
+        function initializeGame() {
+            // Limpiar cualquier juego anterior
+            wordPool.innerHTML = '';
+            scoreDiv.style.display = 'none';
+            scoreDiv.innerText = '';
+            Object.values(dropzones).forEach(dz => dz.innerHTML = '');
+            checkBtn.disabled = true;
+            resetBtn.disabled = true;
+
+            // Seleccionar 3 palabras de cada categoría
+            const selectedEikasia = getRandomElements(eikasia, 3);
+            const selectedPistis = getRandomElements(pistis, 3);
+            const selectedDianoia = getRandomElements(dianoia, 3);
+            const selectedNoesis = getRandomElements(noesis, 3);
+
+            // Guardar las asignaciones correctas
+            correctAssignments = {};
+            selectedEikasia.forEach(word => { correctAssignments[word] = 'eikasia'; });
+            selectedPistis.forEach(word => { correctAssignments[word] = 'pistis'; });
+            selectedDianoia.forEach(word => { correctAssignments[word] = 'dianoia'; });
+            selectedNoesis.forEach(word => { correctAssignments[word] = 'noesis'; });
+
+            // Combinar y mezclar todas las palabras
+            selectedWords = [...selectedEikasia, ...selectedPistis, ...selectedDianoia, ...selectedNoesis];
+            shuffleArray(selectedWords);
+
+            // Crear elementos de palabra y agregarlos al word pool
+            selectedWords.forEach(word => {
+                const wordDiv = document.createElement('div');
+                wordDiv.classList.add('word');
+                wordDiv.setAttribute('draggable', 'true');
+                wordDiv.innerText = word;
+                wordPool.appendChild(wordDiv);
+            });
+
+            // Añadir eventos de drag and drop
+            addDragAndDropHandlers();
+        }
+
+        // Función para mezclar un array (Fisher-Yates)
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        // Variables para drag and drop
+        let draggedElement = null;
+
+        // Función para añadir manejadores de drag and drop
+        function addDragAndDropHandlers() {
+            const words = document.querySelectorAll('.word');
+            words.forEach(word => {
+                word.addEventListener('dragstart', dragStart);
+                word.addEventListener('dragend', dragEnd);
+            });
+
+            Object.values(dropzones).forEach(dropzone => {
+                dropzone.addEventListener('dragover', dragOver);
+                dropzone.addEventListener('drop', drop);
+                dropzone.addEventListener('dragenter', dragEnter);
+                dropzone.addEventListener('dragleave', dragLeave);
+            });
+
+            wordPool.addEventListener('dragover', dragOver);
+            wordPool.addEventListener('drop', dropToPool);
+            wordPool.addEventListener('dragenter', dragEnterPool);
+            wordPool.addEventListener('dragleave', dragLeavePool);
+        }
+
+        // Manejadores de eventos
+        function dragStart(e) {
+            draggedElement = this;
+            setTimeout(() => {
+                this.style.display = 'none';
+            }, 0);
+        }
+
+        function dragEnd(e) {
+            setTimeout(() => {
+                this.style.display = 'block';
+                draggedElement = null;
+            }, 0);
+        }
+
+        function dragOver(e) {
+            e.preventDefault();
+        }
+
+        function dragEnter(e) {
+            e.preventDefault();
+            this.classList.add('over');
+        }
+
+        function dragLeave(e) {
+            this.classList.remove('over');
+        }
+
+        function drop(e) {
+            e.preventDefault();
+            this.classList.remove('over');
+            if (this.children.length >= 3) {
+                alert('Esta columna ya tiene 3 palabras.');
+                return;
+            }
+            if (draggedElement) {
+                this.appendChild(draggedElement);
+                checkAllPlaced();
+            }
+        }
+
+        function dropToPool(e) {
+            e.preventDefault();
+            this.classList.remove('over');
+            if (draggedElement) {
+                this.appendChild(draggedElement);
+                checkAllPlaced();
+            }
+        }
+
+        function dragEnterPool(e) {
+            e.preventDefault();
+            this.classList.add('over');
+        }
+
+        function dragLeavePool(e) {
+            this.classList.remove('over');
+        }
+
+        // Función para verificar si todas las palabras están colocadas
+        function checkAllPlaced() {
+            const totalPlaced = Object.values(dropzones).reduce((acc, dz) => acc + dz.children.length, 0);
+            if (totalPlaced === 12) {
+                checkBtn.disabled = false;
+            } else {
+                checkBtn.disabled = true;
+            }
+        }
+
+        // Función para verificar la puntuación
+        function checkScore() {
+            score = 0;
+            Object.entries(correctAssignments).forEach(([word, category]) => {
+                const dropzone = dropzones[category];
+                for (let child of dropzone.children) {
+                    if (child.innerText === word) {
+                        score++;
+                        break;
+                    }
+                }
+            });
+            scoreDiv.innerText = `Tienes ${score} aciertos de 12.`;
+            scoreDiv.style.display = 'block';
+            resetBtn.disabled = false;
+            checkBtn.disabled = true;
+        }
+
+        // Event listeners para los botones
+        startBtn.addEventListener('click', () => {
+            initializeGame();
+            startBtn.disabled = true;
+            resetBtn.disabled = true;
+            scoreDiv.style.display = 'none';
+        });
+
+        checkBtn.addEventListener('click', () => {
+            checkScore();
+        });
+
+        resetBtn.addEventListener('click', () => {
+            initializeGame();
+            checkBtn.disabled = true;
+            resetBtn.disabled = true;
+            scoreDiv.style.display = 'none';
+            startBtn.disabled = false; // Habilita el botón de inicio para una nueva partida
+        });
+
+        // Permitir reiniciar el juego desde el inicio
+        window.addEventListener('load', () => {
+            // Inicializar sin palabras hasta que se presione "Iniciar Juego"
+        });
+    </script>
+
+</body>
+</html>
