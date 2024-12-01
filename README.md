@@ -41,9 +41,11 @@ Puzzle de la línea:
 https://vertice1971.github.io/Historia_de_la_Filosofia/Puzzle%20de%20la%20L%C3%ADnea.html
 
 Aristóteles
+El análisis del ente:
+https://vertice1971.github.io/Historia_de_la_Filosofia/Tabla%20Aristot%C3%A9lica%20completa%20pregrabada.html
 
 Helenística
-
+Torneo para presentaciones de Ciencia Helenística:
 https://vertice1971.github.io/Historia_de_la_Filosofia/Torneo%20Ciencia%20Helen%C3%ADstica.html
 
 
