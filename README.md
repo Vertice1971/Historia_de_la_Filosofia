@@ -40,3 +40,10 @@ Puzzle de la línea:
 
 https://vertice1971.github.io/Historia_de_la_Filosofia/Puzzle%20de%20la%20L%C3%ADnea.html
 
+Aristóteles
+
+Helenística
+
+https://vertice1971.github.io/Historia_de_la_Filosofia/Torneo%20Ciencia%20Helen%C3%ADstica.html
+
+
