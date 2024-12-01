@@ -1,0 +1,199 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabla Aristotélica Interactiva</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .drag-item {
+            display: inline-block;
+            margin: 5px;
+            padding: 10px;
+            background-color: #e1e1e1;
+            border: 1px solid black;
+            cursor: move;
+        }
+        .drag-item:hover {
+            background-color: #d1d1d1;
+        }
+        .droppable {
+            min-height: 50px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Tabla Aristotélica Interactiva</h1>
+
+    <table id="aristotle-table">
+        <tr>
+            <th>Ente</th>
+            <th>Causa Material</th>
+            <th>Causa Formal</th>
+            <th>Causa Eficiente</th>
+            <th>Causa Final</th>
+            <th>Acto</th>
+            <th>Potencia</th>
+            <th>Cambio Sustancial</th>
+            <th>Cambio Accidental</th>
+        </tr>
+    </table>
+
+    <h3>Palabras para mover:</h3>
+    <div id="word-bank"></div>
+    <h3>Errores cometidos: <span id="error-count">0</span></h3>
+
+    <script>
+        // Función para barajar (desordenar) un array
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        let errorCount = 0;  // Contador de errores
+
+        const data = {
+            "Bombera": {
+                "Causa Material": "Carne, huesos, sangre",
+                "Causa Formal": "Estructura mental",
+                "Causa Eficiente": "Padres",
+                "Causa Final": "Felicidad",
+                "Acto": "Ser humano",
+                "Potencia": "Puede ser madre",
+                "Cambio Sustancial": "Morir",
+                "Cambio Accidental": "Mechas violetas"
+            },
+            "Barco": {
+                "Causa Material": "Madera, metal",
+                "Causa Formal": "Cóncava",
+                "Causa Eficiente": "Ingenieras",
+                "Causa Final": "Transportar por agua",
+                "Acto": "Flotando",
+                "Potencia": "Puede ser muchos toboganes",
+                "Cambio Sustancial": "Desmontarlo en el astillero",
+                "Cambio Accidental": "Hundido"
+            },
+            "Libro": {
+                "Causa Material": "Papel, tinta",
+                "Causa Formal": "Composición de páginas",
+                "Causa Eficiente": "Escritor, impresor",
+                "Causa Final": "Transmitir conocimiento",
+                "Acto": "Siendo leído",
+                "Potencia": "Parte de la fiesta de San Juan",
+                "Cambio Sustancial": "Quemarlo",
+                "Cambio Accidental": "Forrado"
+            },
+            "Inteligencia Artificial": {
+                "Causa Material": "Silicio, cobre",
+                "Causa Formal": "Algoritmos",
+                "Causa Eficiente": "Programadores",
+                "Causa Final": "Optimizar tareas",
+                "Acto": "Procesando datos",
+                "Potencia": "Dictador robótico",
+                "Cambio Sustancial": "Fundido en un horno",
+                "Cambio Accidental": "Pintar las teclas de colores"
+            }
+        };
+
+        const table = document.getElementById("aristotle-table");
+        const wordBank = document.getElementById("word-bank");
+        const errorDisplay = document.getElementById("error-count");
+
+        // Generar filas de la tabla dinámicamente
+        for (const ente in data) {
+            const row = document.createElement("tr");
+            row.id = `${ente}-row`;
+
+            // Primera celda con el nombre del ente
+            const entityCell = document.createElement("td");
+            entityCell.textContent = ente;
+            row.appendChild(entityCell);
+
+            // Crear las demás celdas de la tabla
+            for (const category in data[ente]) {
+                const cell = document.createElement("td");
+                cell.className = "droppable";
+                cell.ondrop = drop;
+                cell.ondragover = allowDrop;
+                cell.dataset.expectedId = `${ente}-${category}`;  // Establece el ID esperado
+                row.appendChild(cell);
+            }
+
+            table.appendChild(row);
+        }
+
+        // Recopilar todas las palabras en un array para desordenarlas
+        let words = [];
+        for (const ente in data) {
+            for (const category in data[ente]) {
+                words.push({
+                    id: `${ente}-${category}`,
+                    text: data[ente][category]
+                });
+            }
+        }
+
+        // Barajar las palabras
+        words = shuffle(words);
+
+        // Agregar palabras al banco de palabras
+        words.forEach(word => {
+            const wordElement = document.createElement("div");
+            wordElement.className = "drag-item";
+            wordElement.draggable = true;
+            wordElement.ondragstart = drag;
+            wordElement.id = word.id;
+            wordElement.textContent = word.text;
+            wordBank.appendChild(wordElement);
+        });
+
+        function allowDrop(event) {
+            event.preventDefault();
+        }
+
+        function drag(event) {
+            event.dataTransfer.setData("text", event.target.id);
+        }
+
+        function drop(event) {
+            event.preventDefault();
+            const dataId = event.dataTransfer.getData("text");
+            const element = document.getElementById(dataId);
+
+            // Validar si la palabra fue colocada en la celda correcta
+            if (event.target.dataset.expectedId === dataId) {
+                // Si es correcto, colocar la palabra en la celda
+                event.target.appendChild(element);
+            } else {
+                // Si es incorrecto, devolver la palabra al banco de palabras y sumar un error
+                wordBank.appendChild(element);
+                errorCount++;
+                errorDisplay.textContent = errorCount;
+            }
+        }
+    </script>
+
+</body>
+</html>
