@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- tomcue@iesjuandelacierva.com -->
+  <title>Textos de Nietzsche para la PAU. Andalucía 2025</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      text-align: center;
+      background-color: #f5f8ff; /* Fondo azul pastel */
+    }
+    .question-container {
+      display: none;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      max-width: 600px;
+      margin: 20px auto;
+      background: #ffffff;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .option {
+      display: block;
+      padding: 10px;
+      margin: 10px 0;
+      border: 2px solid #ddd;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+    .option:hover {
+      background: #e0ebff;
+      transform: scale(1.05);
+    }
+    .correct {
+      background: #c8e6c9;
+      border-color: green;
+    }
+    .incorrect {
+      background: #ffcdd2;
+      border-color: red;
+    }
+    #start-btn, #restart-btn {
+      display: none;
+      margin-top: 20px;
+      padding: 10px;
+      background: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    #restart-btn {
+      background: #28a745;
+    }
+    /* Posiciona el botón "Siguiente" fijo a la derecha, en zona media/alta */
+    #next-btn {
+      position: fixed;
+      right: 20px;
+      top: 30%;
+      padding: 10px;
+      background: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      display: none;
+    }
+    #info-container {
+      margin-top: 20px;
+      font-size: 1.2em;
+    }
+  </style>
+</head>
+<body>
+  <h1>Textos de Nietzsche para la PAU. Andalucía 2025</h1>
+  <h2 style="font-size: 0.6em; color: #555;">Tomás Cuesta. IES Juan de la Cierva</h2>
+  <div id="info-container"></div>
+  <button id="start-btn">Comenzar Quiz</button>
+  <div id="quiz-container" class="question-container"></div>
+  <button id="next-btn">Siguiente</button>
+  <button id="restart-btn">Reiniciar</button>
+  
+  <script>
+    // JSON integrado con todas las preguntas de Nietzsche
+    const data = {
+      "preguntas": [
+        {
+          "texto": "La ciencia no puede ser verdadera, porque niega a Dios. Por consiguiente, no procede de Dios.",
+          "opciones": {
+            "a": "La ciencia no puede alcanzar la verdad porque rechaza la existencia de Dios, y solo a través de lo divino se puede acceder al conocimiento absoluto.",
+            "b": "Nietzsche critica la idea de que la ciencia deba proceder de Dios para ser verdadera, cuestionando la presuposición de que Dios es la única fuente de la verdad.",
+            "c": "La verdad es una construcción subjetiva que cambia con el tiempo, por lo que ni la ciencia ni la religión pueden reclamar su posesión absoluta."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Hasta el momento han sido los errores los poderes más consoladores: ahora esperamos el mismo efecto de las verdades reconocidas, pero la espera se va haciendo un poco larga.",
+          "opciones": {
+            "a": "Nietzsche sostiene que los errores del pasado han sido sustituidos por verdades absolutas que ahora proporcionan el mismo consuelo que antes ofrecían las creencias erróneas.",
+            "b": "Nietzsche señala que, a lo largo de la historia, los seres humanos han encontrado consuelo en creencias erróneas, pero ahora, al descubrir verdades, esperan que estas les brinden la misma tranquilidad, algo que no está ocurriendo.",
+            "c": "Nietzsche critica la búsqueda de verdades absolutas, afirmando que tanto los errores como las verdades reconocidas carecen de valor, ya que solo la voluntad de poder es lo que realmente importa."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Tal vez se pueda deducir de esto la tesis de que la verdad como totalidad armónica no existe más que para almas al mismo tiempo fuertes y desinteresadas, alegres y pacíficas (como era la de Aristóteles), precisamente por ser estas almas las únicas que estarían en condiciones de buscarla, puesto que los demás solo buscan remedios curativos para ellos mismos.",
+          "opciones": {
+            "a": "Nietzsche sostiene que la verdad absoluta solo puede ser alcanzada por aquellos que poseen una mente lógica y racional, como la de Aristóteles, ya que la razón es el único camino hacia el conocimiento.",
+            "b": "Nietzsche sugiere que solo las personas fuertes y sin necesidad de consuelo pueden buscar la verdad por sí misma, mientras que la mayoría de los individuos solo buscan en el conocimiento algo que los alivie de su sufrimiento.",
+            "c": "Nietzsche argumenta que el conocimiento es una herramienta de dominación y que solo aquellos con suficiente poder pueden imponer su visión de la verdad sobre los demás."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "La verdad no es de ningún modo un poder, pese a lo que acostumbra a decir el ilustrado melindroso. — Por el contrario, necesita que el poder se ponga de su parte o ponerse ella de parte del poder.",
+          "opciones": {
+            "a": "Nietzsche sostiene que la verdad tiene un poder propio que se impone por sí misma, sin necesidad de apoyarse en fuerzas externas.",
+            "b": "Nietzsche afirma que la verdad no es un poder por sí sola, sino que necesita del respaldo del poder político, social o ideológico para prevalecer y ser aceptada.",
+            "c": "Nietzsche argumenta que el conocimiento humano es completamente subjetivo y que la verdad es solo una ilusión sin ninguna relevancia en la lucha por el poder."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "En medio del océano del devenir, nosotros aventureros y aves viajeras, nos despertamos en una pequeña isla no mayor que una barquita, y miramos por un momento en torno nuestro con toda la prisa y la curiosidad que nos son posibles.",
+          "opciones": {
+            "a": "Nietzsche describe la vida como un viaje estable en el que los individuos encuentran refugio y certezas en su camino, deteniéndose en lugares seguros para descansar y conocer.",
+            "b": "Nietzsche usa la metáfora de los viajeros y las aves para representar la fugacidad del conocimiento y la vida, donde solo tenemos momentos breves para comprender antes de ser arrastrados nuevamente por el flujo del devenir.",
+            "c": "Nietzsche argumenta que el verdadero conocimiento solo puede alcanzarse en momentos de quietud y reflexión prolongada, alejados del constante cambio y la incertidumbre."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "¡Pero el conocimiento quedaría en una mala posición si únicamente se relacionara con cada pensador en la medida en que se ajustara a su cuerpo! ¡Y los pensadores también estarían en una mala situación si su vanidad fuese tan grande que solo tuvieran que soportarla ellos!",
+          "opciones": {
+            "a": "Nietzsche sostiene que el conocimiento es una construcción puramente individual y subjetiva, determinada exclusivamente por las experiencias corporales de cada pensador.",
+            "b": "Nietzsche advierte contra la idea de que el conocimiento solo sea válido si encaja con la experiencia personal del pensador, ya que esto limitaría su alcance y lo convertiría en una expresión de vanidad más que en una búsqueda genuina.",
+            "c": "Nietzsche argumenta que el verdadero conocimiento solo puede surgir de la introspección individual y que los pensadores deben aislarse para alcanzar la verdad sin interferencias externas."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "No comprendo por qué hay que desear la omnipotencia y la tiranía de la verdad; me basta saber que la verdad posee un gran poder. Pero es preciso que pueda luchar, que tenga una oposición.",
+          "opciones": {
+            "a": "Nietzsche defiende que la verdad debe imponerse de manera absoluta sobre todas las demás perspectivas, eliminando cualquier tipo de oposición que intente desafiarla.",
+            "b": "Nietzsche sostiene que la verdad no debe ser absoluta ni tiránica, sino que necesita enfrentarse a la oposición y al conflicto para mantener su fuerza y relevancia.",
+            "c": "Nietzsche argumenta que la verdad es siempre una construcción subjetiva y relativa, por lo que no tiene sentido hablar de lucha o conflicto en torno a ella."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "¡Qué sed tenéis de estos momentos en que vuestra pasión os confiere un derecho pleno y absoluto ante vosotros mismos!",
+          "opciones": {
+            "a": "Nietzsche critica la pasión como una emoción negativa que siempre nubla el juicio y aleja a las personas del conocimiento verdadero.",
+            "b": "Nietzsche señala que las personas ansían los momentos en los que su pasión les da la ilusión de estar completamente justificadas ante sí mismas, permitiéndoles evitar cualquier duda o crítica interna.",
+            "c": "Nietzsche defiende que la pasión es la fuente más pura de conocimiento y que solo aquellos que se dejan guiar por ella pueden alcanzar la verdad."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Dios ha muerto: pero, siendo los hombres lo que son, habrá acaso aún por espacio de milenios cuevas donde se muestre su sombra. –¡Y nosotros –tendremos que vencer también a su sombra!",
+          "opciones": {
+            "a": "Nietzsche celebra la desaparición total de la religión y sostiene que la humanidad ya se ha liberado completamente de la influencia de Dios.",
+            "b": "Nietzsche afirma que, aunque la creencia en Dios ha desaparecido, su influencia sigue presente en la cultura, la moral y las estructuras sociales, por lo que la humanidad aún debe enfrentarse a sus restos simbólicos.",
+            "c": "Nietzsche argumenta que la humanidad necesita crear un nuevo Dios para reemplazar al que ha desaparecido, ya que no puede vivir sin una divinidad que guíe sus valores."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Es necesario dar tiempo al relámpago y al trueno, es necesario dar tiempo a la luz de los astros, tiempo a las acciones, cuando ya han sido realizadas, para ser vistas y oídas. Este acto está más lejos de los hombres que el acto más distante; y, sin embargo, ellos lo han realizado.",
+          "opciones": {
+            "a": "Nietzsche sostiene que las acciones humanas son inmediatamente comprendidas en toda su magnitud y que su impacto es visible en el mismo instante en que ocurren.",
+            "b": "Nietzsche sugiere que los grandes acontecimientos y cambios en la historia requieren tiempo para ser entendidos, ya que su significado no es evidente de inmediato para quienes los realizan.",
+            "c": "Nietzsche argumenta que todo lo que ocurre está predestinado y que los seres humanos solo pueden observar pasivamente el devenir de la historia."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Dios ha muerto... Pero se puede decir en general: que el acontecimiento mismo es demasiado grande, demasiado remoto, demasiado apartado de la capacidad de comprensión de los muchos como para que pueda decirse que la noticia de ello ya ha llegado;",
+          "opciones": {
+            "a": "Nietzsche sostiene que la idea de la muerte de Dios ha sido completamente aceptada por la humanidad y ya no influye en la moral ni en la cultura.",
+            "b": "Nietzsche afirma que la muerte de Dios es un acontecimiento tan grande que la mayoría de las personas aún no lo ha entendido ni asimilado, y su impacto total aún está por desarrollarse.",
+            "c": "Nietzsche argumenta que la creencia en Dios es inmutable y que, aunque algunos piensen que ha muerto, su influencia continuará sin cambios en la sociedad."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "La 'voluntad de verdad' -pudiera ser una oculta voluntad de muerte-. De esta suerte, el interrogante: ¿por qué ciencia? retorna al problema moral: ¿por qué aún la moral, si la vida, la Naturaleza y la historia son 'inmorales'?",
+          "opciones": {
+            "a": "Nietzsche afirma que la ciencia y la moral son valores absolutos que guían a la humanidad hacia un conocimiento objetivo y un comportamiento correcto, en armonía con la Naturaleza.",
+            "b": "Nietzsche sugiere que la voluntad de verdad, que impulsa a la ciencia y a la moral, podría ser en realidad una forma de negación de la vida, ya que impone valores rígidos sobre un mundo que es caótico y amoral por naturaleza.",
+            "c": "Nietzsche sostiene que la moral y la ciencia son ilusiones creadas por la sociedad, y que la única manera de alcanzar la verdad es a través de la fe religiosa."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Cuando parecía surgir un conflicto entre la vida y el conocimiento nunca se luchaba seriamente: se consideraba una locura negar y dudar. Los pensadores excepcionales tales como los eleáticos, que, no obstante, establecían y proclamaban las antítesis de los errores naturales, creían que era posible vivir esta antítesis; inventaban al sabio, como hombre de concepción inmutable, impersonal y universal.",
+          "opciones": {
+            "a": "Nietzsche sostiene que los filósofos antiguos como los eleáticos encontraron la verdad absoluta y demostraron que la razón siempre debe prevalecer sobre la vida.",
+            "b": "Nietzsche critica a los pensadores que intentaban contradecir los errores naturales con verdades absolutas, ya que creían en la figura del sabio como alguien que podía vivir de manera inmutable y universal, ignorando la fluidez de la vida.",
+            "c": "Nietzsche argumenta que la sabiduría consiste en la completa renuncia al conocimiento y a la búsqueda de la verdad, ya que cualquier intento de comprender la realidad es inútil."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Cerraban los ojos ante el hecho de que también ellos habían llegado a sus proposiciones contradiciéndolo imperante por el ansia de reposo o de posesión exclusiva o de dominio.",
+          "opciones": {
+            "a": "Nietzsche sostiene que los filósofos antiguos llegaron a sus verdades de manera objetiva y desinteresada, sin ninguna motivación personal o psicológica.",
+            "b": "Nietzsche critica a los filósofos que proclamaban verdades absolutas sin reconocer que sus propias conclusiones estaban motivadas por el deseo de control, seguridad o reposo, más que por una búsqueda imparcial de la verdad.",
+            "c": "Nietzsche argumenta que todo pensamiento filosófico es irrelevante, ya que siempre está basado en ilusiones y no tiene ninguna relación con la realidad."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "¿No será el instinto del miedo lo que nos impulsa al conocimiento?¿No será la exultación del cognoscente la exultación de la sensación de la seguridad recuperada… Tal filósofo creía ‘conocido’ el mundo al haberlo reducido a la ‘idea’: ay, ¿no sería porque la ‘idea’ le era tan conocida, tan familiar?, ¿porque la idea ya no le daba tanto miedo?",
+          "opciones": {
+            "a": "Nietzsche sostiene que el conocimiento es un proceso objetivo y racional, totalmente independiente de las emociones o el miedo humano.",
+            "b": "Nietzsche plantea que el impulso hacia el conocimiento podría no ser una búsqueda desinteresada de la verdad, sino un intento de calmar el miedo y recuperar una sensación de seguridad, convirtiendo el mundo en algo predecible y familiar.",
+            "c": "Nietzsche argumenta que el verdadero conocimiento solo se alcanza cuando se superan todas las emociones humanas, especialmente el miedo, y se adopta una perspectiva puramente lógica y matemática."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Quien sabe que es profundo, se esfuerza en ser claro; quien quiere parecer ante la masa como profundo se esfuerza en ser oscuro. Pues la masa tiene por profundo todo aquello cuyo fondo no alcanza a ver: ¡es tan miedosa y le repugna tanto entrar en el agua!",
+          "opciones": {
+            "a": "Nietzsche sostiene que el verdadero conocimiento debe ser siempre oscuro y difícil de entender, ya que solo así demuestra su profundidad y valor.",
+            "b": "Nietzsche distingue entre quienes realmente poseen un pensamiento profundo y buscan expresarlo con claridad, y quienes buscan parecer profundos ante la masa mediante la oscuridad y la ambigüedad.",
+            "c": "Nietzsche defiende que la verdad solo puede ser comprendida por unos pocos elegidos, ya que la mayoría de las personas son incapaces de enfrentar el conocimiento."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Solo se oyen las preguntas a las que se es capaz de contestar.",
+          "opciones": {
+            "a": "Nietzsche sostiene que todas las preguntas pueden ser comprendidas por cualquier persona, independientemente de su capacidad de responderlas.",
+            "b": "Nietzsche plantea que solo percibimos y consideramos las preguntas que estamos preparados para responder, ya que nuestras limitaciones cognitivas nos impiden escuchar o entender aquellas que nos superan.",
+            "c": "Nietzsche argumenta que la única manera de encontrar respuestas verdaderas es mediante la introspección profunda, ya que la verdad está en nuestro interior y no en las preguntas externas."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Tal vez ese error fuera para ti en ese entonces, en que aún fuiste otro -siempre eres otro- tan necesario como todas tus «verdades» de ahora.",
+          "opciones": {
+            "a": "Nietzsche sostiene que los errores deben evitarse a toda costa, ya que la verdad es inmutable y cualquier equivocación es un obstáculo para el conocimiento.",
+            "b": "Nietzsche sugiere que lo que en el pasado considerábamos errores fueron, en su momento, tan necesarios como las verdades que aceptamos ahora, ya que el individuo está en constante cambio.",
+            "c": "Nietzsche argumenta que la identidad del individuo es fija y que una vez que se alcanza la verdad, ya no es necesario reconsiderar los errores del pasado."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "¡Negamos y tenemos que negar, porque algo en nosotros quiere vivir y afirmarse, algo que acaso no conocemos aún, no vemos aún!",
+          "opciones": {
+            "a": "Nietzsche sostiene que la negación es un error, ya que lo correcto es aceptar todas las verdades establecidas para mantener el equilibrio de la sociedad.",
+            "b": "Nietzsche plantea que la negación no es solo un rechazo, sino un impulso vital necesario para la afirmación de la vida y la transformación de uno mismo, incluso cuando aún no entendemos completamente aquello que queremos afirmar.",
+            "c": "Nietzsche argumenta que la negación es una simple reacción emocional sin fundamento racional, y que solo aquellos que comprenden plenamente su existencia pueden afirmar algo de manera auténtica."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Yo aspiro a más; no soy un buscador. Quiero crearme un sol propio.",
+          "opciones": {
+            "a": "Nietzsche afirma que su único objetivo es descubrir la verdad absoluta que ya existe, sin necesidad de inventar nuevos valores o significados.",
+            "b": "Nietzsche expresa su deseo de ir más allá de la simple búsqueda del conocimiento, aspirando a crear su propia luz, su propio sistema de valores, en lugar de seguir los establecidos.",
+            "c": "Nietzsche sostiene que cada individuo debe seguir un único camino trazado por la tradición, ya que la búsqueda de verdades individuales solo genera caos y desorientación."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Y «donde hay risa y alegría, el pensamiento no vale nada» ─ así reza el prejuicio de esta bestia seria contra toda «gaya ciencia».",
+          "opciones": {
+            "a": "Nietzsche sostiene que el pensamiento serio y profundo solo puede surgir en un ambiente solemne y libre de alegría, ya que la risa distrae de la verdadera reflexión.",
+            "b": "Nietzsche critica la idea de que el pensamiento solo puede ser válido si es solemne y serio, defendiendo que la alegría y la risa también pueden formar parte de una filosofía profunda, como propone en su concepto de «gaya ciencia».",
+            "c": "Nietzsche argumenta que la única forma de alcanzar el conocimiento es a través de la burla y la ridiculización de todas las formas de pensamiento tradicional."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Capté esta verdad en el camino y eché mano rápidamente de las primeras, pobres, palabras para atarla, para que no se me volviera a escapar. Y ahora se me ha muerto con estas áridas palabras y cuelga de ellas.",
+          "opciones": {
+            "a": "Nietzsche sostiene que la verdad es algo fijo e inmutable que puede ser plenamente capturado con las palabras adecuadas, sin riesgo de perder su esencia.",
+            "b": "Nietzsche advierte que la verdad es dinámica y escurridiza, y que al intentar fijarla en palabras, corre el riesgo de volverse rígida, muerta y vacía de su significado original.",
+            "c": "Nietzsche argumenta que solo a través del lenguaje se puede alcanzar una verdad definitiva y universal, ya que las palabras son la mejor herramienta para capturar la realidad."
+          },
+          "respuesta": "b"
+        }
+      ]
+    };
+
+    let preguntas = data.preguntas;
+    let preguntasElegidas = [];
+    let preguntaActual = 0;
+    let correctas = 0;
+
+    const quizContainer = document.getElementById('quiz-container');
+    const nextButton = document.getElementById('next-btn');
+    const restartButton = document.getElementById('restart-btn');
+    const startButton = document.getElementById('start-btn');
+    const infoContainer = document.getElementById('info-container');
+
+    // Mostrar información inicial y habilitar el botón de inicio
+    infoContainer.innerHTML = `<p>El test contiene <strong>${preguntas.length}</strong> preguntas.</p>`;
+    startButton.style.display = 'block';
+
+    startButton.addEventListener('click', function() {
+      let numPreguntas = prompt(`El test tiene ${preguntas.length} preguntas. ¿Cuántas deseas jugar?`, preguntas.length);
+      numPreguntas = parseInt(numPreguntas);
+      if (isNaN(numPreguntas) || numPreguntas < 1 || numPreguntas > preguntas.length) {
+        alert('Número no válido. Se jugarán todas las preguntas.');
+        numPreguntas = preguntas.length;
+      }
+      // Seleccionar preguntas aleatorias
+      preguntasElegidas = preguntas.sort(() => 0.5 - Math.random()).slice(0, numPreguntas);
+      preguntaActual = 0;
+      correctas = 0;
+      startButton.style.display = 'none';
+      infoContainer.innerHTML = '';
+      mostrarPregunta();
+    });
+
+    function mostrarPregunta() {
+      if (preguntaActual < preguntasElegidas.length) {
+        quizContainer.innerHTML = '';
+        quizContainer.style.display = 'block';
+        nextButton.style.display = 'none';
+
+        let pregunta = preguntasElegidas[preguntaActual];
+        let preguntaTitulo = document.createElement('h2');
+        preguntaTitulo.textContent = pregunta.texto;
+        quizContainer.appendChild(preguntaTitulo);
+
+        // Convertir opciones en array y mezclarlas
+        let opcionesArray = Object.entries(pregunta.opciones);
+        opcionesArray.sort(() => Math.random() - 0.5);
+        opcionesArray.forEach(([key, texto]) => {
+          let opcion = document.createElement('div');
+          opcion.classList.add('option');
+          opcion.textContent = texto;
+          opcion.dataset.valor = key;
+          opcion.addEventListener('click', function() {
+            validarRespuesta(this, pregunta.respuesta);
+          });
+          quizContainer.appendChild(opcion);
+        });
+      } else {
+        quizContainer.innerHTML = `<h2>¡Test finalizado!</h2><p>Has acertado ${correctas} de ${preguntasElegidas.length} preguntas.</p>`;
+        nextButton.style.display = 'none';
+        restartButton.style.display = 'block';
+      }
+    }
+
+    function validarRespuesta(elemento, respuestaCorrecta) {
+      let opciones = document.querySelectorAll('.option');
+      opciones.forEach(op => op.style.pointerEvents = 'none');
+
+      if (elemento.dataset.valor === respuestaCorrecta) {
+        elemento.classList.add('correct');
+        correctas++;
+      } else {
+        elemento.classList.add('incorrect');
+        let correcta = document.querySelector(`.option[data-valor='${respuestaCorrecta}']`);
+        if (correcta) correcta.classList.add('correct');
+      }
+      nextButton.style.display = 'block';
+    }
+
+    nextButton.addEventListener('click', function() {
+      preguntaActual++;
+      mostrarPregunta();
+    });
+
+    restartButton.addEventListener('click', function() {
+      this.style.display = 'none';
+      startButton.style.display = 'none';
+      preguntaActual = 0;
+      correctas = 0;
+      infoContainer.innerHTML = `<p>El test contiene <strong>${preguntas.length}</strong> preguntas.</p>`;
+      startButton.style.display = 'block';
+      quizContainer.innerHTML = '';
+      quizContainer.style.display = 'none';
+    });
+  </script>
+</body>
+</html>

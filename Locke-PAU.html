@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Textos de Locke para la PAU. Andalucía 2025</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      text-align: center;
+      background-color: #f5f8ff; /* Fondo azul pastel */
+    }
+    .question-container {
+      display: none;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      max-width: 600px;
+      margin: 20px auto;
+      background: #ffffff;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .option {
+      display: block;
+      padding: 10px;
+      margin: 10px 0;
+      border: 2px solid #ddd;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+    .option:hover {
+      background: #e0ebff;
+      transform: scale(1.05);
+    }
+    .correct {
+      background: #c8e6c9;
+      border-color: green;
+    }
+    .incorrect {
+      background: #ffcdd2;
+      border-color: red;
+    }
+    #start-btn, #restart-btn {
+      display: none;
+      margin-top: 20px;
+      padding: 10px;
+      background: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    #restart-btn {
+      background: #28a745;
+    }
+    /* Posiciona el botón "Siguiente" fijo a la derecha, en zona media/alta */
+    #next-btn {
+      position: fixed;
+      right: 20px;
+      top: 30%;
+      padding: 10px;
+      background: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      display: none;
+    }
+    #info-container {
+      margin-top: 20px;
+      font-size: 1.2em;
+    }
+  </style>
+</head>
+<body>
+  <!-- tomcue@iesjuandelacierva.com -->
+  <h1>Textos de Locke para la PAU. Andalucía 2025</h1>
+  <h2 style="font-size: 0.6em; color: #555;">Tomás Cuesta. IES Juan de la Cierva</h2>
+
+  <div id="info-container"></div>
+  <button id="start-btn">Comenzar Quiz</button>
+  <div id="quiz-container" class="question-container"></div>
+  <button id="next-btn">Siguiente</button>
+  <button id="restart-btn">Reiniciar</button>
+  
+  <script>
+    // JSON integrado con todas las preguntas
+    const data = {
+      "preguntas": [
+        {
+          "texto": "Para entender el poder político, correctamente, y para deducirlo de lo que fue su origen, hemos de considerar cuál es su estado en que los hombres se hallan por naturaleza.",
+          "opciones": {
+            "a": "Para comprender el poder político, debemos observar cómo se ejerce en las sociedades actuales, ya que su origen no es relevante para su funcionamiento.",
+            "b": "Para analizar el poder político, primero debemos considerar un escenario previo en el que no existía ese poder, es decir, el estado de naturaleza, donde no hay organización política ni autoridad.",
+            "c": "El estado de naturaleza es un estado de igualdad, donde todos los seres humanos son libres e independientes, y no deben someterse a la voluntad de otro sin su consentimiento."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Es también un estado de igualdad, en el que todo poder y jurisdicción son recíprocos, y donde nadie los disfruta en mayor medida que los demás.",
+          "opciones": {
+            "a": "En el estado de naturaleza, todos los individuos son iguales en derechos y obligaciones, pero algunos tienen más poder debido a su fuerza o inteligencia.",
+            "b": "En el estado de naturaleza, todas las personas son iguales porque nadie tiene más poder o autoridad sobre los demás, a menos que una autoridad superior le otorgue ese derecho de manera clara.",
+            "c": "La razón nos enseña que todos los hombres son iguales e independientes, por lo que nadie tiene derecho a dañar la vida, la salud, la libertad o los bienes de otro."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Mas aunque éste sea un estado de libertad; no es, sin embargo, un estado de licencia.",
+          "opciones": {
+            "a": "En el estado de naturaleza, las personas pueden hacer absolutamente todo lo que quieran sin restricciones, ya que no hay leyes ni autoridad que limite sus acciones.",
+            "b": "Aunque en el estado de naturaleza las personas son libres, esa libertad no significa que puedan actuar sin límites, ya que la ley natural establece restricciones sobre lo que pueden hacer, especialmente en lo que afecta a los derechos de los demás.",
+            "c": "El estado de naturaleza se caracteriza por la igualdad entre los seres humanos, ya que nadie tiene derecho a someter a otro sin su consentimiento."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Y la razón, que es esa ley, enseña a toda la humanidad que quiera consultarla que, siendo todos los hombres iguales e independientes, ninguno debe dañar a otro en lo que atañe a su vida, salud, libertad o posesiones.",
+          "opciones": {
+            "a": "La razón nos enseña que los seres humanos tienen derecho a buscar su propio bienestar sin restricciones, incluso si esto implica dañar a otros cuando es necesario para su supervivencia.",
+            "b": "La razón es la base de la ley natural y nos muestra que todos los seres humanos, al ser iguales e independientes, tienen la obligación de respetar la vida, la salud, la libertad y las posesiones de los demás.",
+            "c": "La libertad en el estado de naturaleza no es ilimitada, ya que está regulada por la ley natural, que impide que una persona haga lo que quiera sin restricciones."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Y así, habiendo sido todos los hombres dotados con las mismas facultades, y al participar todos de una naturaleza común, no puede suponerse que haya entre nosotros una subordinación que nos dé derecho a destruir al prójimo como si éste hubiese sido creado para nuestro uso, igual que ocurre con esas criaturas que son inferiores a nosotros.",
+          "opciones": {
+            "a": "Aunque los seres humanos comparten una naturaleza común, algunos nacen con mayores capacidades y tienen el derecho natural de gobernar y someter a los demás.",
+            "b": "Todos los seres humanos poseen las mismas facultades y comparten una naturaleza común, por lo que nadie tiene derecho a tratar a los demás como si fueran inferiores o estuvieran destinados a servirle.",
+            "c": "La ley natural impide que los seres humanos se dañen unos a otros, ya que la razón nos enseña que todos somos iguales e independientes."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Por la misma razón que cada uno se ve obligado a preservarse a sí mismo y a no destruirse por propia voluntad, también se verá obligado a preservar al resto de la humanidad en la medida en que le sea posible, cuando su propia preservación no se ve amenazada por ello.",
+          "opciones": {
+            "a": "La autoconservación es el único deber del ser humano en el estado de naturaleza, por lo que no tiene ninguna responsabilidad hacia los demás.",
+            "b": "Así como cada persona tiene la obligación de preservar su propia vida, también debe procurar la preservación de los demás, siempre que esto no ponga en peligro su propia existencia.",
+            "c": "La ley natural enseña que todas las personas son iguales y libres, y que nadie debe someter a otro sin su consentimiento."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Cada uno tiene el derecho de castigar a los transgresores de dicha ley en que ésta sea violada.",
+          "opciones": {
+            "a": "En el estado de naturaleza, solo un líder fuerte tiene el derecho de castigar a quienes violen la ley natural, ya que sin una autoridad central, no hay justicia posible.",
+            "b": "En el estado de naturaleza, cualquier individuo tiene el derecho de castigar a quienes violen la ley natural, porque sin un poder central, es la única manera de hacer que se cumpla la justicia.",
+            "c": "La sociedad debe garantizar que las leyes se cumplan mediante jueces imparciales, para evitar que los castigos sean aplicados de manera arbitraria."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Pues la ley de naturaleza, igual que todas las demás leyes que afectan a los hombres en este mundo, sería vana si no hubiese nadie que, en el estado natural, tuviese el poder de ejecutar dicha ley protegiendo al inocente y poniendo coto al ofensor.",
+          "opciones": {
+            "a": "La ley de naturaleza se cumple de manera automática, sin necesidad de que nadie la haga valer, ya que todos los seres humanos la siguen de forma natural.",
+            "b": "Para que la ley de naturaleza tenga valor real, debe haber quien la haga cumplir en el estado de naturaleza, castigando a los infractores y protegiendo a los inocentes, ya que de lo contrario sería ineficaz.",
+            "c": "En la sociedad civil, el poder legislativo debe garantizar que las leyes sean justas y que los jueces las apliquen de manera imparcial."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Pero no se trata de un poder absoluto o arbitrario que permita a un hombre, cuando un criminal ha caído en sus manos, hacer con él lo que venga dictado por el acalorado apasionamiento o la limitada extravagancia de su propia voluntad, sino únicamente castigarlo según los dictados de la serena razón y de la conciencia, asignándole penas que sean proporcionales a la transgresión y que sirvan para que el criminal repare el daño que ha hecho y se abstenga de recaer en su ofensa.",
+          "opciones": {
+            "a": "En el estado de naturaleza, cualquier persona puede castigar libremente a los criminales como considere adecuado, sin necesidad de seguir ninguna norma, ya que no hay un gobierno que imponga límites.",
+            "b": "El derecho a castigar no es un poder absoluto ni arbitrario, sino que debe ejercerse con razón y justicia, imponiendo penas proporcionales al delito, con el objetivo de reparar el daño y evitar que el criminal reincida.",
+            "c": "En una sociedad bien organizada, el castigo es responsabilidad exclusiva del poder judicial, que debe actuar con imparcialidad para evitar abusos de poder."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Al transgredir la ley de naturaleza, el que realiza una ofensa está declarando que vive guiándose por reglas diferentes de las que manda la razón y la equidad común, las cuales son las normas que Dios ha establecido para regular las acciones de los hombres en beneficio de su seguridad mutua.",
+          "opciones": {
+            "a": "Quienes violan la ley natural simplemente están ejerciendo su libertad, ya que en el estado de naturaleza no existen normas universales que regulen el comportamiento humano.",
+            "b": "Al quebrantar la ley natural, un individuo demuestra que no sigue las normas racionales y justas establecidas para la convivencia, las cuales, según Locke, también tienen un fundamento divino en la seguridad mutua de los hombres.",
+            "c": "La razón enseña a los seres humanos que todos son iguales y que ninguno debe someterse a la voluntad de otro sin su consentimiento."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Las ataduras que impedían a los hombres herirse y hacerse violencia unos a otros han sido por él cortadas y rotas.",
+          "opciones": {
+            "a": "Cuando alguien viola la ley natural, sigue estando sujeto a las normas de la razón y la equidad, por lo que su transgresión no afecta al orden social.",
+            "b": "Cuando una persona transgrede la ley natural, está rompiendo los principios que mantenían la convivencia pacífica y se convierte en un peligro para los demás, ya que demuestra que no respeta las normas que evitan el caos y la violencia.",
+            "c": "La razón nos enseña que todos los hombres son iguales e independientes, por lo que ninguno debe someterse a la voluntad de otro sin su consentimiento."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Castigar así a quien haya transgredido esa ley haciendo de este modo que se arrepienta de haberlo hecho. Y, mediante este procedimiento, lograr que el delincuente se abstenga de volver a cometer el mismo delito, y disuadir con el ejemplo a otros para que tampoco lo cometan.",
+          "opciones": {
+            "a": "El castigo debe aplicarse con severidad absoluta para eliminar al delincuente y evitar cualquier riesgo de reincidencia en la sociedad.",
+            "b": "El castigo tiene la función de hacer que el delincuente se arrepienta, evitar que reincida y servir de ejemplo para disuadir a otros de cometer el mismo delito.",
+            "c": "La función del castigo es exclusivamente reparar el daño causado a la víctima, sin importar si el infractor vuelve a cometer el mismo delito o si otros lo imitan."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "El estado de guerra es un estado de enemistad y destrucción; y, por lo tanto, cuando se declara mediante palabras o acciones, no como resultado de un impulso apasionado y momentáneo, sino con una premeditada y establecida intención contra la vida de otro hombre, pone a éste en un estado de guerra contra quien ha declarado dicha intención. Y de este modo expone su vida al riesgo de que sea tomada por aquél o por cualquier otro que se le una en su defensa y haga con él causa común en el combate.",
+          "opciones": {
+            "a": "El estado de guerra es cualquier tipo de conflicto o pelea entre personas, incluso si es momentáneo y sin intención premeditada de causar daño.",
+            "b": "El estado de guerra ocurre cuando una persona decide, de manera deliberada y sostenida, atacar o amenazar la vida de otro, lo que justifica la defensa propia e incluso la unión con otros para protegerse del agresor.",
+            "c": "La sociedad crea leyes para garantizar que el poder del gobierno se convierta en una amenaza para los derechos individuales."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "En virtud de la ley fundamental de naturaleza, un hombre debe conservarse a sí mismo hasta donde le resulte posible; y si todos no pueden ser preservados, la salvación del inocente ha de tener preferencia.",
+          "opciones": {
+            "a": "La ley natural impone que cada persona debe sacrificarse por los demás sin importar las circunstancias, ya que la prioridad siempre es la comunidad antes que el individuo.",
+            "b": "La ley natural establece que cada individuo debe buscar su propia conservación en la medida de lo posible, pero si no todos pueden ser preservados, debe priorizarse la vida del inocente.",
+            "c": "La igualdad entre los hombres es un principio fundamental de la ley natural, por lo que todos deben tener las mismas oportunidades de preservación sin excepción."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Y de aquí viene el que quien intenta poner a otro hombre bajo su poder absoluto se pone a sí mismo en una situación de guerra con él; pues esa intención ha de interpretarse como una declaración o señal del que quiere atentar contra su vida.",
+          "opciones": {
+            "a": "Someter a otro hombre bajo poder absoluto no es necesariamente un acto hostil, ya que puede hacerse con el fin de protegerlo y guiarlo hacia el bien común.",
+            "b": "Intentar someter a otro ser humano bajo poder absoluto equivale a declarar una situación de guerra contra él, ya que esa intención demuestra que el opresor está dispuesto a atentar contra su vida y su libertad.",
+            "c": "Un gobierno legítimo debe garantizar la seguridad de los ciudadanos y evitar que el poder se concentre en una sola persona, asegurando así la protección de los derechos naturales."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Concluyo que aquel que quiere ponerme bajo su poder sin mi consentimiento podría utilizarme a su gusto en cuanto me tuviera, y podría asimismo destruirme en cuanto le viniese en gana.",
+          "opciones": {
+            "a": "Someter a alguien sin su consentimiento no implica necesariamente una amenaza para su vida, ya que el opresor puede actuar con benevolencia y protegerlo.",
+            "b": "Quien intenta someter a otro sin su consentimiento puede tratarlo como un simple instrumento de su voluntad y disponer de él como desee, lo que incluye la posibilidad de destruirlo si así lo decide.",
+            "c": "La igualdad entre los seres humanos impide que alguien se arrogue el derecho de someter a otro sin su consentimiento, ya que todos poseen los mismos derechos naturales."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Aquel que, en el estado de naturaleza, arrebatase la libertad de algún otro que se encuentra en dicho estado debe ser considerado, necesariamente, como alguien que tiene la intención de arrebatarme todo lo demás.",
+          "opciones": {
+            "a": "Privar a alguien de su libertad en el estado de naturaleza no implica necesariamente una amenaza para sus demás derechos, ya que puede hacerse con buenas intenciones.",
+            "b": "En el estado de naturaleza, si alguien quita la libertad a otra persona, debe asumirse que también pretende despojarla de todo lo demás, ya que la libertad es la base de todos los demás derechos.",
+            "c": "El estado de naturaleza es un estado de igualdad en el que todos poseen los mismos derechos y ninguno puede someter a otro sin su consentimiento."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Propiamente hablando, el estado de naturaleza es aquel en el que los hombres viven juntos conforme a la razón, sin un poder terrenal, común y superior a todos, con autoridad para juzgarlos.",
+          "opciones": {
+            "a": "El estado de naturaleza es una situación de caos absoluto en la que los seres humanos viven en constante conflicto, sin ninguna regla ni posibilidad de convivencia pacífica.",
+            "b": "En el estado de naturaleza, los hombres conviven siguiendo la razón y la ley natural, pero no existe una autoridad superior que tenga poder sobre todos ellos para resolver disputas.",
+            "c": "La igualdad entre los seres humanos implica que todos deben obedecer las mismas leyes establecidas por un poder soberano que garantice el orden en la sociedad."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Y es la falta de la oportunidad de apelar lo que le da al hombre el derecho de hacer la guerra a un agresor, incluso aunque éste viva en sociedad y sea un conciudadano.",
+          "opciones": {
+            "a": "Si un agresor ataca a alguien en sociedad, la víctima siempre debe esperar a que la justicia actúe, ya que el uso de la fuerza propia nunca está justificado.",
+            "b": "Cuando una persona es atacada y no tiene posibilidad de apelar a una justicia imparcial, tiene el derecho de defenderse como si estuviera en estado de guerra, incluso si el agresor es un conciudadano dentro de la sociedad.",
+            "c": "El derecho natural establece que todos los seres humanos son libres e iguales, por lo que la violencia nunca puede ser utilizada como respuesta ante una agresión."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "La fuerza que se ejerce sin derecho y que atenta contra la persona de un individuo produce un estado de guerra, tanto en los lugares donde hay un juez común como en los que no lo hay.",
+          "opciones": {
+            "a": "La existencia de un juez común siempre evita que haya un estado de guerra, ya que garantiza que los conflictos se resuelvan pacíficamente.",
+            "b": "Cuando alguien usa la fuerza de manera ilegítima contra otra persona, se crea un estado de guerra, sin importar si existe o no una autoridad judicial en la sociedad.",
+            "c": "La igualdad entre los ciudadanos se basa en la existencia de un sistema judicial imparcial que proteja los derechos individuales y evite los conflictos."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Pero cuando la fuerza deja de ejercerse, cesa el estado de guerra entre quienes viven en sociedad; y ambos bandos están sujetos al justo arbitrio de la ley.",
+          "opciones": {
+            "a": "Aunque la violencia termine, el estado de guerra persiste indefinidamente, ya que los conflictos entre las personas nunca pueden resolverse por completo.",
+            "b": "En la sociedad, cuando la violencia cesa, el estado de guerra se disuelve porque las disputas pueden resolverse a través de la ley y la justicia.",
+            "c": "La igualdad y la razón garantizan que las sociedades nunca lleguen a un estado de guerra, ya que las leyes establecen un orden permanente."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Mas allí donde no hay lugar a apelaciones —como ocurre en el estado de guerra— por falta de leyes positivas y de jueces autorizados a quienes poder apelar, el estado de guerra continúa una vez que empieza.",
+          "opciones": {
+            "a": "Aunque no haya jueces ni leyes positivas, los conflictos siempre se resuelven naturalmente, ya que los seres humanos pueden regularse solo mediante la razón.",
+            "b": "Si no hay leyes positivas ni jueces imparciales a quienes recurrir, el estado de guerra no puede cesar por sí mismo, ya que no existe una autoridad que resuelva los conflictos.",
+            "c": "En una sociedad bien organizada, los ciudadanos pueden confiar en que el sistema judicial resolverá todos los conflictos de manera justa y evitará cualquier estado de guerra."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Es más: allí donde la posibilidad de apelar a la ley y a los jueces constituidos está abierta, pero el remedio es negado por culpa de una manifiesta perversión de la justicia y una obvia tergiversación de las leyes para proteger o dejar indemnes la violencia o las injurias cometidas por algunos hombres o por un grupo de hombres, es difícil imaginar otro estado que no sea el de guerra.",
+          "opciones": {
+            "a": "Mientras existan leyes y jueces, la justicia siempre estará garantizada, incluso si algunas decisiones pueden parecer injustas.",
+            "b": "Si las leyes y los jueces no imparten justicia de manera imparcial y permiten la violencia o los abusos, la sociedad entra en un estado de guerra, pues no hay una autoridad real que garantice el derecho de todos.",
+            "c": "La función del poder legislativo es establecer normas que protejan la seguridad y la libertad de los ciudadanos, asegurando que la justicia prevalezca."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Pues siempre que se hace uso de la violencia o se comete una injuria, aunque estos delitos sean cometidos por manos de quienes han sido nombrados para administrar justicia; seguirán siendo violencia e injuria, por mucho que se disfracen con otros nombres, ilustres o con pretensiones o apariencias de leyes.",
+          "opciones": {
+            "a": "Si un acto violento es cometido por una autoridad legítima, deja de ser una injusticia y se convierte en una acción justificada dentro del marco legal.",
+            "b": "La violencia y la injusticia no dejan de serlo solo porque sean cometidas por quienes tienen el poder judicial o político, ya que la corrupción del derecho no convierte los abusos en algo legítimo.",
+            "c": "La función de la justicia es garantizar que todas las personas reciban un trato igualitario ante la ley, sin importar su posición social o política."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Siempre que no se hace algo bona fide, se está declarando la guerra a las víctimas de una acción así.",
+          "opciones": {
+            "a": "Si una acción no se realiza de buena fe, simplemente se trata de un error o una falta de ética, pero no implica un conflicto mayor.",
+            "b": "Cuando una acción no se realiza de buena fe, especialmente en el ejercicio del poder o la justicia, se está creando un estado de guerra contra aquellos que sufren las consecuencias de esa injusticia.",
+            "c": "En toda sociedad, la buena fe es un principio fundamental para garantizar la convivencia y la confianza en las instituciones políticas y jurídicas."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "La libertad del hombre en sociedad es la de no estar bajo más poder legislativo que el que haya sido establecido por consentimiento en el seno del Estado.",
+          "opciones": {
+            "a": "La libertad en sociedad significa que los ciudadanos deben obedecer todas las leyes impuestas por el gobierno, independientemente de si han sido establecidas con su consentimiento o no.",
+            "b": "En sociedad, la libertad consiste en estar sujeto solo a las leyes que han sido creadas con el consentimiento del pueblo dentro del marco del Estado.",
+            "c": "Un gobierno legítimo debe garantizar la seguridad y la prosperidad de sus ciudadanos mediante el establecimiento de normas que regulen su conducta."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Por lo tanto, la libertad no es lo que sir Robert Filmer nos dice «una libertad para que cada uno haga lo que le plazca, o viva como guste, sin sujetarse a ley alguna».",
+          "opciones": {
+            "a": "Locke acepta la definición de libertad de Filmer pero matiza que debe haber ciertas restricciones para evitar el caos social.",
+            "b": "Locke critica la falsa definición de libertad que propone Filmer, quien intenta desprestigiar el concepto de libertad haciéndolo parecer un estado de anarquía sin normas.",
+            "c": "La libertad significa siempre estar sometido a un poder superior que garantice el orden y la estabilidad de la sociedad, sin excepciones."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Una libertad para seguir los dictados de mi propia voluntad en todas esas cosas que no han sido prescritas por dicha norma.",
+          "opciones": {
+            "a": "En sociedad, la libertad significa que cada individuo puede actuar como quiera, sin necesidad de ajustarse a ninguna norma establecida por el gobierno.",
+            "b": "La libertad en sociedad implica que cada persona puede actuar según su voluntad en todo aquello que no esté regulado por las leyes establecidas legítimamente.",
+            "c": "La verdadera libertad consiste en obedecer siempre las normas establecidas por el gobierno, sin margen para la autonomía individual."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Ese estar libres de un poder absoluto y arbitrario es tan necesario, y está tan íntimamente vinculado a la conservación de un hombre, que nadie puede renunciar a ello sin estar renunciando al mismo tiempo a lo que permite su autoconservación y su vida.",
+          "opciones": {
+            "a": "Es posible que un individuo renuncie voluntariamente a su libertad y se someta a un poder absoluto si cree que esto garantizará su seguridad y bienestar.",
+            "b": "La libertad frente a un poder absoluto es esencial para la supervivencia, ya que renunciar a ella equivale a entregar el control de la propia vida y perder la capacidad de preservarse.",
+            "c": "Un gobierno legítimo debe garantizar la seguridad de sus ciudadanos limitando algunas de sus libertades para evitar conflictos y asegurar el orden social."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Pues un hombre sin poder sobre su propia vida no puede, por contrato o acuerdo otorgado por su propio consentimiento, ponerse bajo el absoluto poder arbitrario de otro que le arrebate esa vida cuando se le antoje. Nadie puede otorgar más poder del que tiene.",
+          "opciones": {
+            "a": "Un individuo puede ceder voluntariamente su vida y libertad a otro mediante un contrato, ya que es dueño absoluto de sí mismo y puede disponer de su existencia como desee.",
+            "b": "Ninguna persona puede someterse voluntariamente a un poder absoluto que tenga derecho a quitarle la vida a su antojo, ya que nadie puede transferir un poder que no posee sobre sí mismo.",
+            "c": "Un contrato social legítimo implica que los ciudadanos ceden parte de sus derechos a un gobierno para que este administre la justicia y proteja la seguridad de todos."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Tanto si consideramos la razón natural, la cual nos dice que, una vez que nacen, los hombres tienen derecho a su autoconservación y, en consecuencia, a comer, a beber y a beneficiarse de todas aquellas cosas que la naturaleza procura para su subsistencia, como si nos atenemos a la revelación, la cual nos da cuenta de los dones mundanales que Dios otorgó a Adán.",
+          "opciones": {
+            "a": "El derecho de propiedad solo se justifica mediante la revelación divina, ya que es Dios quien ha otorgado los recursos naturales a la humanidad.",
+            "b": "La propiedad es un derecho natural basado en la autoconservación, reconocido tanto por la razón como por la religión, que indican que los seres humanos pueden apropiarse de los recursos que necesitan para sobrevivir.",
+            "c": "La propiedad privada es una convención social creada por los hombres a través de acuerdos, y no tiene ninguna base natural o religiosa."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Mostraré cómo los hombres pueden llegar a tener en propiedad varias parcelas de lo que Dios entregó en común al género humano; y ello, sin necesidad de que haya un acuerdo expreso entre los miembros de la comunidad.",
+          "opciones": {
+            "a": "La propiedad solo puede establecerse mediante un acuerdo entre todos los miembros de una comunidad, ya que originalmente la tierra pertenece a toda la humanidad.",
+            "b": "Los seres humanos pueden apropiarse de partes de la naturaleza sin necesidad de un pacto colectivo, ya que la propiedad surge de la transformación de los recursos mediante el trabajo.",
+            "c": "La función del gobierno es regular la distribución de la propiedad para garantizar que todos los ciudadanos tengan acceso equitativo a los recursos naturales."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Aunque la tierra y todas las criaturas inferiores pertenecen en común a todos los hombres, cada hombre tiene, sin embargo, una propiedad que pertenece a su propia persona; y a esa propiedad nadie tiene derecho, excepto él mismo. El trabajo de su cuerpo y la labor producida por sus manos podemos decir que son suyos.",
+          "opciones": {
+            "a": "Todo lo que existe en la naturaleza pertenece a la humanidad en su conjunto, por lo que ningún individuo puede apropiarse de nada de manera exclusiva.",
+            "b": "Aunque los recursos naturales son inicialmente comunes, cada individuo es dueño de su propio cuerpo y de su trabajo, lo que le permite apropiarse de aquello que transforma con su esfuerzo.",
+            "c": "El Estado debe garantizar que todos los ciudadanos tengan acceso equitativo a los bienes materiales, evitando que algunos se apropien de más recursos que otros."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Porque este trabajo, al ser indudablemente propiedad del trabajador, da como resultado el que ningún hombre, excepto él, tenga derecho a lo que ha sido añadido a la cosa en cuestión, al menos cuando queden todavía suficientes bienes comunes para los demás.",
+          "opciones": {
+            "a": "El trabajo de una persona no justifica que algo se convierta en su propiedad, ya que todos los bienes de la naturaleza pertenecen a la humanidad en su conjunto.",
+            "b": "Un individuo adquiere propiedad legítima sobre un bien de la naturaleza cuando lo transforma con su trabajo, siempre que queden suficientes recursos accesibles para los demás.",
+            "c": "La única manera de que alguien adquiera propiedad sobre un bien es mediante la aprobación de la comunidad o del gobierno, que regula la distribución de los recursos."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Pero ¿hasta dónde nos ha dado Dios esa abundancia? Hasta donde podamos disfrutarla. Todo lo que uno pueda usar para ventaja de su vida antes de que se eche a perder será aquello de lo que le esté permitido apropiarse mediante su trabajo.",
+          "opciones": {
+            "a": "No hay límite para la apropiación de bienes, ya que cada persona tiene derecho a acumular tantos recursos como desee, independientemente de si los usa o no.",
+            "b": "Una persona puede apropiarse de los recursos naturales mediante su trabajo, pero solo en la medida en que pueda usarlos antes de que se deterioren, evitando el desperdicio.",
+            "c": "La propiedad solo puede establecerse si todos los miembros de la comunidad están de acuerdo en distribuir los bienes de manera equitativa."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Y así, considerando la abundancia de provisiones naturales que durante mucho tiempo hubo en el mundo, y la escasez de consumidores; (...) sólo pudieron haberse producido muy pocos altercados y discusiones acerca de la propiedad así establecida.",
+          "opciones": {
+            "a": "Desde siempre, la propiedad privada ha sido motivo de conflictos, ya que los seres humanos tienden a disputarse los recursos sin aceptar la idea de propiedad individual.",
+            "b": "Cuando no había escasez, la propiedad privada no generaba conflictos porque todos podían acceder a lo necesario y se aceptaba racionalmente el derecho a la propiedad.",
+            "c": "Para evitar conflictos, las sociedades primitivas establecieron acuerdos colectivos sobre la distribución de los bienes, garantizando así la igualdad en el acceso a los recursos."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "¿Por qué decide mermar su libertad? ¿Por qué renuncia a su imperio y se somete al dominio y control de otro poder?",
+          "opciones": {
+            "a": "Locke se pregunta por qué los seres humanos prefieren vivir bajo un gobierno autoritario en lugar de disfrutar de su libertad natural.",
+            "b": "Locke se pregunta por qué los seres humanos están dispuestos a abandonar el estado de naturaleza pese a las libertades de que se gozan.",
+            "c": "Locke analiza cómo los seres humanos pueden vivir en sociedad bajo normas comunes sin que nadie tenga más poder que los demás."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Pues como en el estado de naturaleza todos son reyes lo mismo que él, cada hombre es igual a los demás; y como la mayor parte de ellos no observa estrictamente la equidad y la justicia, el disfrute de la propiedad que un hombre tiene en un estado así es sumamente inseguro.",
+          "opciones": {
+            "a": "Locke explica que en el estado de naturaleza todos los hombres tienen los mismos derechos, pero la falta de normas y autoridad hace que algunos acumulen más poder que otros.",
+            "b": "Locke señala que, aunque en el estado de naturaleza todos son iguales, la falta de un poder que garantice la justicia hace que la propiedad y los derechos sean inseguros.",
+            "c": "Locke argumenta que la única manera de garantizar la equidad y la justicia en una sociedad es mediante la creación de un gobierno con autoridad absoluta."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Por consiguiente, el grande y principal fin que lleva a los hombres a unirse en Estados y a ponerse bajo un gobierno es la preservación de su propiedad, cosa que no podían hacer en el estado de naturaleza, por faltar en él muchas cosas.",
+          "opciones": {
+            "a": "Locke sostiene que los hombres crean el Estado porque buscan compartir sus bienes con los demás y distribuir la propiedad de manera equitativa.",
+            "b": "Locke afirma que los hombres forman Estados y gobiernos porque, en el estado de naturaleza, no hay garantías suficientes para proteger su propiedad.",
+            "c": "Locke argumenta que la principal función del gobierno es establecer normas morales y religiosas que regulen el comportamiento de los ciudadanos."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Primero, faltaba una ley establecida, fija y conocida.",
+          "opciones": {
+            "a": "Locke señala que en el estado de naturaleza existen normas claras que todos respetan de manera natural, por lo que no es necesario un sistema de leyes formales.",
+            "b": "Locke explica que una de las razones por las que los hombres abandonan el estado de naturaleza es la ausencia de leyes positivas, es decir, leyes escritas y formalmente establecidas que brinden seguridad y eviten conflictos.",
+            "c": "Locke argumenta que las leyes son necesarias para regular la economía y garantizar la prosperidad del comercio dentro de la sociedad."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "En segundo lugar, falta en el estado de naturaleza un juez público e imparcial, con autoridad para resolver los pleitos que surjan entre los hombres, según la ley establecida.",
+          "opciones": {
+            "a": "Locke sostiene que los hombres pueden permanecer en el estado de naturaleza sin jueces, ya que la razón les permite solucionar sus disputas sin necesidad de una autoridad.",
+            "b": "Locke explica que los hombres abandonan el estado de naturaleza porque no hay un juez imparcial con autoridad para resolver disputas, lo que genera inseguridad y conflictos sin una solución justa.",
+            "c": "Locke argumenta que el poder judicial debe estar separado del legislativo para garantizar que las decisiones legales sean justas e independientes."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "En tercer lugar, falta a menudo en el estado de naturaleza un poder que respalde y dé fuerza a la sentencia cuando ésta es justa, a fin de que se ejecute debidamente.",
+          "opciones": {
+            "a": "Locke sostiene que la justicia en el estado de naturaleza se cumple automáticamente, ya que todos los individuos respetan las normas racionales sin necesidad de un poder que las haga cumplir.",
+            "b": "Locke explica que los hombres abandonan el estado de naturaleza porque, aunque pueda haber normas y jueces, no existe un poder que haga cumplir las sentencias, lo que deja la justicia sin fuerza real.",
+            "c": "Locke defiende que el gobierno debe concentrar todo el poder en un solo órgano para garantizar que las leyes se cumplan y se ejecuten sin oposición."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Aquellos que por injusticia cometen alguna ofensa rara vez sucumbirán allí donde les es posible hacer que la justicia impere por la fuerza. Una resistencia así hace que el castigo resulte peligroso, y aun destructivo, para quienes lo intentan.",
+          "opciones": {
+            "a": "En el estado de naturaleza, los infractores aceptan el castigo de manera voluntaria, ya que la razón los lleva a reconocer su culpa y someterse a la justicia.",
+            "b": "Locke explica que los hombres abandonan el estado de naturaleza porque los infractores, si tienen la fuerza suficiente, se resisten a ser castigados, lo que hace que la justicia dependa de la violencia y el riesgo.",
+            "c": "La mejor forma de evitar conflictos es establecer tribunales que dicten sentencias inapelables, asegurando que todos los ciudadanos acepten las decisiones sin resistencia."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Así, la humanidad, a pesar de todos los privilegios que conlleva el estado de naturaleza, padece una condición de enfermedad mientras se encuentra en tal estado; y por eso se inclina a entrar en sociedad cuanto antes.",
+          "opciones": {
+            "a": "Locke sostiene que el estado de naturaleza es la mejor condición para la humanidad, ya que permite a cada individuo vivir en plena libertad sin ninguna necesidad de cambiarlo.",
+            "b": "Aunque el estado de naturaleza ofrece libertad, también tiene problemas graves que lo hacen comparable a una enfermedad, lo que impulsa a los hombres a abandonarlo y formar sociedades.",
+            "c": "La humanidad abandona el estado de naturaleza porque los gobiernos deben organizar a la población y establecer jerarquías claras para mantener el orden."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Esto es lo que los hace estar tan deseosos de renunciar al poder de castigar que cada uno tiene, y de entregárselo a una sola persona para que lo ejerza entre ellos.",
+          "opciones": {
+            "a": "En el estado de naturaleza, cada individuo prefiere mantener su derecho a castigar a los infractores, ya que delegarlo en otra persona significaría perder su libertad.",
+            "b": "Los hombres abandonan el estado de naturaleza porque prefieren ceder el derecho de castigar a una autoridad común, en lugar de arriesgarse a conflictos y venganzas personales.",
+            "c": "Para que la sociedad funcione correctamente, todos los ciudadanos deben participar en la ejecución de las leyes y en el castigo de los infractores."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Y es aquí donde tenemos el derecho original del poder legislativo y del ejecutivo, así como el de los gobiernos de las sociedades mismas.",
+          "opciones": {
+            "a": "Después del pacto social, los ciudadanos siguen conservando todo su poder individual y no delegan ninguna autoridad en un gobierno, ya que el acuerdo solo es simbólico.",
+            "b": "Tras el pacto, se establece el poder legislativo y ejecutivo, ya que los ciudadanos han cedido parte de su autoridad para que el gobierno garantice sus derechos y la estabilidad de la sociedad.",
+            "c": "La función del gobierno es exclusivamente ejecutar las leyes, sin intervenir en su creación ni en la toma de decisiones políticas."
+          },
+          "respuesta": "b"
+        }
+      ]
+    };
+
+    let preguntas = data.preguntas;
+    let preguntasElegidas = [];
+    let preguntaActual = 0;
+    let correctas = 0;
+
+    const quizContainer = document.getElementById('quiz-container');
+    const nextButton = document.getElementById('next-btn');
+    const restartButton = document.getElementById('restart-btn');
+    const startButton = document.getElementById('start-btn');
+    const infoContainer = document.getElementById('info-container');
+
+    // Mostrar información inicial y habilitar el botón de inicio
+    infoContainer.innerHTML = `<p>El test contiene <strong>${preguntas.length}</strong> preguntas.</p>`;
+    startButton.style.display = 'block';
+
+    startButton.addEventListener('click', function() {
+      let numPreguntas = prompt(`El test tiene ${preguntas.length} preguntas. ¿Cuántas deseas jugar?`, preguntas.length);
+      numPreguntas = parseInt(numPreguntas);
+      if (isNaN(numPreguntas) || numPreguntas < 1 || numPreguntas > preguntas.length) {
+        alert('Número no válido. Se jugarán todas las preguntas.');
+        numPreguntas = preguntas.length;
+      }
+      // Seleccionar preguntas aleatorias
+      preguntasElegidas = preguntas.sort(() => 0.5 - Math.random()).slice(0, numPreguntas);
+      preguntaActual = 0;
+      correctas = 0;
+      startButton.style.display = 'none';
+      infoContainer.innerHTML = '';
+      mostrarPregunta();
+    });
+
+    function mostrarPregunta() {
+      if (preguntaActual < preguntasElegidas.length) {
+        quizContainer.innerHTML = '';
+        quizContainer.style.display = 'block';
+        nextButton.style.display = 'none';
+
+        let pregunta = preguntasElegidas[preguntaActual];
+        let preguntaTitulo = document.createElement('h2');
+        preguntaTitulo.textContent = pregunta.texto;
+        quizContainer.appendChild(preguntaTitulo);
+
+        // Convertir opciones en array y mezclarlas
+        let opcionesArray = Object.entries(pregunta.opciones);
+        opcionesArray.sort(() => Math.random() - 0.5);
+        opcionesArray.forEach(([key, texto]) => {
+          let opcion = document.createElement('div');
+          opcion.classList.add('option');
+          opcion.textContent = texto;
+          opcion.dataset.valor = key;
+          opcion.addEventListener('click', function() {
+            validarRespuesta(this, pregunta.respuesta);
+          });
+          quizContainer.appendChild(opcion);
+        });
+      } else {
+        quizContainer.innerHTML = `<h2>¡Test finalizado!</h2><p>Has acertado ${correctas} de ${preguntasElegidas.length} preguntas.</p>`;
+        nextButton.style.display = 'none';
+        restartButton.style.display = 'block';
+      }
+    }
+
+    function validarRespuesta(elemento, respuestaCorrecta) {
+      let opciones = document.querySelectorAll('.option');
+      opciones.forEach(op => op.style.pointerEvents = 'none');
+
+      if (elemento.dataset.valor === respuestaCorrecta) {
+        elemento.classList.add('correct');
+        correctas++;
+      } else {
+        elemento.classList.add('incorrect');
+        let correcta = document.querySelector(`.option[data-valor='${respuestaCorrecta}']`);
+        if (correcta) correcta.classList.add('correct');
+      }
+      nextButton.style.display = 'block';
+    }
+
+    nextButton.addEventListener('click', function() {
+      preguntaActual++;
+      mostrarPregunta();
+    });
+
+    restartButton.addEventListener('click', function() {
+      this.style.display = 'none';
+      startButton.style.display = 'none';
+      preguntaActual = 0;
+      correctas = 0;
+      infoContainer.innerHTML = `<p>El test contiene <strong>${preguntas.length}</strong> preguntas.</p>`;
+      startButton.style.display = 'block';
+      quizContainer.innerHTML = '';
+      quizContainer.style.display = 'none';
+    });
+  </script>
+</body>
+</html>
