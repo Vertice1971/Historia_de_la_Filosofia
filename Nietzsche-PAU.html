@@ -85,6 +85,15 @@
   <button id="restart-btn">Reiniciar</button>
   
   <script>
+    // Función para barajar un array usando el algoritmo de Fisher–Yates
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
     // JSON integrado con todas las preguntas de Nietzsche
     const data = {
       "preguntas": [
@@ -331,14 +340,16 @@
         preguntaTitulo.textContent = pregunta.texto;
         quizContainer.appendChild(preguntaTitulo);
 
-        // Convertir opciones en array y mezclarlas
-        let opcionesArray = Object.entries(pregunta.opciones);
-        opcionesArray.sort(() => Math.random() - 0.5);
-        opcionesArray.forEach(([key, texto]) => {
+        // Convertir las opciones en un array de objetos y mezclarlas con Fisher–Yates
+        let opcionesArray = Object.entries(pregunta.opciones)
+          .map(([key, texto]) => ({ key, texto }));
+        opcionesArray = shuffle(opcionesArray);
+
+        opcionesArray.forEach(opcionObj => {
           let opcion = document.createElement('div');
           opcion.classList.add('option');
-          opcion.textContent = texto;
-          opcion.dataset.valor = key;
+          opcion.textContent = opcionObj.texto;
+          opcion.dataset.valor = opcionObj.key;
           opcion.addEventListener('click', function() {
             validarRespuesta(this, pregunta.respuesta);
           });

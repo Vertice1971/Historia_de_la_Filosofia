@@ -86,6 +86,15 @@
   <button id="restart-btn">Reiniciar</button>
   
   <script>
+    // Función para barajar un array usando el algoritmo de Fisher–Yates
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
     // JSON integrado con todas las preguntas
     const data = {
       "preguntas": [
@@ -184,7 +193,7 @@
           "opciones": {
             "a": "Cuando alguien viola la ley natural, sigue estando sujeto a las normas de la razón y la equidad, por lo que su transgresión no afecta al orden social.",
             "b": "Cuando una persona transgrede la ley natural, está rompiendo los principios que mantenían la convivencia pacífica y se convierte en un peligro para los demás, ya que demuestra que no respeta las normas que evitan el caos y la violencia.",
-            "c": "La razón nos enseña que todos los hombres son iguales e independientes, por lo que ninguno debe someterse a la voluntad de otro sin su consentimiento."
+            "c": "La razón nos enseña que todos los hombres son iguales e independientes, por lo que ninguno debe someter a otro sin su consentimiento."
           },
           "respuesta": "b"
         },
@@ -427,7 +436,7 @@
           "opciones": {
             "a": "Locke explica que en el estado de naturaleza todos los hombres tienen los mismos derechos, pero la falta de normas y autoridad hace que algunos acumulen más poder que otros.",
             "b": "Locke señala que, aunque en el estado de naturaleza todos son iguales, la falta de un poder que garantice la justicia hace que la propiedad y los derechos sean inseguros.",
-            "c": "Locke argumenta que la única manera de garantizar la equidad y la justicia en una sociedad es mediante la creación de un gobierno con autoridad absoluta."
+            "c": "Locke argumenta que la principal función del gobierno es establecer normas morales y religiosas que regulen el comportamiento de los ciudadanos."
           },
           "respuesta": "b"
         },
@@ -548,14 +557,16 @@
         preguntaTitulo.textContent = pregunta.texto;
         quizContainer.appendChild(preguntaTitulo);
 
-        // Convertir opciones en array y mezclarlas
-        let opcionesArray = Object.entries(pregunta.opciones);
-        opcionesArray.sort(() => Math.random() - 0.5);
-        opcionesArray.forEach(([key, texto]) => {
+        // Convertir las opciones en un array de objetos y mezclarlo usando Fisher-Yates
+        let opcionesArray = Object.entries(pregunta.opciones)
+          .map(([key, texto]) => ({ key, texto }));
+        opcionesArray = shuffle(opcionesArray);
+
+        opcionesArray.forEach(opcionObj => {
           let opcion = document.createElement('div');
           opcion.classList.add('option');
-          opcion.textContent = texto;
-          opcion.dataset.valor = key;
+          opcion.textContent = opcionObj.texto;
+          opcion.dataset.valor = opcionObj.key;
           opcion.addEventListener('click', function() {
             validarRespuesta(this, pregunta.respuesta);
           });

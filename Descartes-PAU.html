@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Textos de Descartes para la PAU. Andalucía 2025</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      text-align: center;
+      background-color: #f5f8ff; /* Fondo azul pastel */
+    }
+    .question-container {
+      display: none;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      max-width: 600px;
+      margin: 20px auto;
+      background: #ffffff;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .option {
+      display: block;
+      padding: 10px;
+      margin: 10px 0;
+      border: 2px solid #ddd;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+    .option:hover {
+      background: #e0ebff;
+      transform: scale(1.05);
+    }
+    .correct {
+      background: #c8e6c9;
+      border-color: green;
+    }
+    .incorrect {
+      background: #ffcdd2;
+      border-color: red;
+    }
+    #start-btn, #restart-btn {
+      display: none;
+      margin-top: 20px;
+      padding: 10px;
+      background: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    #restart-btn {
+      background: #28a745;
+    }
+    /* Posiciona el botón "Siguiente" fijo a la derecha, en zona media/alta */
+    #next-btn {
+      position: fixed;
+      right: 20px;
+      top: 30%;
+      padding: 10px;
+      background: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      display: none;
+    }
+    #info-container {
+      margin-top: 20px;
+      font-size: 1.2em;
+    }
+  </style>
+</head>
+<body>
+  <h1>Comprensión lectora: textos de Descartes para la PAU. Andalucía 2025.</h1>
+  <h2 style="font-size: 0.6em; color: #555;">Tomás Cuesta. IES Juan de la Cierva</h2>
+
+  <div id="info-container"></div>
+  <button id="start-btn">Comenzar Quiz</button>
+  <div id="quiz-container" class="question-container"></div>
+  <button id="next-btn">Siguiente</button>
+  <button id="restart-btn">Reiniciar</button>
+  
+  <script>
+    // Función para barajar un array usando el algoritmo de Fisher–Yates
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    // JSON integrado con todas las preguntas de Descartes
+    const data = {
+      "preguntas": [
+        {
+          "texto": "Y como la multiplicidad de leyes frecuentemente sirve para los vicios de tal forma que un Estado está mejor regido cuando no existen más que unas pocas leyes que son minuciosamente observadas, de la misma forma, en lugar del gran número de preceptos del cual está compuesta la lógica, estimé que tendría suficiente con los cuatro siguientes",
+          "opciones": {
+            "a": "Un país necesita muchas leyes para funcionar correctamente, igual que el pensamiento requiere muchas normas para no caer en el error.",
+            "b": "Así como un Estado funciona mejor con pocas leyes bien cumplidas, el pensamiento también es más claro cuando se rige por pocas reglas fundamentales.",
+            "c": "Descartes defiende la claridad y distinción como criterios de verdad, ya que solo lo que se percibe con total certeza puede ser aceptado como verdadero."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Es decir, con todo cuidado debía evitar la precipitación y la prevención, admitiendo exclusivamente en mis juicios aquello que se presentara tan clara y distintamente a mi espíritu que no tuviera motivo alguno para ponerlo en duda.",
+          "opciones": {
+            "a": "Para evitar errores, Descartes aceptaba como verdadero todo aquello que le resultara intuitivo y evidente a primera vista.",
+            "b": "Descartes formuló la regla de la evidencia, según la cual solo debemos aceptar como verdadero aquello que se presente con total claridad y sin posibilidad de duda.",
+            "c": "Para Descartes, la imaginación no es un criterio válido de conocimiento, pues solo la razón nos proporciona verdades indudables."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "El segundo exigía que dividiese cada una de las dificultades a examinar en tantas parcelas como fuera posible y necesario para resolverlas más fácilmente.",
+          "opciones": {
+            "a": "Para entender un problema, basta con dividirlo en dos partes y analizar cada una por separado.",
+            "b": "Descartes formuló el principio del análisis, según el cual todo problema debe dividirse en tantas partes como sea necesario para comprenderlo mejor y resolverlo con mayor facilidad.",
+            "c": "Descartes defendía que la matemática es la ciencia que proporciona mayor certeza, porque sus principios son claros y distintos."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "El tercero requería conducir por orden mis reflexiones comenzando por los objetos más simples y más fácilmente cognoscibles, para ascender poco a poco, gradualmente, hasta el conocimiento de los más complejos, suponiendo inclusive un orden entre aquellos que no se preceden naturalmente los unos a los otros.",
+          "opciones": {
+            "a": "Para Descartes, el conocimiento debe empezar por lo más complejo, ya que esto permite abarcar más información desde el principio.",
+            "b": "Descartes formuló la regla de la síntesis, según la cual el pensamiento debe organizarse empezando por lo más simple y avanzar ordenadamente hacia lo más complejo.",
+            "c": "Para Descartes, la duda metódica es un proceso esencial para descartar todo aquello que no sea completamente cierto."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Según el último de estos preceptos debería realizar recuentos tan completos y revisiones tan amplias que pudiese estar seguro de no omitir nada.",
+          "opciones": {
+            "a": "Descartes pensaba que revisar lo aprendido era innecesario si la primera conclusión parecía clara.",
+            "b": "Descartes formuló la regla de la enumeración, que exige revisar cada paso del razonamiento con atención para asegurarse de que no se ha omitido nada.",
+            "c": "Descartes distingue entre la res cogitans, que es la sustancia pensante, y la res extensa, que es la sustancia material."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Ya sé con certeza que soy, pero aún no sé con claridad qué soy; de suerte que, en adelante, preciso del mayor cuidado para no confundir imprudentemente otra cosa conmigo.",
+          "opciones": {
+            "a": "Descartes afirma que, al descubrir su existencia, también comprende plenamente su naturaleza.",
+            "b": "Descartes afirma el cogito como certeza fundamental: sabe que existe porque piensa, pero aún debe analizar con cuidado qué es exactamente ese 'yo' para no atribuirle características erróneas.",
+            "c": "Descartes sostiene que el conocimiento claro y distinto es el único criterio fiable para aceptar una verdad."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Examinaré de nuevo lo que yo creía ser, antes de incidir en estos pensamientos, y quitaré de mis antiguas opiniones todo lo que puede combatirse mediante las razones que acabo de alegar, de suerte que no quede más que lo enteramente indudable.",
+          "opciones": {
+            "a": "Descartes pretende rechazar todas sus antiguas creencias porque considera que el conocimiento pasado es siempre erróneo.",
+            "b": "Descartes aplica la duda metódica para eliminar de sus creencias todo lo que no sea completamente indudable, asegurándose de que solo permanezca aquello que resista la razón.",
+            "c": "Para Descartes, la diferencia entre la res cogitans y la res extensa es fundamental para entender la naturaleza del alma y del cuerpo."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "¿Diré, acaso, que un animal racional? No, por cierto: pues habría luego que averiguar qué es animal y qué es racional, y así una única cuestión nos llevaría insensiblemente a infinidad de otras cuestiones más difíciles y embarazosas.",
+          "opciones": {
+            "a": "Descartes rechaza la idea de que el ser humano sea un animal racional porque no cree que exista diferencia entre humanos y animales.",
+            "b": "Descartes evita definir al ser humano como 'animal racional' porque esa definición requiere aclarar los términos 'animal' y 'racional', lo que generaría una cadena infinita de cuestiones sin resolver.",
+            "c": "Descartes defiende la existencia de ideas innatas, como la idea de Dios, que no provienen de la experiencia ni de la imaginación."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Entonces, me detendré aquí a considerar más bien los pensamientos que antes nacían espontáneos en mi espíritu, inspirados por mi sola naturaleza, cuando me aplicaba a considerar mi ser. Me fijaba, primero, en que yo tenía un rostro, manos, brazos, y toda esa máquina de huesos y carne, tal y como aparece en un cadáver, a la que designaba con el nombre de cuerpo.",
+          "opciones": {
+            "a": "Descartes concluye que el cuerpo es la única realidad indudable, ya que se percibe directamente a través de los sentidos.",
+            "b": "Descartes recuerda que, antes de aplicar su método, concebía su existencia a través de su cuerpo, percibiéndolo como una máquina de huesos y carne.",
+            "c": "Para Descartes, la sustancia pensante (res cogitans) es distinta de la sustancia extensa (res extensa), ya que el pensamiento no es material."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Que puede moverse de distintos modos, no por sí mismo, sino por alguna otra cosa que lo toca y cuya impresión recibe; pues no creía yo que fuera atribuible a la naturaleza corpórea la potencia de moverse, sentir y pensar.",
+          "opciones": {
+            "a": "Descartes afirma que el cuerpo puede moverse por sí mismo sin necesidad de una causa externa.",
+            "b": "Descartes considera que el cuerpo es algo puramente material y que su movimiento no proviene de él mismo, sino de una causa externa que lo impulsa.",
+            "c": "Para Descartes, el alma es una sustancia distinta del cuerpo, ya que el pensamiento no puede ser explicado en términos materiales."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "¿Qué soy yo, ahora que supongo haber alguien extremadamente poderoso y, si es lícito decirlo así, maligno y astuto, que emplea todas sus fuerzas e industria en engañarme?",
+          "opciones": {
+            "a": "Descartes cree que un ser maligno realmente lo está engañando y que su existencia es incierta.",
+            "b": "Descartes introduce la hipótesis del genio maligno para cuestionar todo lo que cree saber y comprobar si hay algo que no pueda ser puesto en duda.",
+            "c": "Para Descartes, la certeza del cogito es el punto de partida indudable para reconstruir el conocimiento."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "¿Acaso puedo estar seguro de poseer el más mínimo de esos atributos que acabo de referir a la naturaleza corpórea?",
+          "opciones": {
+            "a": "Descartes concluye que su cuerpo y sus atributos físicos son incuestionables porque los percibe directamente.",
+            "b": "Descartes cuestiona si realmente posee atributos corporales, ya que su método de duda le impide confiar en lo que percibe como su cuerpo.",
+            "c": "Para Descartes, la distinción entre la res cogitans y la res extensa es fundamental para entender la naturaleza del pensamiento y del cuerpo."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Una cosa que piensa. ¿Y qué más? Excitaré aún mi imaginación, a fin de averiguar si no soy algo más. No soy esta reunión de miembros llamada cuerpo humano; no soy un aire sutil y penetrante, difundido por todos esos miembros; no soy un viento, un soplo, un vapor, ni nada de cuanto pueda fingir e imaginar.",
+          "opciones": {
+            "a": "Descartes afirma que su existencia depende de su cuerpo y que su identidad se define por su composición física.",
+            "b": "Debido a las dudas, Descartes no tiene evidencia de ser un cuerpo material ni ninguna sustancia física concebida por la imaginación; solo puede afirmar con certeza que es una cosa que piensa.",
+            "c": "Descartes sostiene que la certeza del cogito es el primer principio indudable del conocimiento."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Pero acaso suceda que esas mismas cosas que supongo no ser, puesto que no las conozco, no sean en efecto diferentes de mí, a quien conozco. Nada sé del caso:",
+          "opciones": {
+            "a": "Descartes admite que, aunque no conoce su naturaleza, está seguro de que su cuerpo y su mente son lo mismo.",
+            "b": "Descartes reconoce que no tiene pruebas suficientes para afirmar que su cuerpo y su mente sean cosas distintas o la misma realidad, ya que solo tiene certeza de su existencia como cosa que piensa.",
+            "c": "Descartes distingue entre ideas adventicias, facticias e innatas para analizar el origen del conocimiento."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Ya sé que soy, y eso sabido, busco saber qué soy.",
+          "opciones": {
+            "a": "Descartes, al saber que existe, también conoce inmediatamente su verdadera naturaleza.",
+            "b": "Descartes afirma el cogito como certeza indudable: sabe que existe porque piensa, pero aún debe analizar su naturaleza para determinar qué es exactamente ese 'yo'.",
+            "c": "Para Descartes, la regla de la evidencia establece que solo debemos aceptar como verdadero aquello que se presente con total claridad y distinción."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Decir «excitaré mi imaginación para saber más distintamente qué soy», es tan poco razonable como decir «ahora estoy despierto, y percibo algo real y verdadero, pero como no lo percibo aún con bastante claridad, voy a dormirme adrede para que mis sueños me lo representen con mayor verdad y evidencia».",
+          "opciones": {
+            "a": "Descartes sostiene que la imaginación es una herramienta fiable para conocer mejor la naturaleza del yo.",
+            "b": "Descartes rechaza el uso de la imaginación para conocer la naturaleza del yo, comparándolo con la absurda idea de dormir para comprender mejor la realidad.",
+            "c": "Descartes plantea la hipótesis del sueño para cuestionar la fiabilidad de las percepciones sensoriales."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "¿Hay algo de esto que no sea tan verdadero como es cierto que soy, que existo, aun en el caso de que estuviera siempre dormido, y de que quien me ha dado el ser empleara todas sus fuerzas en burlarme?",
+          "opciones": {
+            "a": "Descartes sostiene que su existencia depende de que esté despierto y percibiendo la realidad de forma consciente.",
+            "b": "Descartes afirma que la certeza de su existencia es innegable incluso si estuviera siempre dormido o si el genio maligno utilizara todo su poder para engañarlo.",
+            "c": "Descartes distingue entre ideas adventicias, facticias e innatas para explicar el origen del conocimiento."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Pues es de suyo tan evidente que soy yo quien duda, entiende y desea, que no hace falta añadir aquí nada para explicarlo.",
+          "opciones": {
+            "a": "Descartes sostiene que el hecho de dudar, entender y desear requiere demostración lógica para ser aceptado como verdadero.",
+            "b": "Descartes considera que la certeza de que él duda, entiende y desea es una intuición inmediata, tan clara y evidente que no necesita prueba alguna.",
+            "c": "Para Descartes, la deducción es un método complementario a la intuición, ya que permite encadenar verdades a partir de principios evidentes."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "También soy yo el mismo que siente, es decir, que recibe y conoce las cosas como a través de los órganos de los sentidos, puesto que, en efecto, veo la luz, oigo el ruido, siento el calor. Se me dirá, empero, que esas apariencias son falsas, y que estoy durmiendo. Concedo que así sea: de todas formas, es al menos muy cierto que me parece ver.",
+          "opciones": {
+            "a": "Descartes sostiene que las percepciones sensoriales son siempre verdaderas y no pueden ser puestas en duda.",
+            "b": "Descartes afirma que, aunque las percepciones puedan ser falsas, el hecho de que ocurran dentro de su mente es absolutamente evidente.",
+            "c": "Descartes distingue entre la intuición y la deducción como métodos fundamentales para alcanzar el conocimiento verdadero."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Y aunque entre éstas, sin duda, hay algunas manifiestamente conocidas de todos, y otras que sólo se revelan a quienes las consideran más de cerca y las investigan con diligencia, el caso es que, una vez descubiertas, no menos ciertas son las unas que las otras.",
+          "opciones": {
+            "a": "Las verdades evidentes deben ser intuitivas para todos, y si requieren investigación, no pueden considerarse absolutamente ciertas.",
+            "b": "Hay algunas verdades evidentes que son claras para todos a la primera, mientras que otras solo lo son tras mucho estudio. Pero todas son evidentes y son igual de fiables.",
+            "c": "Para Descartes, la certeza del cogito es el punto de partida para reconstruir el conocimiento con total seguridad."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Así, por ejemplo, aunque no sea a primera vista tan patente que, en todo triángulo rectángulo, el cuadrado de la base es igual a la suma de los cuadrados de los otros dos lados, como que, en ese mismo triángulo, la base está opuesta al ángulo mayor, sin embargo, una vez sabido lo primero, vemos que es tan verdadero como lo segundo.",
+          "opciones": {
+            "a": "Descartes sostiene que solo las verdades que se comprenden a simple vista pueden considerarse absolutamente ciertas.",
+            "b": "Descartes explica que algunas verdades, como el teorema de Pitágoras, no son evidentes a primera vista, pero una vez demostradas, son tan ciertas como aquellas que se ven de inmediato.",
+            "c": "Para Descartes, la distinción entre la res cogitans y la res extensa es fundamental para entender la diferencia entre pensamiento y materia."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Y por lo que a Dios toca, es cierto que si mi espíritu estuviera desprovisto de algunos prejuicios, y mi pensamiento no fuera distraído por la continua presencia de las imágenes de las cosas sensibles, nada conocería primero ni más fácilmente que a Él.",
+          "opciones": {
+            "a": "Descartes sostiene que el conocimiento de Dios es siempre lo primero que percibimos y no depende de las condiciones de nuestro pensamiento.",
+            "b": "Descartes afirma que, si la mente no estuviera llena de prejuicios ni distraída por los sentidos, el conocimiento de Dios sería lo primero y más fácil de alcanzar.",
+            "c": "Descartes distingue entre ideas adventicias, facticias e innatas para explicar el origen del conocimiento."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Un ser supremo y perfecto, el único en cuya idea está incluida la existencia, y que, por tanto, existe?",
+          "opciones": {
+            "a": "Descartes sostiene en su argumento ontológico que Dios existe porque muchas personas creen en Él y lo han concebido a lo largo de la historia.",
+            "b": "Descartes, en su argumento ontológico, sostiene que Dios, como ser supremo y perfecto, debe existir, porque la existencia es una perfección y no puede faltar en un ser absolutamente perfecto.",
+            "c": "Descartes afirma que el cogito es la primera verdad indudable y el punto de partida para reconstruir el conocimiento."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Ahora, no sólo estoy seguro de ella como de la cosa más cierta, sino que, además, advierto que la certidumbre de todas las demás cosas depende de ella tan por completo.",
+          "opciones": {
+            "a": "Descartes sostiene que la certeza de todas las cosas es independiente de la existencia de Dios y que cada verdad se valida por sí misma.",
+            "b": "Descartes sostiene que la existencia de Dios es la verdad más cierta y que la certeza de todas las demás verdades depende completamente de ella.",
+            "c": "Descartes establece en su método que solo se debe aceptar como verdadero aquello que se presente con total claridad y distinción."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Nada más comprender una cosa muy clara y distintamente, no puedo dejar de creerla verdadera, sin embargo, como también mi naturaleza me lleva a no poder fijar siempre mi espíritu en una misma cosa, y me acuerdo a menudo de haber creído verdadero algo cuando ya he cesado de considerar las razones que yo tenía para creerlo tal, puede suceder que en ese momento se me presenten otras razones que me harían cambiar fácilmente de opinión.",
+          "opciones": {
+            "a": "Descartes sostiene que si algo parece claro y distinto en un momento dado, debe seguir siendo aceptado como verdadero sin necesidad de revisión posterior.",
+            "b": "Descartes explica que cuando comprende algo con claridad y distinción, lo acepta como verdadero, pero reconoce que su mente es limitada y puede olvidar las razones de esa certeza, lo que puede hacerle dudar más adelante.",
+            "c": "Para Descartes, la duda metódica es el procedimiento que permite descartar todo aquello que no sea completamente indudable."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "No puedo por menos de creerlo, mientras está atento mi pensamiento a la demostración; pero tan pronto como esa atención se desvía, aunque me acuerde de haberla entendido claramente, no es difícil que dude de la verdad de aquella demostración.",
+          "opciones": {
+            "a": "Descartes sostiene que una vez comprendida una verdad con claridad y distinción, nunca podrá ser olvidada ni puesta en duda.",
+            "b": "Descartes explica que cuando ve una demostración clara y distinta la acepta como evidente, pero si olvida la demostración puede dudar de si era tan evidente.",
+            "c": "Descartes establece que la existencia del genio maligno es una hipótesis para llevar la duda al extremo y analizar qué puede ser indudable."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "A ello me persuade sobre todo el acordarme de haber creído a menudo que eran verdaderas y ciertas muchas cosas, que luego otras razones distintas me han llevado a juzgar absolutamente falsas.",
+          "opciones": {
+            "a": "Descartes sostiene que todo lo que antes consideraba verdadero debe ser falso porque ha cambiado de opinión en varias ocasiones.",
+            "b": "Descartes explica que recuerda haber creído en verdades que luego descubrió falsas, lo que le hace ser más prudente y dudar antes de aceptar algo como cierto, lo que implica que podría llegar a dudar de algo que anteriormente le pareció evidente.",
+            "c": "Descartes afirma que la razón es la única fuente fiable de conocimiento, ya que los sentidos pueden engañarnos."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Pero tras conocer que hay un Dios, y a la vez que todo depende de Él, y que no es falaz, y, en consecuencia, que todo lo que concibo con claridad y distinción no puede por menos de ser verdadero, entonces, aunque ya no piense en las razones por las que juzgué que esto era verdadero, con tal de que recuerde haberlo comprendido clara y distintamente, no se me puede presentar en contra ninguna razón que me haga ponerlo en duda.",
+          "opciones": {
+            "a": "Descartes sostiene que la certeza de una idea clara y distinta depende solo de la memoria, sin necesidad de otra garantía.",
+            "b": "Descartes sostiene que, dado que Dios existe y no engaña, Dios garantiza que todo lo que ha conocido con claridad y distinción es verdadero, incluso si con el tiempo olvida las razones que le llevaron a esa certeza.",
+            "c": "Descartes argumenta que la duda metódica es necesaria para eliminar todo aquello que no sea absolutamente cierto."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "¿Se me dirá que, en otro tiempo, he considerado verdaderas muchas cosas que luego he reconocido ser falsas? Pero no había conocido clara y distintamente ninguna de ellas.",
+          "opciones": {
+            "a": "Descartes admite que incluso las ideas claras y distintas pueden resultar falsas con el tiempo.",
+            "b": "Descartes responde que nunca ha ocurrido que algo claro y distinto haya resultado ser falso; solo ha resultado ser falso el conocimiento que desde el principio no cumplía con la regla de la evidencia.",
+            "c": "Descartes establece que la existencia de Dios es necesaria para garantizar la verdad del conocimiento claro y distinto."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Pero aun cuando yo soñase, todo lo que se presenta a mi espíritu con evidencia es absolutamente verdadero.",
+          "opciones": {
+            "a": "Descartes sostiene que todo lo que aparece en los sueños es verdadero porque lo experimentamos en nuestra mente.",
+            "b": "Descartes afirma que, aunque estuviera soñando, cualquier idea que se presente con total evidencia sigue siendo absolutamente verdadera.",
+            "c": "Descartes sostiene que la existencia de Dios es la garantía de la verdad de todo conocimiento claro y distinto."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Y ahora que lo conozco, tengo el medio de adquirir una ciencia perfecta acerca de infinidad de cosas: y no sólo acerca de Dios mismo, sino también de la materia corpórea, en cuanto que ésta es objeto de la pura matemática, que no se ocupa de la existencia del cuerpo.",
+          "opciones": {
+            "a": "Descartes sostiene que la existencia de Dios le permite conocer directamente la naturaleza del mundo físico sin necesidad de demostración matemática.",
+            "b": "Descartes sostiene que, al conocer la existencia de Dios, tiene la garantía para alcanzar una ciencia perfecta, tanto sobre Dios como sobre la res extensa, que puede estudiarse a través de la matemática sin considerar su existencia.",
+            "c": "Descartes distingue entre la res cogitans y la res extensa para explicar la diferencia entre la mente y la materia."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Y aunque la mente todo parece estar unida al cuerpo todo, sin embargo, cuando se separa de mi cuerpo un pie, un brazo, o alguna otra parte, sé que no por ello se le quita algo a mi mente. Y no pueden llamarse «partes» de la mente las facultades de querer, sentir, concebir, etc., pues una sola y misma mente es quien quiere, siente, concibe, etc.",
+          "opciones": {
+            "a": "La mente es una entidad separada del cuerpo, pero sus facultades pueden dividirse en distintas partes, como la voluntad y la imaginación, que funcionan de manera independiente.",
+            "b": "La mente es indivisible, a diferencia del cuerpo, que es material y puede dividirse en partes. Aunque la mente esté unida al cuerpo, sus facultades no son partes separadas, sino que forman una única entidad.",
+            "c": "El cuerpo es un conjunto de partes materiales, mientras que la mente es la capacidad de razonar y percibir, lo que permite al ser humano distinguir el conocimiento verdadero de la ilusión."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Mas ocurre lo contrario en las cosas corpóreas o extensas, pues no hay ninguna que mi mente no pueda dividir fácilmente en varias partes y, por consiguiente, no hay ninguna que pueda entenderse como indivisible.",
+          "opciones": {
+            "a": "Las cosas materiales pueden dividirse en partes, pero su comprensión solo es posible cuando se las considera como un todo, sin fraccionarlas en la mente.",
+            "b": "Todo lo material es divisible, a diferencia de la mente, que es indivisible. No hay ninguna cosa corpórea que no pueda fraccionarse en partes, mientras que la mente siempre es una unidad.",
+            "c": "La mente puede analizar lo material mediante la razón, pero la realidad última de las cosas extensas es inmutable y no puede dividirse verdaderamente."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Advierto también que la mente no recibe inmediatamente la impresión de todas las partes del cuerpo, sino sólo del cerebro, o acaso mejor, de una de sus partes más pequeñas, a saber, de aquella en que se ejercita esa facultad que llaman sentido común.",
+          "opciones": {
+            "a": "La mente percibe directamente todas las sensaciones del cuerpo sin necesidad del cerebro, ya que está conectada con cada una de sus partes de manera inmediata.",
+            "b": "La mente no recibe información directamente de todas las partes del cuerpo, sino solo del cerebro, en una zona específica donde se reúnen y organizan las sensaciones antes de que la mente las perciba.",
+            "c": "El sentido común es una capacidad del alma que permite a la razón percibir el mundo sin necesidad de los sentidos o del cerebro."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Advierto, además, que la naturaleza del cuerpo es tal, que, si alguna de sus partes puede ser movida por otra parte un poco alejada, podrá serlo también por las partes que hay entre las dos, aun cuando aquella parte más alejada no actúe.",
+          "opciones": {
+            "a": "El cuerpo es una máquina en la que cada parte se mueve de manera independiente, sin necesidad de estar conectada a las demás.",
+            "b": "En el cuerpo, el movimiento se transmite a través de sus partes, de modo que una parte intermedia puede mover otra sin que la parte original que causó el movimiento siga actuando.",
+            "c": "La mente es la única fuente de movimiento en el cuerpo, ya que ninguna parte puede moverse sin que la mente lo ordene directamente."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Esa sensación se comunica mediante los nervios esparcidos por el pie, que son como cuerdas tirantes que van de allí al cerebro, de modo que cuando se tira de ellos en el pie, tiran ellos a su vez de la parte del cerebro de donde salen y a la que vuelven, excitando en ella cierto movimiento, establecido por la naturaleza para que la mente sienta el dolor como si éste estuviera en el pie.",
+          "opciones": {
+            "a": "El dolor se experimenta directamente en el pie, ya que cada parte del cuerpo tiene su propia conciencia y siente por sí misma.",
+            "b": "El dolor no está realmente en el pie, sino que es una sensación producida en el cerebro cuando los nervios llevan la señal desde el pie, haciéndonos percibirlo allí.",
+            "c": "La mente percibe el dolor de forma instantánea sin necesidad de un proceso físico, pues la sensación se origina en el alma y no en el cuerpo."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Puede suceder que, no moviéndose sus partes extremas —que están en el pie—, sino sólo alguna de las intermedias, ello provoque en el cerebro los mismos movimientos que excitaría en él una herida del pie.",
+          "opciones": {
+            "a": "El cerebro siempre recibe información exacta de dónde se produce un daño en el cuerpo, por lo que nunca puede equivocarse al identificar la fuente del dolor.",
+            "b": "A veces, el cerebro puede interpretar como dolor en el pie una señal que en realidad proviene de otra parte del cuerpo, porque la sensación viaja a través de los nervios y puede activarse en un punto intermedio.",
+            "c": "La mente no necesita del cuerpo para percibir el dolor, ya que puede generarlo por sí misma sin necesidad de una causa física."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Puesto que cada uno de los movimientos ocurridos en la parte del cerebro de la que recibe la impresión la mente de un modo inmediato, causa una sola sensación, nada mejor puede entonces imaginarse ni desearse sino que tal movimiento haga sentir a la mente, de entre todas las sensaciones que es capaz de causar, aquella que sea más propia y ordinariamente útil.",
+          "opciones": {
+            "a": "Las sensaciones podrían haber sido organizadas de cualquier otra manera, pero son como son porque han surgido por casualidad en la evolución del cuerpo humano.",
+            "b": "Las sensaciones no son aleatorias, sino que están organizadas de la manera más útil para la supervivencia del cuerpo, lo que muestra un diseño racional de la naturaleza.",
+            "c": "La mente no recibe señales del cuerpo, sino que genera sus propias sensaciones de manera independiente, sin relación con el estado físico del organismo."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Sabiendo que todos los sentidos me indican con más frecuencia lo verdadero que lo falso, tocante a las cosas que atañen a lo que es útil o dañoso para el cuerpo, y pudiendo casi siempre hacer uso de varios para examinar una sola y misma cosa, y, además, contando con mi memoria para enlazar y juntar los conocimientos pasados a los presentes, y con mi razonamiento, que ha descubierto ya todas las causas de mis errores, no debo temer en adelante que sean falsas las cosas que mis sentidos ordinariamente me representan.",
+          "opciones": {
+            "a": "Los sentidos pueden engañarnos constantemente, por lo que debemos desconfiar de ellos incluso cuando nos ofrecen información coherente sobre el mundo.",
+            "b": "Aunque los sentidos pueden fallar en ocasiones, en general nos proporcionan información fiable, especialmente cuando verificamos una misma percepción con varios sentidos, la memoria y el razonamiento.",
+            "c": "La única fuente de conocimiento verdadero es la mente, ya que los sentidos solo nos ofrecen ilusiones que no pueden ser contrastadas ni corregidas."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Y debo rechazar; por hiperbólicas y ridículas, todas las dudas de estos días pasados: y, en particular, aquella tan general acerca del sueño, que no podía yo distinguir de la vigilia. Pues ahora advierto entre ellos una muy notable diferencia.",
+          "opciones": {
+            "a": "Ahora, después de reflexionar, Descartes concluye que la duda sobre el sueño era una crítica exagerada, ya que la distinción entre sueño y vigilia es clara e indudable.",
+            "b": "Descartes sigue manteniendo la duda sobre si estamos soñando o despiertos, pero ha llegado a la conclusión de que no es posible distinguirlos de manera segura.",
+            "c": "La duda sobre el sueño sigue siendo válida, ya que nunca podemos estar completamente seguros de si estamos soñando o despiertos, y todo lo que percibimos puede ser ilusorio."
+          },
+          "respuesta": "a"
+        },
+        {
+          "texto": "Si estando despierto se me apareciese alguien de súbito, y desapareciese de igual modo, como lo hacen las imágenes que veo en sueños, sin que yo pudiera saber de dónde venía ni adónde iba, no me faltaría razón para juzgarlo como un espectro o fantasma formado en mi cerebro, más bien que como un hombre.",
+          "opciones": {
+            "a": "La falta de coherencia en las experiencias que tenemos mientras estamos despiertos nos indica que algo es imaginario y no real, lo mismo que ocurre con los sueños.",
+            "b": "Los sueños son tan reales como las experiencias en la vigilia, por lo que no hay forma de diferenciarlos de manera segura si estamos despiertos o dormidos.",
+            "c": "Cuando estamos despiertos, nuestra mente puede crear ilusiones que parecen tan reales como las percepciones sensoriales, lo que hace difícil distinguir entre lo real y lo imaginario."
+          },
+          "respuesta": "a"
+        },
+        {
+          "texto": "Pudiendo enlazar sin interrupción la sensación que de ellas tengo con el restante curso de mi vida, entonces estoy seguro de que las percibo despierto, y no dormido.",
+          "opciones": {
+            "a": "La coherencia de las experiencias que tenemos en la vigilia, al estar conectadas con nuestra memoria y el curso de nuestra vida, nos asegura que lo que percibimos mientras estamos despiertos es real, a diferencia de los sueños.",
+            "b": "Las experiencias de los sueños están tan conectadas con nuestra vida diaria que no podemos diferenciarlas de las percepciones cuando estamos despiertos.",
+            "c": "La conciencia de lo que percibimos en la vigilia es desconectada de nuestra memoria y curso de vida, lo que hace imposible estar seguros de si estamos soñando o despiertos."
+          },
+          "respuesta": "a"
+        },
+        {
+          "texto": "Pues no siendo Dios engañoso, se sigue necesariamente que no me engaña en esto.",
+          "opciones": {
+            "a": "Si Dios existe y no es engañoso, entonces podemos confiar plenamente en nuestras percepciones, ya que Él no nos engañaría en ningún momento.",
+            "b": "La percepción humana es inherentemente defectuosa, pero la existencia de un Dios perfecto garantiza que la mente humana no puede caer en errores.",
+            "c": "Dios puede engañarnos en nuestras percepciones, ya que la mente humana es incapaz de distinguir entre la realidad y la ilusión sin su intervención."
+          },
+          "respuesta": "a"
+        }
+      ]
+    };
+
+    let preguntas = data.preguntas;
+    let preguntasElegidas = [];
+    let preguntaActual = 0;
+    let correctas = 0;
+
+    const quizContainer = document.getElementById('quiz-container');
+    const nextButton = document.getElementById('next-btn');
+    const restartButton = document.getElementById('restart-btn');
+    const startButton = document.getElementById('start-btn');
+    const infoContainer = document.getElementById('info-container');
+
+    infoContainer.innerHTML = `<p>El test contiene <strong>${preguntas.length}</strong> preguntas. Podrás elegir cuántas usar.</p>`;
+    startButton.style.display = 'block';
+
+    startButton.addEventListener('click', function() {
+      let numPreguntas = prompt(`El test tiene ${preguntas.length} preguntas. ¿Cuántas deseas jugar?`, preguntas.length);
+      numPreguntas = parseInt(numPreguntas);
+      if (isNaN(numPreguntas) || numPreguntas < 1 || numPreguntas > preguntas.length) {
+        alert('Número no válido. Se jugarán todas las preguntas.');
+        numPreguntas = preguntas.length;
+      }
+      preguntasElegidas = preguntas.sort(() => 0.5 - Math.random()).slice(0, numPreguntas);
+      preguntaActual = 0;
+      correctas = 0;
+      startButton.style.display = 'none';
+      infoContainer.innerHTML = '';
+      mostrarPregunta();
+    });
+
+    function mostrarPregunta() {
+      if (preguntaActual < preguntasElegidas.length) {
+        quizContainer.innerHTML = '';
+        quizContainer.style.display = 'block';
+        nextButton.style.display = 'none';
+
+        let pregunta = preguntasElegidas[preguntaActual];
+        let preguntaTitulo = document.createElement('h2');
+        preguntaTitulo.textContent = pregunta.texto;
+        quizContainer.appendChild(preguntaTitulo);
+
+        // Convertir el objeto de opciones en un array de objetos y barajarlo usando Fisher-Yates
+        let opcionesArray = Object.entries(pregunta.opciones)
+          .map(([key, texto]) => ({ key, texto }));
+        opcionesArray = shuffle(opcionesArray);
+
+        opcionesArray.forEach(opcionObj => {
+          let opcion = document.createElement('div');
+          opcion.classList.add('option');
+          opcion.textContent = opcionObj.texto;
+          opcion.dataset.valor = opcionObj.key; // Asigna la clave correspondiente
+          opcion.addEventListener('click', function() {
+            validarRespuesta(this, pregunta.respuesta);
+          });
+          quizContainer.appendChild(opcion);
+        });
+      } else {
+        quizContainer.innerHTML = `<h2>¡Test finalizado!</h2><p>Has acertado ${correctas} de ${preguntasElegidas.length} preguntas.</p>`;
+        nextButton.style.display = 'none';
+        restartButton.style.display = 'block';
+      }
+    }
+
+    function validarRespuesta(elemento, respuestaCorrecta) {
+      let opciones = document.querySelectorAll('.option');
+      opciones.forEach(op => op.style.pointerEvents = 'none');
+
+      if (elemento.dataset.valor === respuestaCorrecta) {
+        elemento.classList.add('correct');
+        correctas++;
+      } else {
+        elemento.classList.add('incorrect');
+        let correcta = document.querySelector(`.option[data-valor='${respuestaCorrecta}']`);
+        if (correcta) correcta.classList.add('correct');
+      }
+      nextButton.style.display = 'block';
+    }
+
+    nextButton.addEventListener('click', function() {
+      preguntaActual++;
+      mostrarPregunta();
+    });
+
+    restartButton.addEventListener('click', function() {
+      this.style.display = 'none';
+      startButton.style.display = 'none';
+      preguntaActual = 0;
+      correctas = 0;
+      infoContainer.innerHTML = `<p>El test contiene <strong>${preguntas.length}</strong> preguntas.</p>`;
+      startButton.style.display = 'block';
+      quizContainer.innerHTML = '';
+      quizContainer.style.display = 'none';
+    });
+  </script>
+</body>
+</html>
