@@ -48,6 +48,8 @@ Torneo para presentaciones de Ciencia Helenística:
 https://vertice1971.github.io/Historia_de_la_Filosofia/Torneo%20Ciencia%20Helen%C3%ADstica.html
 
 PAU
+https://vertice1971.github.io/Historia_de_la_Filosofia/Descartes-PAU.html
+
 https://vertice1971.github.io/Historia_de_la_Filosofia/Locke-PAU.html
 
 https://vertice1971.github.io/Historia_de_la_Filosofia/Nietzsche-PAU.html
