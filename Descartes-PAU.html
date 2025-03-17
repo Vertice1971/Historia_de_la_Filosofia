@@ -508,7 +508,7 @@
         alert('Número no válido. Se jugarán todas las preguntas.');
         numPreguntas = preguntas.length;
       }
-      preguntasElegidas = preguntas.sort(() => 0.5 - Math.random()).slice(0, numPreguntas);
+      preguntasElegidas = shuffle([...preguntas]).slice(0, numPreguntas);
       preguntaActual = 0;
       correctas = 0;
       startButton.style.display = 'none';
