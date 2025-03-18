@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- tomcue@iesjuandelacierva.com -->
+  <title>Textos de Kant para la PAU. Andalucía 2025</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      text-align: center;
+      background-color: #f5f8ff; /* Fondo azul pastel */
+    }
+    .question-container {
+      display: none;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      max-width: 600px;
+      margin: 20px auto;
+      background: #ffffff;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .option {
+      display: block;
+      padding: 10px;
+      margin: 10px 0;
+      border: 2px solid #ddd;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+    .option:hover {
+      background: #e0ebff;
+      transform: scale(1.05);
+    }
+    .correct {
+      background: #c8e6c9;
+      border-color: green;
+    }
+    .incorrect {
+      background: #ffcdd2;
+      border-color: red;
+    }
+    #start-btn, #restart-btn {
+      display: none;
+      margin-top: 20px;
+      padding: 10px;
+      background: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    #restart-btn {
+      background: #28a745;
+    }
+    /* Posiciona el botón "Siguiente" fijo a la derecha, en zona media/alta */
+    #next-btn {
+      position: fixed;
+      right: 20px;
+      top: 30%;
+      padding: 10px;
+      background: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      display: none;
+    }
+    #info-container {
+      margin-top: 20px;
+      font-size: 1.2em;
+    }
+  </style>
+</head>
+<body>
+  <h1>Comprensión lectora: textos de Kant para la PAU. Andalucía 2025</h1>
+  <h2 style="font-size: 0.6em; color: #555;">Tomás Cuesta. IES Juan de la Cierva</h2>
+  <div id="info-container"></div>
+  <button id="start-btn">Comenzar Quiz</button>
+  <div id="quiz-container" class="question-container"></div>
+  <button id="next-btn">Siguiente</button>
+  <button id="restart-btn">Reiniciar</button>
+  
+  <script>
+    // Función para barajar un array usando el algoritmo de Fisher–Yates
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    // JSON con todas las 46 preguntas sobre Kant
+    const data = {
+      "preguntas": [
+        {
+          "texto": "Entendimiento, ingenio, Juicio, y como quiera que se llamen por lo demás los talentos del espíritu, o el coraje, la resolución, la perseverancia en lo que uno se propone, como propiedades del temperamento, son sin duda buenos y deseables en muchos respectos; pero también pueden llegar a ser extremadamente malos.",
+          "opciones": {
+            "a": "La inteligencia, la valentía y la perseverancia son cualidades siempre buenas, ya que nos ayudan a alcanzar nuestros objetivos sin importar el contexto.",
+            "b": "Cualidades como la inteligencia o el coraje pueden ser útiles y deseables, pero si no están guiadas por una buena voluntad, pueden ser moralmente malas y perjudiciales.",
+            "c": "Para Kant, la razón es la herramienta fundamental que nos guía en nuestras acciones, pues sin ella no podríamos distinguir entre lo bueno y lo malo."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "El poder, la riqueza, la honra, incluso la salud, así como todo el bienestar y el contento con el propio estado, que reciben el nombre de felicidad, infunden coraje y por ello a menudo también arrogancia cuando en ellos no hay una voluntad que corrija y haga universalmente conformes a fin su influjo sobre el ánimo y con ello también todo el principio del obrar.",
+          "opciones": {
+            "a": "La felicidad, entendida como bienestar y éxito, es siempre una fuente de virtudes como el coraje y la confianza, sin que ello implique riesgos morales.",
+            "b": "La felicidad, cuando no está guiada por una buena voluntad, puede generar arrogancia y distorsionar la forma en que una persona actúa y se relaciona con los demás.",
+            "c": "Según Kant, la felicidad es el fin último de la razón, y todas nuestras acciones deben orientarse a alcanzarla mediante el uso de nuestras facultades racionales."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Un espectador racional e imparcial jamás podrá complacerse siquiera a la vista de la prosperidad ininterrumpida de un ser que no detente ningún rasgo de una voluntad pura y buena.",
+          "opciones": {
+            "a": "La felicidad y el éxito de una persona siempre son admirables, independientemente de su moralidad, ya que reflejan su capacidad para alcanzar sus objetivos.",
+            "b": "Para alguien que juzgue racionalmente, no es satisfactorio ver a una persona prosperar si carece de una voluntad moralmente buena, pues el verdadero valor no está en la prosperidad sino en la virtud.",
+            "c": "En la ética kantiana, la razón permite al ser humano comprender la diferencia entre el deber y el interés, asegurando que sus actos sean siempre racionalmente correctos."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "La moderación en los afectos y las pasiones, el dominio de sí mismo y la reflexión serena no solo son buenos para muchos propósitos, sino que parecen constituir incluso una parte del valor intrínseco de la persona; sin embargo, estas cualidades distan aún de ser declaradas buenas sin restricción (por más incondicionadamente que las hayan ensalzado los antiguos).",
+          "opciones": {
+            "a": "Cualidades como la moderación y el autocontrol son siempre buenas en cualquier circunstancia, ya que permiten a la persona actuar con prudencia y sensatez.",
+            "b": "Aunque la moderación, el autocontrol y la reflexión pueden ser valiosas, no son absolutamente buenas, ya que pueden usarse con malas intenciones si no están guiadas por una buena voluntad.",
+            "c": "Para Kant, la felicidad es un estado que se alcanza mediante el autocontrol y la moderación, elementos fundamentales para vivir conforme a la razón."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "La buena voluntad no es buena por lo que efectúe o consiga, ni por su aptitud para alcanzar algún fin propuesto, sino solo por el querer.",
+          "opciones": {
+            "a": "La buena voluntad es valiosa porque produce buenos resultados y ayuda a alcanzar fines positivos en la sociedad.",
+            "b": "La buena voluntad no se valora por sus efectos o su eficacia para lograr ciertos fines, sino por el hecho mismo de querer hacer el bien.",
+            "c": "Según Kant, el valor moral de una acción se mide en función de sus consecuencias, ya que una buena intención no es suficiente si el resultado no es beneficioso."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Considerada en sí misma, ha de ser estimada incomparablemente mucho más que todo lo que pudiera llevarse a cabo en favor de algún deseo e incluso, si se quiere, de la suma de todos los deseos.",
+          "opciones": {
+            "a": "La buena voluntad es valiosa, pero debe equilibrarse con los deseos naturales del ser humano para lograr una vida plena y satisfactoria.",
+            "b": "La buena voluntad tiene un valor absoluto y superior a cualquier acción motivada por intereses o deseos, incluso si estos fueran universales.",
+            "c": "Según Kant, la razón y los deseos deben complementarse para alcanzar la felicidad, ya que esta es el fin último de la vida moral."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Aun cuando a esta voluntad le faltase por completo la facultad de imponer su propósito, por un particular disfavor del destino o una parca dote por parte de una naturaleza madrastra.",
+          "opciones": {
+            "a": "La voluntad solo tiene valor moral si logra imponerse y producir efectos positivos en el mundo, ya que su bondad se mide por sus resultados.",
+            "b": "La buena voluntad sigue siendo valiosa en sí misma, incluso si no logra imponerse o alcanzar sus objetivos debido al destino o a limitaciones naturales que le dificultan actuar.",
+            "c": "Según Kant, el destino y las condiciones naturales determinan la moralidad de una persona, ya que estos factores influyen en su capacidad para actuar bien."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "En esta idea del valor absoluto de la mera voluntad, sin que en su estimación se tenga en cuenta ninguna utilidad, hay algo tan extraño que –a pesar de que se esté tan de acuerdo con ella, incluso por parte de la razón común– tiene que surgir la sospecha de que esta idea se funda secretamente solo en fantasías entusiastas.",
+          "opciones": {
+            "a": "La idea de que la voluntad tenga valor sin depender de su utilidad es aceptada sin cuestionamiento, ya que no genera dudas ni aparenta ser problemática.",
+            "b": "La noción de que la buena voluntad tiene un valor absoluto, sin basarse en su utilidad, puede parecer poco realista o difícil de justificar, aunque la razón común tienda a aceptarla.",
+            "c": "Para Kant, la razón humana es siempre práctica y útil, ya que su función es ayudarnos a actuar eficazmente en el mundo."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "En las disposiciones naturales de un ser organizado, es decir, ordenado con arreglo a fines para la vida, asumimos como principio que no hallaremos en él ninguna herramienta para algún fin que no sea también la más conveniente y máximamente adecuada para este.",
+          "opciones": {
+            "a": "La naturaleza dota a los seres organizados de múltiples herramientas sin un propósito definido, lo que implica que sus capacidades pueden usarse de cualquier manera.",
+            "b": "En los seres organizados, la naturaleza no proporciona herramientas inadecuadas para sus fines, sino que cada facultad tiene un propósito que encaja con su función.",
+            "c": "Según Kant, la razón es la mejor herramienta para garantizar la felicidad humana, ya que su propósito es ayudarnos a alcanzar el bienestar y la satisfacción personal."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Ella no habría acertado en nada en sus arreglos para ello cuando eligió a la razón de la criatura como ejecutora de su propósito. Pues todas las acciones que esta criatura haya de poner en ejercicio con ese propósito, y la regla toda de su conducta, hubieran podido serle trazadas con mucha más precisión por instinto.",
+          "opciones": {
+            "a": "La razón es la facultad más eficaz para guiar la conducta del ser humano y garantizar su bienestar, ya que le permite tomar siempre las mejores decisiones.",
+            "b": "Si el propósito de la naturaleza fuera simplemente garantizar la felicidad del ser humano, habría sido más eficaz dotarlo de instintos en lugar de razón, ya que estos serían una guía más segura.",
+            "c": "Kant defiende que la moralidad debe estar basada en la razón, ya que sin ella no podríamos diferenciar entre el bien y el mal."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Y si por añadidura le hubiese sido otorgada la razón a tan aventajada criatura, solo le habría servido para plantear consideraciones acerca de la afortunada disposición de su naturaleza.",
+          "opciones": {
+            "a": "Si el ser humano tuviera razón además de instintos, su función principal sería la de mejorar su capacidad para alcanzar la felicidad con mayor eficacia.",
+            "b": "Si la naturaleza hubiera diseñado al ser humano para alcanzar la felicidad, estaría guiado por instintos, y la razón solo le serviría para reflexionar sobre lo bien adaptado que está a su entorno, sin intervenir en su conducta.",
+            "c": "Kant sostiene que la razón es el único medio por el cual el ser humano puede conocer el mundo y actuar correctamente, ya que sin ella estaría completamente desorientado."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "En resumen: la naturaleza habría tenido la precaución de que la razón no se hubiera desviado al uso práctico ni se hubiera atrevido a idear ella misma, con sus débiles intelecciones, el bosquejo de la felicidad.",
+          "opciones": {
+            "a": "La razón es la mejor herramienta para diseñar un plan de felicidad, ya que permite al ser humano calcular y alcanzar el bienestar de forma efectiva.",
+            "b": "Si nuestro fin fuera la felicidad, la naturaleza no habría dejado que la razón se dedique a ayudar a tomar decisiones prácticas como la moralidad y tampoco a que intente definir qué es la felicidad.",
+            "c": "Para Kant, la razón es el fundamento de la moralidad, y su principal tarea es establecer los principios universales que guían la conducta humana."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Cuanto más se emplea una razón cultivada con el propósito de gozar de la vida y de la felicidad, tanto más se aleja el ser humano del verdadero contento.",
+          "opciones": {
+            "a": "La razón es el mejor medio para alcanzar la felicidad, ya que nos permite planificar nuestra vida de forma eficiente y evitar el sufrimiento.",
+            "b": "Cuanto más se usa la razón para buscar la felicidad, más difícil se vuelve alcanzarla, porque la razón multiplica deseos, preocupaciones y dudas en lugar de proporcionar contento.",
+            "c": "Según Kant, la razón nos permite distinguir entre lo bueno y lo malo, asegurando que nuestras acciones sean siempre correctas."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Acaban envidiando más que menospreciando la casta común de la gente, más cercana a la guía del mero instinto natural y que no concede a su razón mucho influjo en lo que hacen o dejan de hacer.",
+          "opciones": {
+            "a": "La gente que usa la razón para buscar la felicidad termina comprendiendo que han hecho lo correcto, ya que el pensamiento racional es el mejor camino hacia una vida plena.",
+            "b": "Quienes han usado demasiado la razón para buscar la felicidad terminan envidiando a quienes viven de manera más instintiva y sin tantas reflexiones, porque parecen tener una vida más sencilla y contenta.",
+            "c": "Kant sostiene que la diferencia entre los seres humanos y los animales es el uso de la razón, que nos permite alejarnos de la dependencia de los instintos y actuar con autonomía."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "No es un juicio amargo u hostil con respecto a la bondad en el gobierno del mundo el de quienes moderan mucho y hasta reducen por debajo de cero los ufanos elogios al provecho que se supone que nos proporciona la razón en lo que respecta a la felicidad y el contento en la vida.",
+          "opciones": {
+            "a": "Cuestionar la utilidad de la razón para alcanzar la felicidad es una crítica injusta al orden del mundo, ya que la razón nos ha sido dada precisamente para guiarnos hacia una vida plena.",
+            "b": "No es irracional ni pesimista pensar que la razón no nos conduce a la felicidad, porque en realidad la razón sirve para otra cosa distinta y superior.",
+            "c": "Para Kant, la felicidad y la razón están intrínsecamente ligadas, ya que la razón nos permite identificar los mejores medios para alcanzarla y vivir en armonía con el mundo."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Un propósito diferente y mucho más digno de su existencia, al que la razón está llamada mucho más propiamente que a la felicidad.",
+          "opciones": {
+            "a": "La razón tiene como principal función ayudar al ser humano a alcanzar la felicidad, ya que es el fin último de su existencia.",
+            "b": "La razón no está destinada a buscar la felicidad, sino a un propósito superior y más digno, que Kant dirá que es el cumplimiento del deber moral.",
+            "c": "Para Kant, el conocimiento racional nos permite entender mejor el mundo y adaptarnos a él, garantizando así una vida más plena y satisfactoria."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "La razón no es lo suficientemente apta para guiar con seguridad a la voluntad en lo que respecta a los objetos de esta última y a la satisfacción de todas nuestras necesidades.",
+          "opciones": {
+            "a": "La razón es el mejor instrumento para satisfacer nuestras necesidades, ya que nos permite tomar decisiones calculadas y eficientes.",
+            "b": "La razón no es un medio seguro para orientar la voluntad en la búsqueda de necesidades y deseos.",
+            "c": "Según Kant, la razón tiene la capacidad de establecer principios morales universales, lo que le permite guiar a la voluntad con absoluta certeza."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "La verdadera vocación de la razón tiene que ser el producir una voluntad buena, pero no a propósito de algo otro, como medio, sino una voluntad buena en sí misma.",
+          "opciones": {
+            "a": "La razón tiene como propósito principal lograr objetivos concretos y beneficiosos para el ser humano, sirviendo como un medio para alcanzar fines deseables.",
+            "b": "La razón no está destinada a buscar resultados externos, sino a formar una voluntad buena en sí misma, sin depender de un propósito ajeno a ella.",
+            "c": "Según Kant, la voluntad debe guiarse por el cálculo racional de los efectos de sus acciones, asegurando así los mejores resultados posibles."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Si se percibe que cultivar la razón –que es un requisito para el primer e incondicionado propósito– puede restringir de muchas maneras, al menos en esta vida, la consecución del segundo propósito, que siempre es condicionado, a saber, la felicidad.",
+          "opciones": {
+            "a": "Cultivar la razón facilita la felicidad, ya que nos permite tomar mejores decisiones y alcanzar nuestros objetivos de manera más efectiva.",
+            "b": "Desarrollar la razón es esencial para llegar a la buena voluntad en sí misma, categórica. Pero puede dificultar la felicidad, ya que esta es hipotética, dependiente de condiciones externas.",
+            "c": "Según Kant, la razón es el mejor medio para alcanzar la felicidad, ya que nos ayuda a maximizar el bienestar individual y colectivo."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Contento según su propia especie, a saber, uno debido al cumplimiento de un fin que a su vez solo se determina por la razón, por más que esto haya de llevar aparejado un quebranto de los fines de la inclinación.",
+          "opciones": {
+            "a": "La satisfacción humana depende principalmente del cumplimiento de deseos y necesidades, ya que estos son los que verdaderamente proporcionan bienestar.",
+            "b": "Existe un tipo de contento propio de la razón, que surge del cumplimiento del deber moral, aunque esto implique renunciar a los deseos o incluso ir en contra de ellos.",
+            "c": "Según Kant, la felicidad es el resultado natural de actuar conforme a la razón, ya que esta permite alcanzar los fines que más benefician al individuo."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Una voluntad que es en sí altamente estimable y buena sin ningún propósito ulterior, tal como ella cohabita ya en el sano entendimiento natural, y el cual no necesita tanto que se lo enseñe, sino más bien que se lo aclare.",
+          "opciones": {
+            "a": "La voluntad solo es buena si está dirigida hacia la consecución de ciertos fines beneficiosos, ya que sin un propósito concreto carecería de valor.",
+            "b": "La buena voluntad es valiosa en sí misma y la razón humana siempre la reconoce, aunque necesite ser aclarada.",
+            "c": "Para Kant, la moralidad debe ser enseñada a cada persona desde cero, ya que no existe en la razón sin una educación previa."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Paso por alto aquí todas las acciones que ya son reconocidas como contrarias al deber, por más que puedan ser útiles para algún propósito u otro.",
+          "opciones": {
+            "a": "Las acciones que son útiles para un propósito pueden considerarse morales si benefician a muchas personas.",
+            "b": "Kant está investigando qué es el deber y evidentemente estas no sirven para saberlo.",
+            "c": "Para Kant, la moralidad se basa en la felicidad, por lo que una acción debe considerarse buena si produce bienestar general."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Mucho más difícil es notar esta diferencia cuando la acción es conforme al deber y el sujeto tiene además una inclinación inmediata hacia ella.",
+          "opciones": {
+            "a": "Si una acción se realiza porque nos gusta hacerla, tiene un mayor valor moral que si se hace solo por deber.",
+            "b": "Cuando una acción concuerda con el deber y al mismo tiempo nos resulta agradable, es difícil saber si realmente se ha hecho por deber o por gusto.",
+            "c": "La inclinación personal es el criterio principal para determinar si una acción es moralmente correcta, ya que refleja la voluntad auténtica del sujeto."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Asegurarse la propia felicidad es un deber (al menos indirecto), pues la falta de contento con el propio estado podría convertirse fácilmente en una gran tentación de infringir los deberes.",
+          "opciones": {
+            "a": "La felicidad es el único deber moral, ya que sin ella no se pueden cumplir correctamente los demás principios éticos.",
+            "b": "La felicidad es un deber indirecto porque su ausencia puede llevarnos a violar otros deberes morales, pero no es un fin absoluto en sí misma.",
+            "c": "Para Kant, el ser humano debe perseguir la felicidad como su principal objetivo, ya que sin felicidad no hay moralidad."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Dejo de lado las acciones que son efectivamente conformes al deber, pero hacia las cuales los seres humanos no tienen inmediatamente inclinación, aunque las lleven a cabo por ser impelidos a ello a través de una inclinación diferente.",
+          "opciones": {
+            "a": "Cualquier acción que sea conforme al deber tiene valor moral, independientemente de la razón por la que se realice.",
+            "b": "Si alguien actúa conforme al deber, pero movido por otra inclinación ajena al deber mismo, su acción no tiene valor moral.",
+            "c": "Para Kant, lo importante no es la motivación de una acción, sino que esta sea beneficiosa para la sociedad."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Una única inclinación, determinada en lo que respecta a lo que promete y al tiempo en el que puede obtenerse su satisfacción, puede primar sobre una idea vacilante.",
+          "opciones": {
+            "a": "A veces, un deseo inmediato y concreto puede dominar sobre la idea abstracta y difusa de la felicidad total.",
+            "b": "La felicidad es siempre el factor decisivo en la toma de decisiones, ya que es el bien supremo que guía todas las acciones humanas.",
+            "c": "Según Kant, las decisiones correctas se toman en función de lo que nos produce placer en el momento, sin considerar principios racionales."
+          },
+          "respuesta": "a"
+        },
+        {
+          "texto": "Si la inclinación universal a la felicidad no determinase su voluntad, si la salud, al menos para él, no entrase en este cálculo tan necesariamente, entonces aquí, como en todos los demás casos, queda aún una ley, a saber: la de promover su felicidad, no por inclinación, sino por deber, y solo entonces tiene su conducta un verdadero valor moral.",
+          "opciones": {
+            "a": "La felicidad debe buscarse solo cuando nos apetezca, ya que no tiene relación con la moralidad.",
+            "b": "La felicidad solo tiene valor moral cuando se busca desde el deber, no porque la persona la desee o la considere un beneficio personal.",
+            "c": "Kant sostiene que cualquier búsqueda de la felicidad es moralmente válida, independientemente de la razón que la motive."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Esto no es ni de lejos suficiente para creer que el vendedor ha procedido de esta manera por deber y por principios de la honradez: su provecho lo requería.",
+          "opciones": {
+            "a": "Siempre que una acción sea correcta y beneficiosa para los demás, debe considerarse moral, sin importar las razones que llevaron a hacerla.",
+            "b": "El hecho de que un comerciante actúe honradamente no significa que lo haga por deber, pues podría hacerlo simplemente porque le conviene, ya que así asegura una clientela fija.",
+            "c": "Para Kant, toda acción conforme al deber tiene valor moral, incluso si se realiza por interés propio, ya que lo importante es su efecto positivo."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Pues el amor no puede mandarse como una inclinación, pero hacer el bien por el deber mismo –aun cuando no haya en absoluto una inclinación que nos impele a ello, e incluso si se le opone una natural e invencible aversión– es un amor práctico y no patológico.",
+          "opciones": {
+            "a": "El amor siempre es una emoción espontánea, por lo que solo puede existir si surge naturalmente y no cuando se impone por deber.",
+            "b": "No se puede ordenar amar, pero se puede ordenar, racionalmente, a la voluntad, tratar a los demás con amor.",
+            "c": "Kant sostiene que el amor solo es válido cuando nace de la inclinación natural del ser humano y no cuando se actúa en contra de los propios sentimientos."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Una acción por deber tiene su valor no en el propósito que haya de cumplirse a través de ella, sino en la máxima de acuerdo con la que se decide.",
+          "opciones": {
+            "a": "Lo que determina el valor moral de una acción es la finalidad que persigue, ya que los resultados positivos hacen que la acción sea moralmente buena.",
+            "b": "El valor moral de una acción no depende de sus efectos, sino de la máxima con la que se realiza, ya que la moralidad se basa en principios universales y no en consecuencias.",
+            "c": "Según Kant, la moralidad surge de la utilidad de una acción, ya que una decisión es ética si logra el mayor beneficio para el mayor número de personas."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Queda claro por lo anterior que los propósitos que podamos tener con las acciones, y sus efectos, como fines y motores de la voluntad, no pueden conferir ningún valor moral e incondicionado a las acciones.",
+          "opciones": {
+            "a": "La moralidad de una acción se mide por sus efectos, ya que los resultados determinan si una decisión ha sido buena o mala.",
+            "b": "Para Kant, la moralidad no puede depender de fines o consecuencias, sino que debe ser incondicionada, es decir, basada en el deber y no en resultados.",
+            "c": "Las acciones son moralmente correctas si generan felicidad y bienestar, ya que el propósito de la ética es maximizar el placer humano."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Por lo tanto, ¿dónde ha de residir este valor, si no ha de consistir en la voluntad por su referencia al efecto que se espera de tal acción?",
+          "opciones": {
+            "a": "La moralidad de una acción depende de su utilidad, ya que un acto es bueno si logra resultados beneficiosos.",
+            "b": "El valor de la acción no dependerá del objetivo sino de la intención o voluntad pura que considera que hacer eso es hacer lo correcto sin que importe el resultado.",
+            "c": "Para Kant, la razón nos permite calcular qué acciones tienen mejores consecuencias y, por tanto, son moralmente correctas."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "El deber es la necesidad de una acción por respeto por la ley. Por el objeto, como efecto de la acción que tengo intención de llevar a cabo, bien puedo tener inclinación, pero nunca respeto, justamente porque es meramente un efecto, y no la actividad de una voluntad.",
+          "opciones": {
+            "a": "El respeto surge de los resultados de nuestras acciones, ya que estos reflejan si hemos actuado correctamente o no.",
+            "b": "La voluntad racional reconoce la ley moral y considera que es necesario entonces cumplirla: eso es el deber. Puede ser que tenga interés o afecto por el resultado que se consigue al cumplir el deber, pero lo necesario es la ley moral y esa es la razón por la que actúa.",
+            "c": "Para Kant, una acción es valiosa si genera respeto en los demás, ya que la moralidad se mide en función del impacto social positivo."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Solo puede ser un objeto de respeto y por lo tanto un mandato aquello que se encuentra en conexión con mi voluntad únicamente como fundamento, pero nunca como efecto.",
+          "opciones": {
+            "a": "Respetamos una acción por sus consecuencias, ya que los efectos son los que determinan su valor moral.",
+            "b": "La voluntad solo asume como absoluto aquello que reconoce como principio racional, es decir, lo que fundamenta moralmente la acción, y no lo que esta produce como resultado.",
+            "c": "Según Kant, el respeto depende de los deseos personales, ya que cada individuo decide qué principios quiere seguir."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Una acción por deber ha de dejar de lado completamente el influjo de la inclinación y con esta todo objeto de la voluntad; por lo tanto, a la voluntad no le queda nada que pueda determinarla más que, objetivamente, la ley y, subjetivamente, el puro respeto por esta ley práctica.",
+          "opciones": {
+            "a": "La voluntad debe actuar conforme a lo que siente, ya que las inclinaciones son parte esencial de la moralidad.",
+            "b": "La voluntad moralmente correcta actúa sin depender de deseos ni intereses personales, sino solo por respeto a la ley moral.",
+            "c": "Para Kant, la moralidad depende de los sentimientos, ya que sin inclinación no hay auténtica motivación para actuar."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Pues todos estos efectos (el agrado del propio estado, y hasta la promoción de la felicidad ajena) también podrían haberse realizado por otras causas, por lo que para ello no se requeriría la voluntad de un ser racional.",
+          "opciones": {
+            "a": "La felicidad propia y la de los demás dependen exclusivamente de la voluntad racional, ya que sin ella no podrían alcanzarse.",
+            "b": "Todas las consecuencias positivas que pueden estar causadas por la acción correcta, podrían estar causadas por esa acción u otra sin que la motivación hubiera sido 'hacer lo racionalmente correcto'.",
+            "c": "Para Kant, solo los seres racionales pueden generar felicidad, ya que la razón es el único camino para lograr un bienestar verdadero."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Jamás debo proceder más que de tal modo que también pueda querer que mi máxima deba convertirse en una ley universal.",
+          "opciones": {
+            "a": "Una acción es correcta si puede generalizarse como norma universal, independientemente de los intereses personales.",
+            "b": "La moralidad es subjetiva y depende de cada individuo, por lo que cada persona debe decidir sus propias normas.",
+            "c": "Kant sostiene que la moral se basa en la utilidad, por lo que las acciones deben evaluarse en función de su conveniencia."
+          },
+          "respuesta": "a"
+        },
+        {
+          "texto": "Nada más que la representación de la ley en sí misma –que por supuesto solo tiene lugar en el ser racional.",
+          "opciones": {
+            "a": "La ley moral puede ser comprendida y seguida por cualquier ser vivo, ya que es un principio universal de la naturaleza.",
+            "b": "Lo único verdaderamente bueno es la fusión inmediata con la ley moral y eso solo puede hacerlo nuestra capacidad racional.",
+            "c": "Para Kant, la moralidad no está relacionada con la razón, sino con la experiencia y el contexto cultural de cada sociedad."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Bien moral, el cual está presente ya en la persona misma que obra de acuerdo con la representación de la ley, pero que no puede esperarse en primer lugar del efecto.",
+          "opciones": {
+            "a": "La moralidad de una acción se juzga por sus consecuencias, ya que el bien moral solo se hace evidente a través de sus efectos en el mundo.",
+            "b": "El bien moral consiste en asumir la integración absoluta del mandato de la razón práctica en nuestra toma de decisiones en lugar del cálculo de las consecuencias.",
+            "c": "Para Kant, la moralidad surge de los sentimientos y del impacto emocional que las acciones generan en quienes las realizan y en los demás."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Como he despojado a la voluntad de todos los impulsos que podrían surgirle a ella por seguir alguna ley, no queda más que la universal conformidad como tal de las acciones a la ley.",
+          "opciones": {
+            "a": "Si eliminamos cualquier motivación externa, la voluntad queda vacía y sin ninguna guía para actuar.",
+            "b": "Al quitar del cálculo de 'qué hacer' las consecuencias de la ley, solo queda que hay que actuar aceptando la ley en sí misma.",
+            "c": "La moralidad depende de la utilidad de las acciones, ya que sin un objetivo concreto no tendría sentido hablar de principios universales."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Jamás debo proceder más que de tal modo que también pueda querer que mi máxima deba convertirse en una ley universal.",
+          "opciones": {
+            "a": "La moralidad de una acción depende de si sus efectos son positivos y beneficiosos para la mayoría de las personas.",
+            "b": "La única conducta moral es aquella que sigue principios que podrían ser un principio válido para todos sin contradicción.",
+            "c": "Para Kant, cada persona debe seguir sus propias reglas morales, sin necesidad de pensar en si podrían aplicarse a los demás."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "La mera conformidad a ley (sin que se funde en ninguna ley que se vea determinada en aras de ciertas acciones).",
+          "opciones": {
+            "a": "Seguir la ley moral significa obedecer normas específicas según el contexto y las acciones concretas que realizamos.",
+            "b": "Las reglas morales válidas no se basan en qué acciones consiguen ciertos resultados sino en aceptar los deberes correctos por sí mismos.",
+            "c": "Para Kant, la moralidad exige seguir leyes impuestas por la sociedad, ya que estas determinan qué acciones son correctas en cada situación."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Con ello también concuerda perfectamente la razón humana común en su enjuiciamiento práctico, la cual siempre tiene a la vista dicho principio.",
+          "opciones": {
+            "a": "La moralidad es un concepto filosófico complejo que solo puede ser comprendido por quienes estudian ética y filosofía.",
+            "b": "La razón humana, incluso en su uso común, reconoce de forma natural que los principios morales deben ser universales y no depender de circunstancias individuales.",
+            "c": "Para Kant, la moralidad es relativa, y cada sociedad establece sus propios principios según sus valores y tradiciones."
+          },
+          "respuesta": "b"
+        }
+      ]
+    };
+
+    let preguntas = data.preguntas;
+    let preguntasElegidas = [];
+    let preguntaActual = 0;
+    let correctas = 0;
+
+    const quizContainer = document.getElementById('quiz-container');
+    const nextButton = document.getElementById('next-btn');
+    const restartButton = document.getElementById('restart-btn');
+    const startButton = document.getElementById('start-btn');
+    const infoContainer = document.getElementById('info-container');
+
+    // Mostrar información inicial y habilitar el botón de inicio
+    infoContainer.innerHTML = `<p>El test contiene <strong>${preguntas.length}</strong> preguntas. Podrás elegir cuántas usar.</p>`;
+    startButton.style.display = 'block';
+
+    startButton.addEventListener('click', function() {
+      let numPreguntas = prompt(`El test tiene ${preguntas.length} preguntas. ¿Cuántas deseas jugar?`, preguntas.length);
+      numPreguntas = parseInt(numPreguntas);
+      if (isNaN(numPreguntas) || numPreguntas < 1 || numPreguntas > preguntas.length) {
+        alert('Número no válido. Se jugarán todas las preguntas.');
+        numPreguntas = preguntas.length;
+      }
+      // Seleccionar preguntas aleatorias
+      preguntasElegidas = shuffle([...preguntas]).slice(0, numPreguntas);
+      preguntaActual = 0;
+      correctas = 0;
+      startButton.style.display = 'none';
+      infoContainer.innerHTML = '';
+      mostrarPregunta();
+    });
+
+    function mostrarPregunta() {
+      if (preguntaActual < preguntasElegidas.length) {
+        quizContainer.innerHTML = '';
+        quizContainer.style.display = 'block';
+        nextButton.style.display = 'none';
+
+        let pregunta = preguntasElegidas[preguntaActual];
+        let preguntaTitulo = document.createElement('h2');
+        preguntaTitulo.textContent = pregunta.texto;
+        quizContainer.appendChild(preguntaTitulo);
+
+        // Convertir las opciones en un array de objetos y mezclarlas con Fisher–Yates
+        let opcionesArray = Object.entries(pregunta.opciones)
+          .map(([key, texto]) => ({ key, texto }));
+        opcionesArray = shuffle(opcionesArray);
+
+        opcionesArray.forEach(opcionObj => {
+          let opcion = document.createElement('div');
+          opcion.classList.add('option');
+          opcion.textContent = opcionObj.texto;
+          opcion.dataset.valor = opcionObj.key;
+          opcion.addEventListener('click', function() {
+            validarRespuesta(this, pregunta.respuesta);
+          });
+          quizContainer.appendChild(opcion);
+        });
+      } else {
+        quizContainer.innerHTML = `<h2>¡Test finalizado!</h2><p>Has acertado ${correctas} de ${preguntasElegidas.length} preguntas.</p>`;
+        nextButton.style.display = 'none';
+        restartButton.style.display = 'block';
+      }
+    }
+
+    function validarRespuesta(elemento, respuestaCorrecta) {
+      let opciones = document.querySelectorAll('.option');
+      opciones.forEach(op => op.style.pointerEvents = 'none');
+
+      if (elemento.dataset.valor === respuestaCorrecta) {
+        elemento.classList.add('correct');
+        correctas++;
+      } else {
+        elemento.classList.add('incorrect');
+        let correcta = document.querySelector(`.option[data-valor='${respuestaCorrecta}']`);
+        if (correcta) correcta.classList.add('correct');
+      }
+      nextButton.style.display = 'block';
+    }
+
+    nextButton.addEventListener('click', function() {
+      preguntaActual++;
+      mostrarPregunta();
+    });
+
+    restartButton.addEventListener('click', function() {
+      this.style.display = 'none';
+      startButton.style.display = 'none';
+      preguntaActual = 0;
+      correctas = 0;
+      infoContainer.innerHTML = `<p>El test contiene <strong>${preguntas.length}</strong> preguntas.</p>`;
+      startButton.style.display = 'block';
+      quizContainer.innerHTML = '';
+      quizContainer.style.display = 'none';
+    });
+  </script>
+</body>
+</html>
