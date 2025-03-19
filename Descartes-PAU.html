@@ -68,6 +68,15 @@
       border-radius: 5px;
       display: none;
     }
+    /* Estilos para el contador de preguntas */
+    #question-counter {
+      position: fixed;
+      right: 20px;
+      top: 37%;
+      font-size: 1.2em;
+      font-weight: bold;
+      color: #333;
+    }
     #info-container {
       margin-top: 20px;
       font-size: 1.2em;
@@ -82,6 +91,8 @@
   <button id="start-btn">Comenzar</button>
   <div id="quiz-container" class="question-container"></div>
   <button id="next-btn">Siguiente</button>
+  <!-- Contenedor para el contador de preguntas -->
+  <div id="question-counter"></div>
   <button id="restart-btn">Reiniciar</button>
   
   <script>
@@ -316,7 +327,7 @@
         {
           "texto": "Nada más comprender una cosa muy clara y distintamente, no puedo dejar de creerla verdadera, sin embargo, como también mi naturaleza me lleva a no poder fijar siempre mi espíritu en una misma cosa, y me acuerdo a menudo de haber creído verdadero algo cuando ya he cesado de considerar las razones que yo tenía para creerlo tal, puede suceder que en ese momento se me presenten otras razones que me harían cambiar fácilmente de opinión.",
           "opciones": {
-            "a": "Descartes sostiene que si algo parece claro y distinto en un momento dado, debe seguir siendo aceptado como verdadero sin necesidad de revisión posterior.",
+            "a": "Descartes sostiene que todo lo que antes consideraba verdadero debe ser falso porque ha cambiado de opinión en varias ocasiones.",
             "b": "Descartes explica que cuando comprende algo con claridad y distinción, lo acepta como verdadero, pero reconoce que su mente es limitada y puede olvidar las razones de esa certeza, lo que puede hacerle dudar más adelante.",
             "c": "Para Descartes, la duda metódica es el procedimiento que permite descartar todo aquello que no sea completamente indudable."
           },
@@ -352,7 +363,7 @@
         {
           "texto": "¿Se me dirá que, en otro tiempo, he considerado verdaderas muchas cosas que luego he reconocido ser falsas? Pero no había conocido clara y distintamente ninguna de ellas.",
           "opciones": {
-            "a": "Descartes admite que incluso las ideas claras y distintas pueden resultar falsas con el tiempo.",
+            "a": "Descartes sostiene que incluso las ideas claras y distintas pueden resultar falsas con el tiempo.",
             "b": "Descartes responde que nunca ha ocurrido que algo claro y distinto haya resultado ser falso; solo ha resultado ser falso el conocimiento que desde el principio no cumplía con la regla de la evidencia.",
             "c": "Descartes establece que la existencia de Dios es necesaria para garantizar la verdad del conocimiento claro y distinto."
           },
@@ -461,7 +472,7 @@
           "texto": "Si estando despierto se me apareciese alguien de súbito, y desapareciese de igual modo, como lo hacen las imágenes que veo en sueños, sin que yo pudiera saber de dónde venía ni adónde iba, no me faltaría razón para juzgarlo como un espectro o fantasma formado en mi cerebro, más bien que como un hombre.",
           "opciones": {
             "a": "La falta de coherencia en las experiencias que tenemos mientras estamos despiertos nos indica que algo es imaginario y no real, lo mismo que ocurre con los sueños.",
-            "b": "Los sueños son tan reales como las experiencias en la vigilia, por lo que no hay forma de diferenciarlos de manera segura si estamos despiertos o dormidos.",
+            "b": "Los sueños son tan reales como las experiencias en la vigilia, por lo que no hay forma de diferenciarlas de manera segura si estamos despiertos o dormidos.",
             "c": "Cuando estamos despiertos, nuestra mente puede crear ilusiones que parecen tan reales como las percepciones sensoriales, lo que hace difícil distinguir entre lo real y lo imaginario."
           },
           "respuesta": "a"
@@ -519,6 +530,8 @@
     function mostrarPregunta() {
       if (preguntaActual < preguntasElegidas.length) {
         quizContainer.innerHTML = '';
+        // Actualizar el contador de preguntas
+        document.getElementById('question-counter').textContent = `Pregunta ${preguntaActual + 1} de ${preguntasElegidas.length}`;
         quizContainer.style.display = 'block';
         nextButton.style.display = 'none';
 
@@ -575,6 +588,8 @@
       preguntaActual = 0;
       correctas = 0;
       infoContainer.innerHTML = `<p>El test contiene <strong>${preguntas.length}</strong> preguntas.</p>`;
+      // Limpiar el contador al reiniciar
+      document.getElementById('question-counter').textContent = '';
       startButton.style.display = 'block';
       quizContainer.innerHTML = '';
       quizContainer.style.display = 'none';

@@ -68,6 +68,15 @@
       border-radius: 5px;
       display: none;
     }
+    /* Estilos para el contador de preguntas */
+    #question-counter {
+      position: fixed;
+      right: 20px;
+      top: 37%;
+      font-size: 1.2em;
+      font-weight: bold;
+      color: #333;
+    }
     #info-container {
       margin-top: 20px;
       font-size: 1.2em;
@@ -83,6 +92,8 @@
   <button id="start-btn">Comenzar</button>
   <div id="quiz-container" class="question-container"></div>
   <button id="next-btn">Siguiente</button>
+  <!-- Contenedor para el contador de preguntas -->
+  <div id="question-counter"></div>
   <button id="restart-btn">Reiniciar</button>
   
   <script>
@@ -95,7 +106,7 @@
       return array;
     }
 
-    // JSON integrado con todas las preguntas
+    // JSON integrado con todas las preguntas de Locke
     const data = {
       "preguntas": [
         {
@@ -184,7 +195,7 @@
           "opciones": {
             "a": "Quienes violan la ley natural simplemente están ejerciendo su libertad, ya que en el estado de naturaleza no existen normas universales que regulen el comportamiento humano.",
             "b": "Al quebrantar la ley natural, un individuo demuestra que no sigue las normas racionales y justas establecidas para la convivencia, las cuales, según Locke, también tienen un fundamento divino en la seguridad mutua de los hombres.",
-            "c": "La razón enseña a los seres humanos que todos son iguales y que ninguno debe someterse a la voluntad de otro sin su consentimiento."
+            "c": "La razón enseña a los seres humanos que todos son iguales y que ninguno debe someter a otro sin su consentimiento."
           },
           "respuesta": "b"
         },
@@ -218,7 +229,7 @@
         {
           "texto": "En virtud de la ley fundamental de naturaleza, un hombre debe conservarse a sí mismo hasta donde le resulte posible; y si todos no pueden ser preservados, la salvación del inocente ha de tener preferencia.",
           "opciones": {
-            "a": "La ley natural impone que cada persona debe sacrificarse por los demás sin importar las circunstancias, ya que la prioridad siempre es la comunidad antes que el individuo.",
+            "a": "Locke sostiene que cada persona debe sacrificarse por los demás sin importar las circunstancias, ya que la prioridad siempre es la comunidad antes que el individuo.",
             "b": "La ley natural establece que cada individuo debe buscar su propia conservación en la medida de lo posible, pero si no todos pueden ser preservados, debe priorizarse la vida del inocente.",
             "c": "La igualdad entre los hombres es un principio fundamental de la ley natural, por lo que todos deben tener las mismas oportunidades de preservación sin excepción."
           },
@@ -229,7 +240,7 @@
           "opciones": {
             "a": "Someter a otro hombre bajo poder absoluto no es necesariamente un acto hostil, ya que puede hacerse con el fin de protegerlo y guiarlo hacia el bien común.",
             "b": "Intentar someter a otro ser humano bajo poder absoluto equivale a declarar una situación de guerra contra él, ya que esa intención demuestra que el opresor está dispuesto a atentar contra su vida y su libertad.",
-            "c": "Un gobierno legítimo debe garantizar la seguridad de los ciudadanos y evitar que el poder se concentre en una sola persona, asegurando así la protección de los derechos naturales."
+            "c": "Un gobierno legítimo debe garantizar que todos los ciudadanos tengan acceso equitativo a los bienes materiales, evitando que algunos se apropien de más recursos que otros."
           },
           "respuesta": "b"
         },
@@ -479,7 +490,7 @@
         {
           "texto": "Aquellos que por injusticia cometen alguna ofensa rara vez sucumbirán allí donde les es posible hacer que la justicia impere por la fuerza. Una resistencia así hace que el castigo resulte peligroso, y aun destructivo, para quienes lo intentan.",
           "opciones": {
-            "a": "En el estado de naturaleza, los infractores aceptan el castigo de manera voluntaria, ya que la razón los lleva a reconocer su culpa y someterse a la justicia.",
+            "a": "Locke sostiene que los infractores aceptan el castigo de manera voluntaria, ya que la razón los lleva a reconocer su culpa y someterse a la justicia.",
             "b": "Locke explica que los hombres abandonan el estado de naturaleza porque los infractores, si tienen la fuerza suficiente, se resisten a ser castigados, lo que hace que la justicia dependa de la violencia y el riesgo.",
             "c": "La mejor forma de evitar conflictos es establecer tribunales que dicten sentencias inapelables, asegurando que todos los ciudadanos acepten las decisiones sin resistencia."
           },
@@ -526,7 +537,6 @@
     const startButton = document.getElementById('start-btn');
     const infoContainer = document.getElementById('info-container');
 
-    // Mostrar información inicial y habilitar el botón de inicio
     infoContainer.innerHTML = `<p>El test contiene <strong>${preguntas.length}</strong> preguntas. Podrás elegir cuántas usar.</p>`;
     startButton.style.display = 'block';
 
@@ -549,6 +559,8 @@
     function mostrarPregunta() {
       if (preguntaActual < preguntasElegidas.length) {
         quizContainer.innerHTML = '';
+        // Actualizar el contador de preguntas
+        document.getElementById('question-counter').textContent = `Pregunta ${preguntaActual + 1} de ${preguntasElegidas.length}`;
         quizContainer.style.display = 'block';
         nextButton.style.display = 'none';
 
@@ -605,6 +617,8 @@
       preguntaActual = 0;
       correctas = 0;
       infoContainer.innerHTML = `<p>El test contiene <strong>${preguntas.length}</strong> preguntas.</p>`;
+      // Limpiar el contador al reiniciar
+      document.getElementById('question-counter').textContent = '';
       startButton.style.display = 'block';
       quizContainer.innerHTML = '';
       quizContainer.style.display = 'none';

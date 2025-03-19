@@ -69,6 +69,15 @@
       border-radius: 5px;
       display: none;
     }
+    /* Estilos para el contador de preguntas */
+    #question-counter {
+      position: fixed;
+      right: 20px;
+      top: 37%;
+      font-size: 1.2em;
+      font-weight: bold;
+      color: #333;
+    }
     #info-container {
       margin-top: 20px;
       font-size: 1.2em;
@@ -82,6 +91,7 @@
   <button id="start-btn">Comenzar</button>
   <div id="quiz-container" class="question-container"></div>
   <button id="next-btn">Siguiente</button>
+  <div id="question-counter"></div>
   <button id="restart-btn">Reiniciar</button>
   
   <script>
@@ -199,7 +209,7 @@
         {
           "texto": "En resumen: la naturaleza habría tenido la precaución de que la razón no se hubiera desviado al uso práctico ni se hubiera atrevido a idear ella misma, con sus débiles intelecciones, el bosquejo de la felicidad.",
           "opciones": {
-            "a": "La razón es la mejor herramienta para diseñar un plan de felicidad, ya que permite al ser humano calcular y alcanzar el bienestar de forma efectiva.",
+            "a": "La razón es el mejor instrumento para diseñar un plan de felicidad, ya que permite al ser humano calcular y alcanzar el bienestar de forma efectiva.",
             "b": "Si nuestro fin fuera la felicidad, la naturaleza no habría dejado que la razón se dedique a ayudar a tomar decisiones prácticas como la moralidad y tampoco a que intente definir qué es la felicidad.",
             "c": "Para Kant, la razón es el fundamento de la moralidad, y su principal tarea es establecer los principios universales que guían la conducta humana."
           },
@@ -424,9 +434,9 @@
         {
           "texto": "Jamás debo proceder más que de tal modo que también pueda querer que mi máxima deba convertirse en una ley universal.",
           "opciones": {
-            "a": "Una acción es correcta si puede generalizarse como norma universal, independientemente de los intereses personales.",
-            "b": "La moralidad es subjetiva y depende de cada individuo, por lo que cada persona debe decidir sus propias normas.",
-            "c": "Kant sostiene que la moral se basa en la utilidad, por lo que las acciones deben evaluarse en función de su conveniencia."
+            "a": "La moralidad de una acción depende de si sus efectos son positivos y beneficiosos para la mayoría de las personas.",
+            "b": "La única conducta moral es aquella que sigue principios que podrían ser un principio válido para todos sin contradicción.",
+            "c": "Para Kant, cada persona debe seguir sus propias reglas morales, sin necesidad de pensar en si podrían aplicarse a los demás."
           },
           "respuesta": "a"
         },
@@ -521,6 +531,8 @@
     function mostrarPregunta() {
       if (preguntaActual < preguntasElegidas.length) {
         quizContainer.innerHTML = '';
+        // Actualizar el contador de preguntas
+        document.getElementById('question-counter').textContent = `Pregunta ${preguntaActual + 1} de ${preguntasElegidas.length}`;
         quizContainer.style.display = 'block';
         nextButton.style.display = 'none';
 
@@ -577,6 +589,8 @@
       preguntaActual = 0;
       correctas = 0;
       infoContainer.innerHTML = `<p>El test contiene <strong>${preguntas.length}</strong> preguntas.</p>`;
+      // Limpiar el contador al reiniciar
+      document.getElementById('question-counter').textContent = '';
       startButton.style.display = 'block';
       quizContainer.innerHTML = '';
       quizContainer.style.display = 'none';

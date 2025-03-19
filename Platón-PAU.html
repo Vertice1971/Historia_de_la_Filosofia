@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- tomcue@iesjuandelacierva.com -->
+  <title>Textos de Platón para la PAU. Andalucía 2025</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      text-align: center;
+      background-color: #f5f8ff; /* Fondo azul pastel */
+    }
+    .question-container {
+      display: none;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      max-width: 600px;
+      margin: 20px auto;
+      background: #ffffff;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .option {
+      display: block;
+      padding: 10px;
+      margin: 10px 0;
+      border: 2px solid #ddd;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+    .option:hover {
+      background: #e0ebff;
+      transform: scale(1.05);
+    }
+    .correct {
+      background: #c8e6c9;
+      border-color: green;
+    }
+    .incorrect {
+      background: #ffcdd2;
+      border-color: red;
+    }
+    #start-btn, #restart-btn {
+      display: none;
+      margin-top: 20px;
+      padding: 10px;
+      background: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    #restart-btn {
+      background: #28a745;
+    }
+    /* Posiciona el botón "Siguiente" fijo a la derecha, en zona media/alta */
+    #next-btn {
+      position: fixed;
+      right: 20px;
+      top: 30%;
+      padding: 10px;
+      background: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      display: none;
+    }
+    #info-container {
+      margin-top: 20px;
+      font-size: 1.2em;
+    }
+    #question-counter {
+      position: fixed;
+      right: 20px;
+      top: 37%;
+      font-size: 1.2em;
+      font-weight: bold;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <h1>Comprensión lectora: textos de Platón para la PAU. Andalucía 2025</h1>
+  <h2 style="font-size: 0.6em; color: #555;">Tomás Cuesta. IES Juan de la Cierva</h2>
+  <div id="info-container"></div>
+  <button id="start-btn">Comenzar</button>
+  <div id="quiz-container" class="question-container"></div>
+  <button id="next-btn">Siguiente</button>
+  <div id="question-counter"></div>
+  <button id="restart-btn">Reiniciar</button>
+  
+  <script>
+    // Función para barajar un array usando el algoritmo de Fisher–Yates
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    // JSON integrado con todas las preguntas de Platón
+    const data = {
+      "preguntas": [
+        {
+          "texto": "Examina ya –dijo él– si esto es de este modo. Decimos que existe algo igual. No me refiero a un madero igual a otro madero ni a una piedra con otra piedra ni a ninguna cosa de esa clase, sino a algo distinto, que subsiste al margen de todos esos objetos.",
+          "opciones": {
+            "a": "Platón sostiene que la igualdad entre dos objetos es absoluta y que no depende de nuestra percepción, ya que los objetos sensibles nunca cambian su relación de igualdad.",
+            "b": "Platón distingue entre las cosas físicas que pueden parecernos más o menos iguales entre sí según nuestra percepción, y la Idea de Igualdad en sí, que es perfecta y existe independientemente de los objetos concretos.",
+            "c": "Platón defiende que la percepción de igualdad entre los objetos es subjetiva y depende exclusivamente de la experiencia individual, ya que no existe una noción universal de igualdad."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "¿De dónde, entonces, hemos obtenido ese conocimiento? ¿No, por descontado, de las cosas que ahora mismo mencionábamos, de haber visto maderos o piedras o algunos otros objetos iguales, o a partir de esas cosas lo hemos intuido, siendo diferente a ellas?",
+          "opciones": {
+            "a": "Platón sostiene que el conocimiento de la igualdad proviene exclusivamente de la experiencia sensorial, ya que al observar objetos iguales desarrollamos la noción de igualdad en nuestra mente.",
+            "b": "Platón se pregunta el origen de la Idea de Igualdad, que no procede directamente de objetos físicos más o menos iguales, esos objetos solo nos hacen pensar o nos aproximan a una Idea que es de otro tipo.",
+            "c": "Platón defiende que el conocimiento de la igualdad surge a partir del razonamiento lógico sin necesidad de experiencia previa, ya que nuestra mente construye por sí misma conceptos abstractos sin referencia a lo sensible."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "¿Las cosas iguales en sí mismas es posible que se te muestren como desiguales, o la igualdad aparecerá como desigualdad?",
+          "opciones": {
+            "a": "Platón sostiene que la percepción de igualdad varía según la perspectiva de cada persona, lo que demuestra que no existe una noción fija de igualdad, sino que depende de cada observador.",
+            "b": "Platón argumenta que, a diferencia de los objetos físicos, que pueden parecernos iguales o no según nuestra percepción, la Idea de Igualdad es inmutable y nunca puede mostrarse como desigual.",
+            "c": "Platón explica que la igualdad depende de la armonía en la estructura del alma humana, ya que solo una mente racional equilibrada es capaz de percibir correctamente lo que es justo y equitativo."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Por lo tanto, no es lo mismo –dijo él– esas cosas iguales y lo igual en sí.",
+          "opciones": {
+            "a": "Platón sostiene que la igualdad entre los objetos físicos es la única forma de igualdad que existe, ya que no hay una noción superior o separada de igualdad más allá de lo que percibimos.",
+            "b": "Platón concluye que las cosas físicas que parecen iguales no son lo mismo que la Idea de Igualdad, ya que estas cosas cambian y pueden ser imperfectas, mientras que la Idea de Igualdad es absoluta e inmutable.",
+            "c": "Platón explica que la igualdad es un concepto relativo que depende de la función que cumplan los objetos en la sociedad, de modo que lo igual en sí se entiende en términos de utilidad práctica."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Siempre que al ver un objeto, a partir de su contemplación, intuyas otro, sea semejante o desemejante, es necesario –dijo– que eso sea un proceso de reminiscencia.",
+          "opciones": {
+            "a": "Platón afirma que cuando observamos un objeto, nuestro conocimiento se basa únicamente en la información que obtenemos a través de los sentidos, sin necesidad de que intervenga ningún recuerdo previo.",
+            "b": "Platón sostiene que cuando percibimos algo y lo relacionamos con otra realidad diferente, no estamos aprendiendo algo nuevo, sino evocando un saber que ya teníamos antes, lo que demuestra que el conocimiento es anterior a la experiencia.",
+            "c": "Platón sostiene que el aprendizaje se da cuando el alma conecta con la Idea del Bien, que ilumina todos los conceptos, haciendo innecesario cualquier recuerdo previo."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "¿Respecto a los maderos y a las cosas iguales de que hablábamos ahora? ¿Es que no parece que son iguales como lo que es igual por sí, o carecen de algo para ser de igual clase que lo igual en sí, o nada?",
+          "opciones": {
+            "a": "Platón sostiene que los objetos físicos que parecen iguales entre sí son completamente idénticos a la Igualdad en sí, ya que no hay una distinción entre lo que percibimos y la verdadera igualdad.",
+            "b": "Platón plantea que los objetos físicos que parecen iguales no pertenecen al mismo tipo de realidad que la Idea de Igualdad, pues estos son materiales y cambiantes, mientras que la Idea es una verdad absoluta e inmutable.",
+            "c": "Platón explica que la igualdad es una construcción social que varía según el contexto y la utilidad de los objetos, sin que haya una referencia fija o universal que defina qué significa ser igual."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Cuando uno al ver algo piensa: lo que ahora yo veo pretende ser como algún otro de los objetos reales, pero carece de algo y no consigue ser tal como aquél.",
+          "opciones": {
+            "a": "Platón sostiene que los objetos físicos son copias exactas de las realidades auténticas y no hay diferencia entre lo que percibimos y lo que realmente existe.",
+            "b": "Platón explica que al observar algo que se parece a otra realidad más auténtica, nos damos cuenta de que es una imitación imperfecta, lo que sugiere que existe un modelo superior que no se encuentra en el mundo físico.",
+            "c": "Platón defiende que todas las cosas del mundo tienen la misma naturaleza y no hay jerarquía entre ellas, ya que la realidad es homogénea y sin grados de perfección."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Es necesario que nosotros previamente hayamos visto lo igual antes de aquel momento en el que al ver por primera vez las cosas iguales pensamos que todas ellas tienden a ser como lo igual.",
+          "opciones": {
+            "a": "Platón sostiene que la noción de igualdad se construye progresivamente a partir de la observación de los objetos físicos, sin que exista un conocimiento previo en el alma.",
+            "b": "Platón argumenta que para reconocer que los objetos sensibles intentan parecerse a la Idea de Igualdad, debemos haber conocido antes esa realidad superior, lo que indica que el conocimiento es anterior a la experiencia.",
+            "c": "Platón explica que la igualdad es solo una convención lingüística que utilizamos para organizar nuestra percepción del mundo, sin que exista una referencia objetiva en la realidad."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Además, reconocemos esto: que si lo hemos pensado no es posible pensarlo, sino a partir del hecho de ver o de tocar o de alguna otra percepción de los sentidos.",
+          "opciones": {
+            "a": "Platón sostiene que todo conocimiento proviene exclusivamente de la percepción sensorial, ya que solo a través de los sentidos podemos formar ideas en nuestra mente.",
+            "b": "Platón reconoce que, aunque el conocimiento verdadero no proviene de los sentidos, estos funcionan como un punto de partida para recordar verdades que nuestra alma ya conocía previamente.",
+            "c": "Platón afirma que el alma racional debe gobernar sobre las demás partes del alma, ya que solo así el ser humano puede alcanzar la justicia y vivir de acuerdo con la verdad."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Antes de que empezáramos a ver, oír, y percibir todo lo demás, era necesario que hubiéramos obtenido captándolo en algún lugar el conocimiento de qué es lo igual en sí mismo, si es que a este punto íbamos a referir las igualdades aprehendidas por nuestros sentidos.",
+          "opciones": {
+            "a": "Platón sostiene que el conocimiento de la igualdad surge únicamente después de la experiencia sensorial, ya que sin percibir primero los objetos no podríamos construir ninguna idea sobre ellos.",
+            "b": "Platón afirma que, para poder reconocer la igualdad en los objetos sensibles, debemos haber conocido antes la Idea de Igualdad, lo que demuestra que el alma tenía ese conocimiento antes de su contacto con el mundo físico.",
+            "c": "Platón defiende que el acceso al conocimiento verdadero solo es posible mediante la Dialéctica, que permite al alma ascender desde la opinión hasta la comprensión de las Ideas Universales."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Así que si, habiéndolo adquirido antes de nacer, nacimos teniéndolo, ¿sabíamos ya antes de nacer y apenas nacidos no solo lo igual, lo mayor, y lo menor, y todo lo de esa clase?",
+          "opciones": {
+            "a": "Platón sostiene que todas nuestras ideas se forman después del nacimiento a partir de la experiencia, ya que la mente es una tabla rasa que solo empieza a conocer a través de los sentidos.",
+            "b": "Platón argumenta que si al nacer podemos reconocer la igualdad, es porque nuestra alma ya poseía ese conocimiento, al igual que el resto de Modelos Universales, que existen de forma independiente a la experiencia sensorial.",
+            "c": "Platón explica que el conocimiento del Bien es superior a cualquier otro saber, ya que sin conocer el Bien no podemos comprender plenamente conceptos como la justicia o la belleza."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "El razonamiento nuestro de ahora no es en algo más sobre lo igual en sí que sobre lo bello en sí, y lo bueno en sí, y lo justo y lo santo, y, a lo que precisamente me refiero, sobre todo aquello que etiquetamos con «eso lo que es».",
+          "opciones": {
+            "a": "Platón sostiene que cada concepto que manejamos es relativo y depende de la cultura y la percepción individual, por lo que no existe un fundamento universal para ideas como la justicia o la belleza.",
+            "b": "Platón amplía su razonamiento más allá de la Idea de Igualdad, afirmando que lo mismo ocurre con el resto de Modelos Universales, como la Idea de Belleza, de Bien y de Justicia, que existen de forma independiente al mundo físico.",
+            "c": "Platón argumenta que el conocimiento solo se alcanza plenamente cuando el alma se ha separado del cuerpo, ya que mientras permanezca en la vida terrenal, su percepción está condicionada por los sentidos."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Y si es que después de haberlos adquirido antes de nacer, pienso, al nacer los perdimos, y luego al utilizar nuestros sentidos respecto a esas mismas cosas recuperamos los conocimientos que en un tiempo anterior ya teníamos, ¿acaso lo que llamamos aprender no sería recuperar un conocimiento ya familiar?",
+          "opciones": {
+            "a": "Platón sostiene que el aprendizaje consiste en adquirir conocimientos completamente nuevos a través de la experiencia sensorial, sin que haya ninguna forma de saber previo en nuestra alma, por lo que la reminiscencia es imposible.",
+            "b": "Platón explica que el alma poseía conocimientos antes de nacer, pero al encarnarse en el cuerpo los olvidó, de modo que lo que llamamos aprender no es más que recordar lo que ya conocíamos, lo que él denomina reminiscencia.",
+            "c": "Platón argumenta que el alma solo empieza a conocer cuando entra en el cuerpo, y que el verdadero conocimiento se alcanza a través de la experiencia, sin necesidad de recordar nada anterior, lo que contradice la idea de reminiscencia."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "¿Acaso –preguntó Adimanto– no son la justicia y lo demás que hemos descrito lo supremo, sino que hay algo todavía mayor?",
+          "opciones": {
+            "a": "Platón sostiene que la justicia es el concepto más elevado en su filosofía y que no existe ninguna realidad superior a ella, ya que representa el ideal último de la convivencia humana.",
+            "b": "Platón plantea que, aunque la Idea de Justicia es esencial, existe una Idea Universal superior que la fundamenta y le otorga su verdadero significado, situándose por encima de todas las demás.",
+            "c": "Platón explica que el conocimiento de las Ideas Universales solo es accesible para quienes han sido formados en la dialéctica, ya que sin ella es imposible alcanzar una visión completa de la verdad."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Pero en cuanto a lo que llamas `el estudio supremo' y en cuanto a lo que trata, ¿te parece que podemos dejar pasar sin preguntarte qué es?",
+          "opciones": {
+            "a": "Platón sostiene que el conocimiento más elevado puede alcanzarse mediante la observación empírica del mundo, sin necesidad de una estructura racional superior que lo organice.",
+            "b": "Platón considera que existe un saber que está por encima de todos los demás, una comprensión última de la realidad que solo puede alcanzarse mediante la noesis, el nivel más alto del conocimiento intelectual.",
+            "c": "Platón explica que la educación en la polis debe centrarse en el desarrollo del carácter y las habilidades retóricas, ya que la capacidad de persuasión es la clave para alcanzar el éxito en la vida política."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Pero también sabes que, si no lo conocemos, por más que conociéramos todas las demás cosas, sin aquello nada nos sería de valor, así como si poseemos algo sin el Bien.",
+          "opciones": {
+            "a": "Platón sostiene que cada conocimiento es valioso por sí mismo y no necesita de una referencia última, ya que el saber se construye de manera independiente en distintas áreas del pensamiento.",
+            "b": "Platón argumenta que la Idea de Bien es el principio fundamental que otorga significado y valor a todo conocimiento, ya que sin ella ninguna otra Idea Universal podría ser comprendida en su verdadera esencia.",
+            "c": "Platón explica que la justicia es el pilar central de su filosofía política y que su comprensión es suficiente para garantizar un gobierno adecuado, sin que sea necesario recurrir a otros conceptos superiores."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Cierto, y resulta ridículo. —Claro, sobre todo si nos reprochan que no conocemos el bien y hablan como si a su vez lo supiesen; pues dicen que es la inteligencia del bien, como si comprendiéramos qué quieren decir cuando pronuncian la palabra `bien'.",
+          "opciones": {
+            "a": "Platón sostiene que el Bien es fácilmente comprensible y que no necesita una definición precisa, ya que su significado es evidente para cualquiera que reflexione sobre la moral.",
+            "b": "Platón critica a quienes definen el Bien como 'inteligencia' sin poder explicar qué significa realmente esa inteligencia, mostrando que repiten términos sin entender su contenido filosófico.",
+            "c": "Platón explica que la inteligencia del Bien se alcanza mediante el dominio de las artes matemáticas, ya que el conocimiento geométrico es la clave para comprender la verdad última."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Es patente que, respecto de las cosas justas y bellas, muchos se atienen a las apariencias y, aunque no sean justas ni bellas, actúan y las adquieren como si lo fueran; respecto de las cosas buenas, en cambio, nadie se conforma con poseer apariencias.",
+          "opciones": {
+            "a": "Platón sostiene que la percepción de la justicia y la belleza es completamente subjetiva y que cada individuo puede decidir libremente qué considera justo o bello sin que haya un criterio superior.",
+            "b": "Platón señala que las personas pueden aceptar falsos conceptos de justicia y belleza dejándose llevar por la apariencia, pero en el caso del Bien, nadie se conforma con algo que solo lo parezca, lo que muestra que su valor es más profundo y absoluto.",
+            "c": "Platón argumenta que la mejor manera de distinguir entre la justicia y la belleza verdaderas es mediante la educación artística y la retórica, que permiten comprender los valores culturales asociados a estas nociones."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Lo que toda alma persigue y por lo cual hace todo, adivinando que existe, pero sumida en dificultades frente a eso y sin poder captar suficientemente qué es.",
+          "opciones": {
+            "a": "Platón sostiene que cada individuo persigue distintos fines en función de su educación y su contexto social, sin que haya un principio común que guíe a todas las almas.",
+            "b": "Platón afirma que todas las almas buscan, aunque de manera confusa, la Idea de Bien, ya que es el principio último que da sentido a la realidad, aunque su verdadera naturaleza es difícil de comprender.",
+            "c": "Platón defiende que la noesis, el conocimiento más elevado, solo puede alcanzarse mediante la dialéctica, ya que sin ella el alma permanece atrapada en el mundo de la opinión."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Si se desconoce en qué sentido las cosas justas y bellas del Estado son buenas, no sirve de mucho tener un guardián que ignore esto en ellas.",
+          "opciones": {
+            "a": "Platón sostiene que los guardianes deben centrarse únicamente en la fuerza y la disciplina, ya que su papel no requiere un conocimiento profundo de la justicia o la belleza.",
+            "b": "Platón argumenta que un guardián solo puede desempeñar correctamente su función si comprende que la justicia y la belleza están subordinadas a la Idea de Bien, pues sin esa referencia, su juicio será deficiente.",
+            "c": "Platón explica que la formación de los artesanos es la clave para el buen funcionamiento de la polis, ya que sin ellos no se puede garantizar el bienestar material de la ciudad."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Pero ¿es que acaso te parece correcto decir acerca de ellas, como si se supiese, algo que no se sabe? —Como si se supiera, de ningún modo, pero sí como quien está dispuesto a exponer, como su pensamiento, aquello que piensa.",
+          "opciones": {
+            "a": "Platón sostiene que es válido expresar opiniones sin fundamento, ya que el conocimiento se construye colectivamente a partir del debate y la confrontación de ideas.",
+            "b": "No se debe pretender estar diciendo la verdad cuando no se está seguro de ella, pero sí se puede expresar la opinión o la aproximación a la verdad reconociendo que es solo eso.",
+            "c": "Platón explica que la educación de los guardianes debe centrarse en el entrenamiento físico y militar, ya que su papel no requiere reflexión filosófica ni el desarrollo de la razón."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "¿O te parece que los ciegos que hacen correctamente su camino se diferencian en algo de los que tienen opiniones verdaderas sin inteligencia?",
+          "opciones": {
+            "a": "Platón sostiene que la opinión verdadera es suficiente para alcanzar el conocimiento, ya que una persona puede actuar correctamente sin necesidad de comprender racionalmente la verdad.",
+            "b": "Platón compara a quienes poseen una opinión acertada pero sin comprensión con ciegos que avanzan por el camino correcto sin ver, ya que sin la noesis, el conocimiento racional, no hay un saber auténtico.",
+            "c": "Platón explica que la formación en música y poesía es esencial para el desarrollo moral de los ciudadanos, ya que a través de estas artes pueden interiorizar los valores fundamentales de la polis."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "En cuanto a lo que parece un vástago del Bien y lo que más se le asemeja, en cambio, estoy dispuesto a hablar.",
+          "opciones": {
+            "a": "Platón sostiene que la Idea de Bien es accesible a través de la experiencia cotidiana y que no hay dificultad en comprender su esencia directamente.",
+            "b": "Platón reconoce que la Idea de Bien es demasiado compleja para explicarla directamente, por lo que usará una analogía comparándola con su 'hijo', el Sol, que al igual que el Bien, ilumina y da sentido a todo lo que conocemos.",
+            "c": "Platón argumenta que el conocimiento matemático es la única vía para comprender la realidad, ya que las formas geométricas contienen en sí mismas toda la estructura del universo."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Ojalá que yo pueda pagarlo y vosotros recibirlo; y no sólo los intereses, como ahora; por ahora recibid esta criatura y vástago del Bien en sí.",
+          "opciones": {
+            "a": "Platón sostiene que el conocimiento del Bien es algo que puede transmitirse de manera inmediata y sin dificultades, como cualquier otro tipo de enseñanza.",
+            "b": "Platón reconoce que aún no puede explicar completamente la Idea de Bien, pero ofrece su analogía con el Sol, que es su 'descendiente' y viene a ser como una parte secundaria o complementaria de la otra, que es la parte central.",
+            "c": "Platón explica que el desarrollo de la economía en la polis es fundamental para garantizar el bienestar de los ciudadanos, ya que sin estabilidad material no puede florecer la vida intelectual."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Que hay muchas cosas bellas, muchas buenas, y así, con cada multiplicidad, decimos que existe y la distinguimos con el lenguaje. —Lo decimos, en efecto. —También afirmamos que hay algo Bello en sí y Bueno en sí y, análogamente, respecto de todas aquellas cosas que postulábamos como múltiples;",
+          "opciones": {
+            "a": "Platón sostiene que cada cosa particular es única e independiente, sin que haya una unidad superior que las relacione, ya que el conocimiento proviene solo de la observación de los objetos individuales.",
+            "b": "Platón explica que aunque percibimos muchas cosas bellas y buenas en el mundo sensible, todas ellas se agrupan bajo una única Idea Universal, como la Idea de Belleza o la Idea de Bien, que es la verdadera realidad de la que las cosas físicas son meras copias.",
+            "c": "Platón argumenta que la multiplicidad de las cosas surge de la interacción entre los elementos materiales, sin que sea necesario postular un principio abstracto que las unifique en una sola esencia."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Pues bien, ¿has advertido que el artesano de las percepciones modeló mucho más perfectamente la facultad de ver y de ser visto? —En realidad, no.",
+          "opciones": {
+            "a": "Platón sostiene que todos los sentidos han sido diseñados de la misma manera y no hay uno que destaque sobre los demás.",
+            "b": "Platón indica que la vista es distinta a otros sentidos, pues tiene un componente de perfección que el resto no posee.",
+            "c": "Platón argumenta que la vista es solo un sentido más y que el verdadero conocimiento no depende de ella, sino únicamente de la razón."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "¿Hay algo de otro género que el oído necesita para oír y la voz para ser oída, de modo que, si este tercer género no se hace presente, uno no oirá y la otra no se oirá?",
+          "opciones": {
+            "a": "Platón sostiene que todos los sentidos dependen de un tercer elemento externo para funcionar, ya que la percepción siempre requiere un intermediario.",
+            "b": "Platón indica que, a diferencia de la vista, el oído y la voz no necesitan un tercer elemento para su funcionamiento, lo que muestra que la vista es un sentido especial.",
+            "c": "Platón explica que la estructura del alma está dividida en tres partes, y cada una de ellas cumple una función específica en la búsqueda del conocimiento."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Por consiguiente, el sentido de la vista y el poder de ser visto se hallan ligados por un vínculo de una especie nada pequeña, de mayor estima que las demás ligazones de los sentidos, salvo que la luz no sea estimable.",
+          "opciones": {
+            "a": "Platón sostiene que todos los sentidos tienen el mismo valor y funcionan de manera equivalente en la percepción del mundo.",
+            "b": "Platón indica que la vista es distinta a otros sentidos, pues requiere un vínculo particular, la luz, que la distingue de los demás sentidos y la hace más relevante.",
+            "c": "Platón explica que el alma está ligada a la percepción sensorial mediante distintos tipos de conexiones, siendo el oído el más importante en la adquisición del conocimiento."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Ni la vista misma, ni aquello en lo cual se produce -lo que llamamos `ojo'- son el sol. —Claro que no. —Pero es el más afín al sol, pienso, de los órganos que conciernen a los sentidos. —Con mucho. —Y la facultad que posee, ¿no es algo así como un fluido que le es dispensado por el sol?",
+          "opciones": {
+            "a": "Platón sostiene que todos los órganos de los sentidos funcionan de manera independiente y que ninguno tiene una relación especial con los elementos del mundo exterior.",
+            "b": "Platón señala que la visión o la vista no son el sol, pero forman el órgano más cercano al sol, ya que su capacidad de ver depende de la luz que este emite.",
+            "c": "Platón explica que la percepción sensorial se produce a través de la armonía entre el cuerpo y el alma, sin que los órganos tengan una conexión especial con elementos externos."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "El vástago del Bien, al que el Bien ha engendrado análogo a sí mismo. De este modo, lo que en el ámbito inteligible es el Bien respecto de la inteligencia y de lo que se intelige, esto es el sol en el ámbito visible respecto de la vista y de lo que se ve.",
+          "opciones": {
+            "a": "Platón sostiene que el conocimiento del Bien y la percepción visual son procesos independientes, sin que haya una conexión entre el mundo inteligible y el mundo sensible.",
+            "b": "Platón establece una analogía entre el Bien y el sol, afirmando que así como el sol hace posible la visión en el mundo sensible, el Bien hace posible el conocimiento en el mundo inteligible.",
+            "c": "Platón explica que la vista es el sentido más importante para acceder al conocimiento, ya que a través de la observación del mundo físico podemos alcanzar la verdad absoluta."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Lo que corresponde al alma: cuando fija su mirada en objetos sobre los cuales brilla la verdad y lo que es, intelige, conoce y parece tener inteligencia; pero cuando se vuelve hacia lo sumergido en la oscuridad, que nace y perece, entonces opina y percibe débilmente.",
+          "opciones": {
+            "a": "Platón sostiene que el alma puede conocer la verdad únicamente a través de la percepción sensorial, ya que todo conocimiento depende de la experiencia en el mundo físico.",
+            "b": "Platón indica que cuando el alma dirige su pensamiento guiada o iluminada por el Bien hacia el mundo inteligible, alcanza el conocimiento verdadero, pero si solo usa los sentidos y se enfoca en el mundo sensible, solo obtiene opiniones débiles y cambiantes.",
+            "c": "Platón explica que la educación debe centrarse en el entrenamiento de los sentidos, ya que el conocimiento proviene principalmente de la observación y la experiencia material."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Lo que aporta la verdad a las cosas cognoscibles y otorga al que conoce el poder de conocer, puedes decir que es la Idea del Bien. Y por ser causa de la ciencia y de la verdad, concíbela como cognoscible; y aun siendo bellos tanto el conocimiento como la verdad, si estimamos correctamente el asunto, tendremos a la Idea del Bien por algo distinto y más bello.",
+          "opciones": {
+            "a": "Platón sostiene que el conocimiento y la verdad son los principios supremos y que no necesitan de un fundamento superior para otorgarles valor.",
+            "b": "Platón indica que la Idea de Bien es la fuente de la verdad y del conocimiento, ya que hace posible tanto que existan las cosas como que la mente racional pueda conocerlas.",
+            "c": "Platón explica que la percepción de la belleza y la verdad depende de la armonía del alma, ya que el equilibrio interno es la clave para alcanzar la sabiduría."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Es correcto pensar que ambas cosas, la verdad y la ciencia, son afines al Bien, pero sería equivocado creer que una u otra fueran el Bien, ya que la condición del Bien es mucho más digna de estima.",
+          "opciones": {
+            "a": "Platón sostiene que la verdad y la ciencia son los principios supremos de la realidad y que no hay una noción superior que las fundamente.",
+            "b": "Platón distingue entre lo que es causa y lo que es efecto: la verdad y la ciencia derivan del Bien, pero no lo agotan, ya que el Bien es el principio supremo que otorga inteligibilidad a todo lo que existe, situándose por encima incluso del conocimiento.",
+            "c": "Platón explica que la verdad y la ciencia son conceptos subjetivos construidos a partir de la experiencia, por lo que su significado varía según la educación y la cultura de cada individuo."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Pienso que puedes decir que el sol no sólo aporta a lo que se ve la propiedad de ser visto, sino también la génesis, el crecimiento y la nutrición, sin ser él mismo génesis.",
+          "opciones": {
+            "a": "Platón sostiene que el sol solo tiene la función de iluminar, sin influir en el desarrollo o existencia de los seres vivos.",
+            "b": "Platón establece una analogía entre el sol y el Bien, mostrando que, así como el sol permite la visión y sostiene la vida sin ser él mismo vida, el Bien permite el conocimiento y otorga existencia a las Ideas sin ser una Idea más, sino su fundamento supremo.",
+            "c": "Platón explica que el crecimiento y la nutrición dependen exclusivamente de la interacción material entre los cuerpos, sin que haya una referencia a principios superiores que los expliquen."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Y así dirás que a las cosas cognoscibles les viene del Bien no sólo el ser conocidas, sino también de él les llega el existir y la esencia.",
+          "opciones": {
+            "a": "Platón sostiene que el conocimiento de las cosas es independiente de su existencia, ya que la realidad se construye únicamente a partir de la percepción sensorial.",
+            "b": "Platón establece que el Bien es el fundamento ontológico y epistemológico de la realidad: ontológico porque da existencia y esencia a todo lo que es, y epistemológico porque hace posible el conocimiento al otorgar inteligibilidad a las cosas.",
+            "c": "Platón explica que la existencia de los objetos y su conocimiento dependen exclusivamente del pensamiento humano, sin que haya un principio superior que los determine."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Piensa entonces, como decíamos, cuáles son los dos que reinan: uno, el del género y ámbito inteligibles; otro, el del visible, y no digo `el del cielo' para que no creas que hago juego de palabras. ¿Captas estas dos especies, la visible y la inteligible?",
+          "opciones": {
+            "a": "Platón sostiene que no hay distinción entre lo visible y lo inteligible, ya que todo conocimiento proviene únicamente de la observación del mundo material.",
+            "b": "Platón distingue dos ámbitos de la realidad: el mundo sensible, regido por el sol, donde todo es cambiante y accesible a los sentidos, y el Mundo de las Ideas, iluminado por el Bien, donde residen las verdades eternas y solo se accede mediante la razón.",
+            "c": "Platón explica que la diferencia entre lo visible y lo inteligible depende exclusivamente de la capacidad individual de percibir correctamente la realidad, sin que haya una estructura objetiva que los distinga."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Toma ahora una línea dividida en dos partes desiguales; divide nuevamente cada sección según la misma proporción, la del género de lo que se ve y otra la del que se intelige, y tendrás distinta oscuridad y claridad relativas.",
+          "opciones": {
+            "a": "Platón sostiene que la percepción de la realidad es uniforme y no admite grados de claridad, ya que el conocimiento es siempre inmediato y absoluto.",
+            "b": "Platón introduce la línea dividida con cuatro segmentos asimétricos que van de más oscuro (sensible inferior, Eikasía) a más iluminado (inteligible superior, Noesis).",
+            "c": "Platón explica que la estructura del conocimiento es aleatoria y que la distinción entre lo visible y lo inteligible es una construcción arbitraria sin fundamento filosófico."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "¿Estás dispuesto a declarar que la línea ha quedado dividida, en cuanto a su verdad y no verdad, de modo tal que lo opinable es a lo cognoscible como la copia es a aquello de los que es copiado?",
+          "opciones": {
+            "a": "Platón sostiene que no hay diferencia entre la opinión y el conocimiento, ya que ambos dependen de la percepción personal de cada individuo.",
+            "b": "Platón establece que la línea dividida refleja la relación entre lo opinable (mundo sensible) y lo cognoscible (Mundo de las Ideas), donde lo primero es una copia imperfecta de lo segundo, igual que dentro del mundo sensible las sombras o imágenes son la copia imperfecta de las cosas físicas.",
+            "c": "Platón explica que el conocimiento de la realidad se adquiere únicamente mediante la experiencia sensorial, ya que solo aquello que puede percibirse directamente tiene validez filosófica."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Se sirven de figuras visibles y hacen discursos acerca de ellas, aunque no pensando en éstas sino en aquellas cosas a las cuales éstas se parecen, discurriendo en vista al Cuadrado en sí y a la Diagonal en sí, y no en vista de la que dibujan.",
+          "opciones": {
+            "a": "Platón sostiene que el conocimiento matemático es puramente empírico y que solo podemos comprender figuras geométricas a partir de su representación física.",
+            "b": "Platón describe el tercer nivel del conocimiento en la línea dividida, la Dianoia, donde los matemáticos emplean figuras sensibles para representar mejor los Objetos Matemáticos, pero no razonan sobre los dibujos en sí, sino sobre las entidades abstractas que estos representan.",
+            "c": "Platón explica que las figuras geométricas y los números son solo construcciones arbitrarias creadas por el pensamiento humano sin referencia a una realidad objetiva."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Pero en esta su primera sección, el alma se ve forzada a servirse de supuestos en su búsqueda, sin avanzar hacia un principio, por no poder remontarse más allá de los supuestos. Y para eso usa como imágenes a los objetos que abajo eran imitados.",
+          "opciones": {
+            "a": "Platón sostiene que el conocimiento verdadero puede alcanzarse incluso si se parte de suposiciones, ya que estas siempre conducen a la verdad absoluta.",
+            "b": "Platón describe el nivel de la Dianoia, donde el alma usa figuras visibles y supuestos para razonar, pero sin llegar a un principio absoluto, ya que depende de conceptos previos que no cuestiona.",
+            "c": "Platón explica que el pensamiento filosófico debe basarse únicamente en la percepción sensorial, sin necesidad de modelos abstractos o razonamiento matemático."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "La razón misma aprehende, por medio de la facultad dialéctica, y hace de los supuestos no principios sino realmente supuestos, que son como peldaños y trampolines hasta el principio del todo, que es no supuesto, y, tras aferrarse a él, ateniéndose a las cosas que de él dependen, desciende hasta una conclusión.",
+          "opciones": {
+            "a": "Platón sostiene que todo conocimiento parte de suposiciones inmutables y que no es posible cuestionarlas ni superarlas mediante la razón.",
+            "b": "Platón describe la Dialéctica, el nivel más alto de conocimiento, donde la razón no se detiene en supuestos, sino que asciende hasta las Ideas Universales y llega hasta el principio absoluto, desde el cual deduce todo lo demás en un proceso que luego desciende hasta lo particular, en la Dialéctica descendente.",
+            "c": "Platón explica que la verdad solo puede alcanzarse a través de la observación y la experiencia empírica, sin necesidad de razonamiento abstracto."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "¿Quieres distinguir lo que de lo real e inteligible es estudiado por la ciencia dialéctica, estableciendo que es más claro que lo estudiado por las llamadas `artes’, para las cuales los supuestos son principios? Y los que los estudian se ven forzados a estudiarlos por medio del pensamiento discursivo, aunque no por los sentidos.",
+          "opciones": {
+            "a": "Platón sostiene que todo conocimiento verdadero proviene de la experiencia sensorial, sin que haya niveles superiores de comprensión basados en la razón pura.",
+            "b": "Platón distingue dentro del Mundo Inteligible dos niveles: el inferior, la Dianoia, donde las ciencias matemáticas trabajan con supuestos sin cuestionarlos, y el superior, la Noesis, donde la Dialéctica prescinde de supuestos y asciende hasta la comprensión directa de las Ideas Universales.",
+            "c": "Platón explica que las artes y las ciencias prácticas son el camino más elevado hacia el conocimiento, ya que permiten a los ciudadanos aplicar sus habilidades en la vida cotidiana."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Pero a raíz de no hacer el examen avanzando hacia un principio sino a partir de supuestos, te parece que no poseen inteligencia acerca de ellos, aunque sean inteligibles junto a un principio. Y creo que llamas `pensamiento discursivo' al estado mental de los geómetras y similares, pero no `inteligencia'; como si el `pensamiento discursivo' fuera algo intermedio entre la opinión y la inteligencia.",
+          "opciones": {
+            "a": "Platón sostiene que las matemáticas conducen directamente a la comprensión de las Ideas Universales, sin que haya diferencia entre los métodos geométricos y la inteligencia filosófica.",
+            "b": "Platón sitúa la Dianoia en un nivel intermedio entre la Opinión (Doxa) y la Inteligencia (Noesis), ya que, aunque estudia realidades inteligibles como los Objetos Matemáticos, parte de supuestos y no alcanza directamente las Ideas Universales. Es la puerta de acceso a lo abstracto, pero aún ligada a ciertos métodos del mundo sensible.",
+            "c": "Platón explica que la única forma de alcanzar el conocimiento es a través del pensamiento discursivo, ya que la inteligencia pura es inaccesible para el ser humano."
+          },
+          "respuesta": "b"
+        }
+      ]
+    };
+
+    let preguntas = data.preguntas;
+    let preguntasElegidas = [];
+    let preguntaActual = 0;
+    let correctas = 0;
+
+    const quizContainer = document.getElementById('quiz-container');
+    const nextButton = document.getElementById('next-btn');
+    const restartButton = document.getElementById('restart-btn');
+    const startButton = document.getElementById('start-btn');
+    const infoContainer = document.getElementById('info-container');
+
+    // Mostrar información inicial y habilitar el botón de inicio
+    infoContainer.innerHTML = `<p>El test contiene <strong>${preguntas.length}</strong> preguntas. Podrás elegir cuántas usar.</p>`;
+    startButton.style.display = 'block';
+
+    startButton.addEventListener('click', function() {
+      let numPreguntas = prompt(`El test tiene ${preguntas.length} preguntas. ¿Cuántas deseas jugar?`, preguntas.length);
+      numPreguntas = parseInt(numPreguntas);
+      if (isNaN(numPreguntas) || numPreguntas < 1 || numPreguntas > preguntas.length) {
+        alert('Número no válido. Se jugarán todas las preguntas.');
+        numPreguntas = preguntas.length;
+      }
+      // Seleccionar preguntas aleatorias
+      preguntasElegidas = shuffle([...preguntas]).slice(0, numPreguntas);
+      preguntaActual = 0;
+      correctas = 0;
+      startButton.style.display = 'none';
+      infoContainer.innerHTML = '';
+      mostrarPregunta();
+    });
+
+    function mostrarPregunta() {
+      if (preguntaActual < preguntasElegidas.length) {
+        quizContainer.innerHTML = '';
+        document.getElementById('question-counter').textContent = `Pregunta ${preguntaActual + 1} de ${preguntasElegidas.length}`;
+        quizContainer.style.display = 'block';
+        nextButton.style.display = 'none';
+
+        let pregunta = preguntasElegidas[preguntaActual];
+        let preguntaTitulo = document.createElement('h2');
+        preguntaTitulo.textContent = pregunta.texto;
+        quizContainer.appendChild(preguntaTitulo);
+
+        // Convertir las opciones en un array de objetos y mezclarlas con Fisher–Yates
+        let opcionesArray = Object.entries(pregunta.opciones)
+          .map(([key, texto]) => ({ key, texto }));
+        opcionesArray = shuffle(opcionesArray);
+
+        opcionesArray.forEach(opcionObj => {
+          let opcion = document.createElement('div');
+          opcion.classList.add('option');
+          opcion.textContent = opcionObj.texto;
+          opcion.dataset.valor = opcionObj.key;
+          opcion.addEventListener('click', function() {
+            validarRespuesta(this, pregunta.respuesta);
+          });
+          quizContainer.appendChild(opcion);
+        });
+      } else {
+        quizContainer.innerHTML = `<h2>¡Test finalizado!</h2><p>Has acertado ${correctas} de ${preguntasElegidas.length} preguntas.</p>`;
+        nextButton.style.display = 'none';
+        restartButton.style.display = 'block';
+      }
+    }
+
+    function validarRespuesta(elemento, respuestaCorrecta) {
+      let opciones = document.querySelectorAll('.option');
+      opciones.forEach(op => op.style.pointerEvents = 'none');
+
+      if (elemento.dataset.valor === respuestaCorrecta) {
+        elemento.classList.add('correct');
+        correctas++;
+      } else {
+        elemento.classList.add('incorrect');
+        let correcta = document.querySelector(`.option[data-valor='${respuestaCorrecta}']`);
+        if (correcta) correcta.classList.add('correct');
+      }
+      nextButton.style.display = 'block';
+    }
+
+    nextButton.addEventListener('click', function() {
+      preguntaActual++;
+      mostrarPregunta();
+    });
+
+    restartButton.addEventListener('click', function() {
+      this.style.display = 'none';
+      startButton.style.display = 'none';
+      preguntaActual = 0;
+      correctas = 0;
+      infoContainer.innerHTML = `<p>El test contiene <strong>${preguntas.length}</strong> preguntas.</p>`;
+      document.getElementById('question-counter').textContent = '';
+      startButton.style.display = 'block';
+      quizContainer.innerHTML = '';
+      quizContainer.style.display = 'none';
+    });
+  </script>
+</body>
+</html>
