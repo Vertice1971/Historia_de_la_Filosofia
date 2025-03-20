@@ -48,5 +48,5 @@ Torneo para presentaciones de Ciencia Helenística:
 https://vertice1971.github.io/Historia_de_la_Filosofia/Torneo%20Ciencia%20Helen%C3%ADstica.html
 
 Acceso a la Universidad
-https://vertice1971.github.io/Historia_de_la_Filosofia/PAU%2025.md
+https://github.com/Vertice1971/Historia_de_la_Filosofia/blob/main/PAU%202025.md
 
