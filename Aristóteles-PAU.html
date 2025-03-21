@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Textos de Aristóteles para la PAU. Andalucía 2025</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      text-align: center;
+      background-color: #f5f8ff; /* Fondo azul pastel */
+    }
+    .question-container {
+      display: none;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      max-width: 600px;
+      margin: 20px auto;
+      background: #ffffff;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .option {
+      display: block;
+      padding: 10px;
+      margin: 10px 0;
+      border: 2px solid #ddd;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+    .option:hover {
+      background: #e0ebff;
+      transform: scale(1.05);
+    }
+    .correct {
+      background: #c8e6c9;
+      border-color: green;
+    }
+    .incorrect {
+      background: #ffcdd2;
+      border-color: red;
+    }
+    #start-btn, #restart-btn {
+      display: none;
+      margin-top: 20px;
+      padding: 10px;
+      background: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    #restart-btn {
+      background: #28a745;
+    }
+    /* Posiciona el botón "Siguiente" fijo a la derecha, en zona media/alta */
+    #next-btn {
+      position: fixed;
+      right: 20px;
+      top: 30%;
+      padding: 10px;
+      background: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      display: none;
+    }
+    /* Estilos para el contador de preguntas */
+    #question-counter {
+      position: fixed;
+      right: 20px;
+      top: 37%;
+      font-size: 1.2em;
+      font-weight: bold;
+      color: #333;
+    }
+    #info-container {
+      margin-top: 20px;
+      font-size: 1.2em;
+    }
+  </style>
+</head>
+<body>
+  <h1>Comprensión lectora: textos de Aristóteles para la PAU. Andalucía 2025</h1>
+  <h2 style="font-size: 0.6em; color: #555;">Tomás Cuesta. IES Juan de la Cierva</h2>
+  <div id="info-container"></div>
+  <button id="start-btn">Comenzar</button>
+  <div id="quiz-container" class="question-container"></div>
+  <button id="next-btn">Siguiente</button>
+  <!-- Contenedor para el contador de preguntas -->
+  <div id="question-counter"></div>
+  <button id="restart-btn">Reiniciar</button>
+  
+  <script>
+    // Función para barajar un array usando el algoritmo de Fisher–Yates
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    // JSON con todas las preguntas sobre Aristóteles
+    const data = {
+      "preguntas": [
+        {
+          "texto": "Lo que elegimos no está determinado por otra cosa –pues así el proceso seguiría hasta el infinito, de suerte que el deseo sería vacío y vano–",
+          "opciones": {
+            "a": "Nada de lo que elegimos tiene una causa, porque todo surge del azar o del deseo momentáneo.",
+            "b": "A la hora de tomar decisiones tiene que haber un objetivo que es un fin valioso en sí mismo; de lo contrario, tendríamos una cadena sin fin de objetivos.",
+            "c": "Elegimos siempre en función de nuestros hábitos, ya que el hábito es la causa última del comportamiento, aunque no sea consciente."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Si es así, debemos intentar determinar, esquemáticamente al menos, cuál es este bien y a cuál de las ciencias o facultades pertenece. Parecería que ha de ser la suprema y directiva en grado sumo.",
+          "opciones": {
+            "a": "El bien más alto pertenece a la técnica, ya que es esta la que produce todos los objetos útiles que necesitamos.",
+            "b": "El bien supremo debe ser definido por la ciencia más alta, que es la política, porque dirige a todas las demás y se ocupa del fin último del ser humano.",
+            "c": "No hay un solo bien supremo, sino muchos bienes diversos según cada ciencia, ya que cada una tiene su propio criterio de valor."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Y puesto que la política se sirve de las demás ciencias y prescribe, además, qué se debe hacer y qué se debe evitar, el fin de ella incluirá los fines de las demás ciencias.",
+          "opciones": {
+            "a": "La política es una ciencia subordinada a otras más técnicas, ya que depende de sus resultados para alcanzar sus fines.",
+            "b": "La política incluye y orienta a todas las demás ciencias porque su objetivo es el bien común, que abarca los fines particulares de cada disciplina.",
+            "c": "La política se limita a establecer leyes, pero no tiene relación con otras ciencias ni con los fines que estas persiguen."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Pues aunque sea el mismo el bien del individuo y el de la ciudad, es evidente que es mucho más grande y más perfecto alcanzar y salvaguardar el bien de la ciudad.",
+          "opciones": {
+            "a": "El bien de cada persona es siempre más importante que el de la ciudad, porque solo el individuo puede alcanzar la virtud plena.",
+            "b": "El bien de la ciudad es superior porque abarca a muchos ciudadanos, y protegerlo implica también proteger el bien de cada individuo.",
+            "c": "El bien de la ciudad y el del individuo no tienen ninguna relación, ya que pertenecen a ámbitos diferentes y no se pueden comparar."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Pero sobre lo que es la felicidad discuten y no lo explican del mismo modo los ignorantes y los sabios. Pues unos creen que es alguna de las cosas tangibles y manifiestas como el placer, o la riqueza, o los honores; otros, otra cosa; muchas veces, incluso, una misma persona opina cosas distintas.",
+          "opciones": {
+            "a": "La mayoría de las personas identifica la felicidad con cosas externas como el placer, el dinero o el reconocimiento social, aunque no todos estén de acuerdo en ello.",
+            "b": "Los sabios y los ignorantes tienen distintas definiciones de la felicidad, y si algunas personas creen que consiste en bienes visibles o materiales, otros simplemente cambian de idea según las circunstancias.",
+            "c": "Las personas sabias coinciden en que la felicidad consiste en el placer, la fama o el éxito, mientras que otros tienen opiniones más confusas o contradictorias."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Si está enferma, piensa que la felicidad es la salud; si es pobre, la riqueza; y quienes tienen conciencia de su ignorancia admiran a los que dicen algo grande y que está por encima de ellos.",
+          "opciones": {
+            "a": "Las personas siempre saben con claridad en qué consiste la felicidad, porque esta no cambia según su situación.",
+            "b": "Según las circunstancias personales, la gente tiende a identificar la felicidad con aquello que más necesita, y quienes se reconocen ignorantes suelen admirar ideas elevadas o inalcanzables.",
+            "c": "La felicidad se encuentra solo en bienes materiales, como la salud o el dinero, y por eso todos buscan lo mismo en cualquier situación."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "En efecto, también Platón suscitaba, con razón, este problema e inquiría si la investigación ha de partir de los principios o remontarse hacia ellos, así como, en el estadio, uno ha de correr desde los jueces hacia la meta o al revés.",
+          "opciones": {
+            "a": "Platón se preguntaba si hay que empezar cualquier investigación por los hechos concretos que percibimos o por nuestras emociones más inmediatas.",
+            "b": "La cuestión es si debemos comenzar la búsqueda del conocimiento desde los principios universales y abstractos, o si debemos partir de lo concreto y particular para llegar a ellos.",
+            "c": "Platón sostenía que no era posible investigar con orden, ya que cada persona debe seguir su propio camino sin atender a principios comunes."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Por esto, para ser capaz de ser un competente discípulo de las cosas buenas y justas y, en suma, de la política, es menester que haya sido bien conducido por sus costumbres. Pues el punto de partida es lo concreto, y si esto está suficientemente claro no habrá necesidad de cuestionar el porqué. Un hombre así tiene ya o puede fácilmente adquirir los principios.",
+          "opciones": {
+            "a": "Para poder razonar sobre lo justo y lo bueno, basta con tener conocimientos teóricos, sin necesidad de haber sido educado previamente.",
+            "b": "El punto de partida no está en ideas abstractas, sino en lo concreto: una buena educación moral permite comprender lo justo y lo bueno desde la experiencia concreta, facilitando la adquisición de principios generales.",
+            "c": "Es imposible llegar a comprender lo justo y lo bueno si uno ya tiene ideas previas, pues ello impide razonar con objetividad."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Divididos, pues, los bienes en tres clases —los exteriores, los del cuerpo y los del alma— decimos que los del alma son los más importantes y los bienes por excelencia.",
+          "opciones": {
+            "a": "Todos los bienes tienen el mismo valor, ya sean materiales, físicos o relacionados con el alma, porque todos contribuyen de igual manera a la felicidad.",
+            "b": "Aristóteles distingue tres tipos de bienes: los externos (como el dinero o los amigos), los del cuerpo (como la salud o la fuerza) y los del alma (como la virtud o el conocimiento); y afirma que estos últimos son los más valiosos.",
+            "c": "Los bienes del cuerpo, como la salud, son los más importantes, porque sin ellos no se puede disfrutar de los bienes del alma ni de los externos."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Es también correcto decir que el fin consiste en ciertas acciones y actividades, pues así se desprende de los bienes del alma y no de los exteriores.",
+          "opciones": {
+            "a": "La felicidad se alcanza acumulando suficientes bienes externos, como riqueza o fama, que garantizan una vida sin preocupaciones.",
+            "b": "Dado que los bienes del alma son los más valiosos, el fin del ser humano debe buscarse en sus actividades y elecciones racionales, no en posesiones externas.",
+            "c": "La felicidad no depende de nuestras acciones, sino de circunstancias externas que escapan a nuestro control, como la suerte o el entorno social."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Nuestro razonamiento está de acuerdo con quienes sostienen que la felicidad es la virtud o alguna clase de virtud, pues la actividad conforme a la virtud es propia de ella. Pero hay una diferencia importante entre tener el bien supremo en una posesión y en una actividad.",
+          "opciones": {
+            "a": "La felicidad consiste simplemente en poseer virtud, aunque no se practique, ya que lo importante es tener buenas cualidades.",
+            "b": "No basta con tener virtud como cualidad estática; la verdadera felicidad reside en ejercerla, en vivir conforme a ella a través de nuestras acciones.",
+            "c": "La virtud no está relacionada con la felicidad, pues esta depende más de los bienes materiales o del entorno."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Ahora bien, para la mayoría de los hombres los placeres son objeto de disputa, porque no lo son por naturaleza, mientras que lo que es naturalmente agradable es apreciado por quienes aman lo noble.",
+          "opciones": {
+            "a": "Todos los placeres son iguales por naturaleza, por lo que no tiene sentido discutir sobre ellos.",
+            "b": "Existen placeres que parecen buenos pero no lo son por naturaleza; solo quienes poseen buen carácter y aman lo noble encuentran placer en lo verdaderamente valioso.",
+            "c": "Dado que el placer depende únicamente de la costumbre, Aristóteles sostiene que no hay distinción real entre los placeres buenos y malos."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Añadamos que ni siquiera es bueno quien no se complace en las acciones buenas, ni se le llama justo al que no disfruta de la práctica de la justicia, ni libre al que no goza de las acciones liberales. Así, las acciones conforme a la virtud son en sí mismas agradables.",
+          "opciones": {
+            "a": "Una persona virtuosa puede actuar bien sin disfrutarlo, pues lo importante es el resultado, no la actitud interior.",
+            "b": "La verdadera virtud se reconoce cuando se disfruta del bien; actuar justamente, generosamente o valientemente debe ser placentero en sí mismo.",
+            "c": "La virtud consiste en hacer lo correcto, incluso si ello conlleva sufrimiento, ya que el placer y el bien son opuestos en la filosofía de Aristóteles."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Pero es evidente que la felicidad necesita también de los bienes exteriores, pues es difícil hacer el bien sin contar con recursos.",
+          "opciones": {
+            "a": "La felicidad depende únicamente de la virtud, por lo que los bienes materiales son irrelevantes.",
+            "b": "Aunque la felicidad se fundamenta en la virtud, Aristóteles reconoce que son necesarios ciertos bienes exteriores para facilitar la acción correcta.",
+            "c": "Los bienes exteriores son más importantes que la virtud, pues sin recursos no se puede alcanzar la felicidad."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Uno que sea de mal aspecto, mal nacido o esté solo sin hijos, no puede ser plenamente feliz; y menos aún aquel cuyos hijos o amigos sean malos o hayan muerto. Por ello, la felicidad parece necesitar también prosperidad externa.",
+          "opciones": {
+            "a": "La felicidad no depende de las circunstancias personales, ya que Aristóteles niega la influencia del aspecto o la familia.",
+            "b": "Aristóteles sostiene que la felicidad es únicamente interna.",
+            "c": "Aunque la felicidad se basa en la virtud, ciertas condiciones externas —como la buena fortuna en lo personal o familiar— contribuyen a una vida feliz."
+          },
+          "respuesta": "c"
+        },
+        {
+          "texto": "Toda comunidad se constituye con miras a un bien, pues en función de lo que se considera bueno todos actúan. Así, todas tienden a un bien, pero la comunidad política tiende al supremo, que lo engloba todo.",
+          "opciones": {
+            "a": "Cada comunidad tiene intereses propios, sin que exista un bien común.",
+            "b": "Las comunidades humanas existen para alcanzar algún bien, y la comunidad política busca el bien más alto: el bien común.",
+            "c": "Las comunidades surgen por costumbre, sin perseguir un bien determinado."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Cuantos opinan que es lo mismo ser gobernante de una ciudad, rey, administrador de su casa o amo de sus esclavos, no expresan bien la diferencia; creen que solo varía en cantidad y no en esencia.",
+          "opciones": {
+            "a": "Aristóteles afirma que gobernar una ciudad o una casa es lo mismo, salvo la cantidad de personas.",
+            "b": "Para Aristóteles, no es solo cuestión de cantidad —más o menos personas—, sino de la naturaleza y finalidad del gobierno.",
+            "c": "La diferencia entre un rey, un padre y un amo es meramente el título, ya que la autoridad es la misma."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Como si al gobernar a pocos se fuese amo; a más, administrador de casa; y a más, gobernante o rey, como si no hubiera diferencia entre una gran casa y una pequeña ciudad.",
+          "opciones": {
+            "a": "Aristóteles sostiene que no hay diferencia entre gobernar una familia y una ciudad, pues solo varía el número.",
+            "b": "Para Aristóteles, gobernar una casa, una ciudad o un reino son actividades distintas, pues no es solo la cantidad lo que importa, sino la finalidad.",
+            "c": "Lo esencial al gobernar es la capacidad de mando, sin importar el número de gobernados."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "El que manda por naturaleza y el súbdito, para su seguridad. Quien es capaz de prever con la mente es un jefe natural, y quien ejecuta con el cuerpo es súbdito por naturaleza; por ello, al jefe y al súbdito les interesa lo mismo.",
+          "opciones": {
+            "a": "Aristóteles defiende que todas las personas tienen las mismas capacidades y nadie debe gobernar por naturaleza.",
+            "b": "Según Aristóteles, algunas personas están naturalmente dotadas para dirigir mediante la razón y otras para obedecer con el cuerpo, buscando el bien de ambos.",
+            "c": "La diferencia entre amo y esclavo es una construcción social sin fundamento natural."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "La naturaleza no actúa con mezquindad, así como cada órgano cumple mejor su función si sirve para un solo fin. Pero entre los bárbaros, la mujer y el esclavo ocupan la misma posición, porque en ellos falta el elemento gobernante por naturaleza.",
+          "opciones": {
+            "a": "Aristóteles defiende que en todas las culturas, mujer y esclavo tienen el mismo rol.",
+            "b": "En una comunidad bien ordenada como la griega, cada miembro cumple una función distinta; pero entre los bárbaros, al faltar el principio racional, la mujer y el esclavo quedan en la misma posición subordinada.",
+            "c": "Cuanto más funciones cumple una persona, mejor, por eso no debe haber especialización."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "La ciudad, que posee el nivel más alto de autosuficiencia, nació por las necesidades de la vida, pero subsiste para el vivir bien. De ahí que toda ciudad es natural, al igual que las comunidades primarias.",
+          "opciones": {
+            "a": "La ciudad es una creación artificial que surge por decisión humana, y su función es proteger de peligros externos.",
+            "b": "Aristóteles sostiene que la ciudad nace de necesidades básicas, pero su verdadera finalidad es permitir una vida moral e intelectual plena; por ello es natural.",
+            "c": "La ciudad existe únicamente para garantizar la libertad individual, sin relación con la vida buena o la virtud."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "La ciudad es el fin de aquellas comunidades, y la naturaleza es fin. Lo que algo llega a ser, al culminar su desarrollo, es su naturaleza, ya sea un hombre, un caballo o una casa.",
+          "opciones": {
+            "a": "La naturaleza de algo se define por su origen, no por su culminación; por ello la ciudad no es natural.",
+            "b": "Para Aristóteles, algo es natural cuando alcanza su fin; la ciudad es natural porque es el fin al que se desarrollan las comunidades humanas.",
+            "c": "La ciudad es solo una etapa intermedia sin relevancia natural, siendo lo primordial la familia."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "De todo esto es evidente que la ciudad es natural, y que el hombre es, por naturaleza, un animal social.",
+          "opciones": {
+            "a": "Aristóteles afirma que la ciudad es una invención humana y que el hombre solo vive en sociedad por conveniencia.",
+            "b": "Según Aristóteles, la ciudad es natural, pues el hombre está hecho para vivir en comunidad y alcanzar su plenitud en ella.",
+            "c": "Aristóteles cree que el hombre es autosuficiente y solo se une a la sociedad en casos de necesidad."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "El hombre es el único animal que tiene palabra. Pues la voz es signo del dolor y del placer, y por ello los demás animales solo poseen la voz.",
+          "opciones": {
+            "a": "La palabra y la voz son iguales, ya que ambas expresan emociones básicas.",
+            "b": "Aristóteles distingue entre voz y palabra: la voz expresa sensaciones, pero solo la palabra permite comunicar lo justo, lo injusto y lo verdadero, característica exclusiva del ser humano.",
+            "c": "Todos los animales poseen palabra en distintos grados, pero el hombre se diferencia por tener una voz más articulada."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "La palabra es para manifestar lo conveniente y lo perjudicial, así como lo justo y lo injusto. Esto es lo propio del hombre frente a los demás animales.",
+          "opciones": {
+            "a": "Aristóteles afirma que el lenguaje sirve solo para expresar emociones, como en los animales.",
+            "b": "La función de la palabra humana es permitir la reflexión ética, comunicando lo justo, lo injusto, lo útil y lo dañino, lo que distingue al hombre.",
+            "c": "Todos los animales usan la palabra para coordinarse, sin diferencia clara con los humanos."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Cuando el uno, la minoría o la mayoría gobiernan atendiendo al interés común, esos regímenes son rectos; pero quienes gobiernan atendiendo a intereses particulares son desviaciones.",
+          "opciones": {
+            "a": "Cualquier forma de gobierno es válida si es elegida por la mayoría, sin importar a quién beneficie.",
+            "b": "Para Aristóteles, un régimen es justo cuando se gobierna en favor del bien común, ya sea por uno, unos pocos o la mayoría; si se gobierna por intereses particulares, es injusto.",
+            "c": "Los regímenes justos concentran el poder en pocas manos para evitar conflictos de intereses."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "República. Y es así, pues uno o unos pocos pueden distinguirse por su excelencia; pero en un gran número es difícil alcanzar la perfección en todas las virtudes, aunque pueden destacar en la virtud guerrera, la cual se da en la masa. Por ello, en este régimen la clase combatiente tiene el poder supremo.",
+          "opciones": {
+            "a": "Aristóteles rechaza que la masa tenga poder, ya que solo los sabios deben gobernar.",
+            "b": "Dado que la mayoría no alcanza todas las virtudes, Aristóteles justifica que en una república el poder lo ejerzan quienes destacan en la virtud militar, más común entre muchos.",
+            "c": "La virtud guerrera es contraria a la política y no debe influir en el gobierno."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Si la mayoría fuese rica y ejerciera el poder de la ciudad...",
+          "opciones": {
+            "a": "Si gobierna la mayoría, el régimen es siempre una democracia, sin importar la riqueza.",
+            "b": "Aristóteles advierte que su clasificación admite matices: si la mayoría es rica y gobierna por interés propio, el régimen no es democracia sino oligarquía.",
+            "c": "Aristóteles cree que los ricos nunca pueden formar mayoría política, ya que la riqueza siempre está en pocas manos."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Igualmente, si en alguna parte los pobres fuesen minoría pero, por ser más fuertes, ejercieran la soberanía...",
+          "opciones": {
+            "a": "Si los pobres gobiernan, el régimen es democracia, sin importar el número.",
+            "b": "Aristóteles admite matices en su clasificación: aunque los pobres sean minoría, si gobiernan por su interés, el régimen es democracia, pues lo esencial es quién manda y con qué fin.",
+            "c": "Los pobres, al ser menos, nunca pueden tener el poder, ya que depende solo de la cantidad."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Por otro lado, si se combina la minoría con la riqueza y el gran número con la pobreza para definir los regímenes, llamando oligarquía a aquel en que los ricos (pocos) tienen las magistraturas y democracia a aquel en que los pobres (muchos) las tienen, esto implica otra dificultad.",
+          "opciones": {
+            "a": "Basta observar si gobiernan muchos o pocos para definir democracia u oligarquía.",
+            "b": "Aristóteles advierte que esta clasificación basada en número y riqueza es útil pero problemática, pues no siempre coincide con quién ejerce el poder ni con el fin perseguido.",
+            "c": "Para Aristóteles, democracia y oligarquía son términos absolutos sin admitir excepciones."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "¿Cómo llamaremos a los regímenes mencionados: aquel en que los ricos sean mayoría y aquel en que los pobres sean minoría, pero ambos sean dueños de su gobierno, si no existe otro régimen?",
+          "opciones": {
+            "a": "Si el poder lo tienen los ricos, aunque sean mayoría, se debe llamar democracia por el número.",
+            "b": "Aristóteles insiste en que cuando número y riqueza no coinciden, es difícil aplicar los nombres clásicos, lo que muestra que estas categorías deben usarse con prudencia.",
+            "c": "Todos los regímenes deben encajar sin excepción en una de las formas ya conocidas, sin importar sus particularidades."
+          },
+          "respuesta": "b"
+        }
+      ]
+    };
+
+    let preguntas = data.preguntas;
+    let preguntasElegidas = [];
+    let preguntaActual = 0;
+    let correctas = 0;
+
+    const quizContainer = document.getElementById('quiz-container');
+    const nextButton = document.getElementById('next-btn');
+    const restartButton = document.getElementById('restart-btn');
+    const startButton = document.getElementById('start-btn');
+    const infoContainer = document.getElementById('info-container');
+
+    infoContainer.innerHTML = `<p>El test contiene <strong>${preguntas.length}</strong> preguntas. Podrás elegir cuántas usar.</p>`;
+    startButton.style.display = 'block';
+
+    startButton.addEventListener('click', function() {
+      let numPreguntas = prompt(`El test tiene ${preguntas.length} preguntas. ¿Cuántas deseas jugar?`, preguntas.length);
+      numPreguntas = parseInt(numPreguntas);
+      if (isNaN(numPreguntas) || numPreguntas < 1 || numPreguntas > preguntas.length) {
+        alert('Número no válido. Se jugarán todas las preguntas.');
+        numPreguntas = preguntas.length;
+      }
+      // Seleccionar preguntas aleatorias
+      preguntasElegidas = shuffle([...preguntas]).slice(0, numPreguntas);
+      preguntaActual = 0;
+      correctas = 0;
+      startButton.style.display = 'none';
+      infoContainer.innerHTML = '';
+      mostrarPregunta();
+    });
+
+    function mostrarPregunta() {
+      if (preguntaActual < preguntasElegidas.length) {
+        quizContainer.innerHTML = '';
+        // Actualizar el contador de preguntas
+        document.getElementById('question-counter').textContent = `Pregunta ${preguntaActual + 1} de ${preguntasElegidas.length}`;
+        quizContainer.style.display = 'block';
+        nextButton.style.display = 'none';
+
+        let pregunta = preguntasElegidas[preguntaActual];
+        let preguntaTitulo = document.createElement('h2');
+        preguntaTitulo.textContent = pregunta.texto;
+        quizContainer.appendChild(preguntaTitulo);
+
+        // Convertir las opciones en un array de objetos y mezclarlas
+        let opcionesArray = Object.entries(pregunta.opciones)
+          .map(([key, texto]) => ({ key, texto }));
+        opcionesArray = shuffle(opcionesArray);
+
+        opcionesArray.forEach(opcionObj => {
+          let opcion = document.createElement('div');
+          opcion.classList.add('option');
+          opcion.textContent = opcionObj.texto;
+          opcion.dataset.valor = opcionObj.key;
+          opcion.addEventListener('click', function() {
+            validarRespuesta(this, pregunta.respuesta);
+          });
+          quizContainer.appendChild(opcion);
+        });
+      } else {
+        quizContainer.innerHTML = `<h2>¡Test finalizado!</h2><p>Has acertado ${correctas} de ${preguntasElegidas.length} preguntas.</p>`;
+        nextButton.style.display = 'none';
+        restartButton.style.display = 'block';
+      }
+    }
+
+    function validarRespuesta(elemento, respuestaCorrecta) {
+      let opciones = document.querySelectorAll('.option');
+      opciones.forEach(op => op.style.pointerEvents = 'none');
+
+      if (elemento.dataset.valor === respuestaCorrecta) {
+        elemento.classList.add('correct');
+        correctas++;
+      } else {
+        elemento.classList.add('incorrect');
+        let correcta = document.querySelector(`.option[data-valor='${respuestaCorrecta}']`);
+        if (correcta) correcta.classList.add('correct');
+      }
+      nextButton.style.display = 'block';
+    }
+
+    nextButton.addEventListener('click', function() {
+      preguntaActual++;
+      mostrarPregunta();
+    });
+
+    restartButton.addEventListener('click', function() {
+      this.style.display = 'none';
+      startButton.style.display = 'none';
+      preguntaActual = 0;
+      correctas = 0;
+      infoContainer.innerHTML = `<p>El test contiene <strong>${preguntas.length}</strong> preguntas.</p>`;
+      document.getElementById('question-counter').textContent = '';
+      startButton.style.display = 'block';
+      quizContainer.innerHTML = '';
+      quizContainer.style.display = 'none';
+    });
+  </script>
+</body>
+</html>
