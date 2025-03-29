@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Textos de Ortega para la PAU. Andalucía 2025</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      text-align: center;
+      background-color: #f5f8ff; /* Fondo azul pastel */
+    }
+    .question-container {
+      display: none;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      max-width: 600px;
+      margin: 20px auto;
+      background: #ffffff;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .option {
+      display: block;
+      padding: 10px;
+      margin: 10px 0;
+      border: 2px solid #ddd;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+    .option:hover {
+      background: #e0ebff;
+      transform: scale(1.05);
+    }
+    .correct {
+      background: #c8e6c9;
+      border-color: green;
+    }
+    .incorrect {
+      background: #ffcdd2;
+      border-color: red;
+    }
+    #start-btn, #restart-btn {
+      display: none;
+      margin-top: 20px;
+      padding: 10px;
+      background: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    #restart-btn {
+      background: #28a745;
+    }
+    /* Posiciona el botón "Siguiente" fijo a la derecha, en zona media/alta */
+    #next-btn {
+      position: fixed;
+      right: 20px;
+      top: 30%;
+      padding: 10px;
+      background: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      display: none;
+    }
+    /* Estilos para el contador de preguntas */
+    #question-counter {
+      position: fixed;
+      right: 20px;
+      top: 37%;
+      font-size: 1.2em;
+      font-weight: bold;
+      color: #333;
+    }
+    #info-container {
+      margin-top: 20px;
+      font-size: 1.2em;
+    }
+  </style>
+</head>
+<body>
+  <h1>Comprensión lectora: textos de Ortega para la PAU. Andalucía 2025</h1>
+  <h2 style="font-size: 0.6em; color: #555;">Tomás Cuesta. IES Juan de la Cierva</h2>
+  <div id="info-container"></div>
+  <button id="start-btn">Comenzar</button>
+  <div id="quiz-container" class="question-container"></div>
+  <button id="next-btn">Siguiente</button>
+  <!-- Contenedor para el contador de preguntas -->
+  <div id="question-counter"></div>
+  <button id="restart-btn">Reiniciar</button>
+  
+  <script>
+    // Función para barajar un array usando el algoritmo de Fisher–Yates
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    // Nuevo JSON con todas las preguntas de Ortega
+    const data = {
+      "preguntas": [
+        {
+          "texto": "Late bajo todo lo dicho la suposición de que existe una íntima afinidad entre los sistemas científicos y las generaciones o épocas. ¿Quiere esto decir que la ciencia, y especialmente la filosofía, sea un conjunto de convicciones que sólo valen como verdad para un determinado tiempo? Si aceptamos de esta suerte el carácter transitorio de toda verdad, quedaremos enrolados en las huestes de la doctrina «relativista», que es una de las más típicas emanaciones del siglo XIX. Mientras hablamos de escapar a esta época, no haríamos sino reincidir en ella.",
+          "opciones": {
+            "a": "La filosofía cambia con cada época porque está ligada a la cultura, y eso demuestra que nunca puede haber una verdad objetiva universal.",
+            "b": "Si asumimos que la verdad cambia con el tiempo, caemos en el relativismo, una doctrina que Ortega critica por ser un producto típico del siglo XIX, del que no podemos salir si pensamos como él.",
+            "c": "Para Ortega, cada generación tiene su propia verdad, que responde a sus necesidades, pero eso no significa que no haya un fondo común racional entre todas ellas."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "La verdad, el reflejar adecuadamente lo que las cosas son, se obliga a ser una e invariable. Más la vida humana, en su multiforme desarrollo, es decir, en la historia, ha cambiado constantemente de opinión, consagrando como «verdad» la que adoptaba en cada caso. ¿Cómo compaginar lo uno con lo otro? ¿Cómo avecindar la verdad, que es una e invariable, dentro de la vitalidad humana, que es, por esencia, mudadiza y varía de individuo a individuo, de raza a raza, de edad a edad?",
+          "opciones": {
+            "a": "La historia demuestra que no existe ninguna verdad firme, ya que todo cambia constantemente, y Ortega acepta que no se puede hablar de una verdad única.",
+            "b": "Ortega plantea el problema de cómo hacer compatible una verdad única con la diversidad histórica y vital del ser humano, que consagra diferentes verdades en cada época.",
+            "c": "Para Ortega, la verdad depende completamente del punto de vista individual, por eso no se puede hablar de historia de la verdad, sino solo de opiniones personales."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "En primer lugar, si no existe la verdad, no puede el relativismo tomarse a sí mismo en serio. En segundo lugar, la fe en la verdad es un hecho radical de la vida humana: si la amputamos queda ésta convertida en algo ilusorio y absurdo. La amputación misma que ejecutamos carecerá de sentido y valor. El relativismo es, a la postre, escepticismo.",
+          "opciones": {
+            "a": "Ortega sostiene que, aunque el relativismo sea contradictorio, es útil porque respeta la pluralidad de puntos de vista y permite una vida más libre.",
+            "b": "Ortega afirma que el relativismo es incoherente, porque al negar la verdad niega también la posibilidad de afirmarse a sí mismo; además, sin una mínima fe en la verdad, la vida se vuelve absurda.",
+            "c": "Ortega defiende una forma matizada de relativismo, pues cree que toda verdad es válida solo dentro del marco de la experiencia personal de cada uno."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Siendo la verdad una, absoluta e invariable, no puede ser atribuida a nuestras personas individuales, corruptibles y mudadizas. Habrá que suponer, más allá de las diferencias que entre los hombres existen, una especie de sujeto abstracto, común al europeo y al chino, al contemporáneo de Pericles y al caballero de Luis XIV.",
+          "opciones": {
+            "a": "Ortega critica a Descartes porque había negado la existencia de un sujeto racional común; Descartes prefería basar la verdad en la experiencia concreta de cada individuo.",
+            "b": "Ortega expone la lógica del racionalismo moderno, que para mantener la verdad como algo absoluto necesita postular un sujeto abstracto, igual para todos los tiempos y culturas.",
+            "c": "Ortega sostiene que la experiencia de cada generación construye su propia verdad, sin necesidad de apelar a un sujeto universal."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Pero no se comprende por qué la razón no ha descubierto, desde luego, el universo de las verdades. ¿Cómo es que tarda tanto? ¿Cómo permite que la humanidad se entretenga milenariamente en sestear abrazada a los más varios errores? ¿Cómo explicar la muchedumbre de opiniones y de gustos que, según las edades, las razas, los individuos, han dominado la historia?",
+          "opciones": {
+            "a": "Ortega defiende que la razón no ha podido descubrir la verdad porque está limitada por la biología y la psicología del ser humano.",
+            "b": "Ortega critica al racionalismo por ignorar que la historia está llena de errores, y se pregunta irónicamente por qué, si la razón es infalible, ha tardado tanto en descubrir la verdad.",
+            "c": "Ortega considera que la historia revela que las distintas culturas han accedido a verdades complementarias, lo que prueba que no existe una única forma de racionalidad."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Desde el punto de vista del racionalismo, la historia, con sus incesantes peripecias, carece de sentido, y es propiamente la historia de los estorbos puestos a la razón para manifestarse. El racionalismo es antihistórico.",
+          "opciones": {
+            "a": "Ortega defiende la postura racionalista porque considera que la historia es solo una sucesión de errores humanos que impiden alcanzar la verdad.",
+            "b": "Ortega considera que la verdad del racionalismo es atemporal, mientras que la historia de la humanidad no es más que una acumulación de obstáculos para que la razón encuentre esa verdad única y eterna.",
+            "c": "Ortega considera que la historia revela la evolución progresiva de la razón vital, que se adapta a las distintas circunstancias de cada época."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "De suerte que el error es un pecado de la voluntad, no un azar, y aun tal vez un sino de la inteligencia. Si no fuera por los pecados de la voluntad, ya el primer hombre habría descubierto todas las verdades que le son asequibles.",
+          "opciones": {
+            "a": "Ortega defiende que el error es un fallo inevitable del entendimiento humano, que está condenado a equivocarse por su debilidad natural.",
+            "b": "Ortega expone críticamente la tesis racionalista según la cual el error no se debe a los límites del entendimiento, sino a un mal uso de la voluntad, que escoge lo falso pudiendo haber elegido lo verdadero.",
+            "c": "Ortega cree que cada época tiene su propio horizonte de verdad, por eso no tiene sentido hablar de un error universal que hubiera podido evitarse desde el origen."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Contraponer la cultura a la vida y reclamar para ésta la plenitud de sus derechos frente a aquélla no es hacer profesión de fe anticultural. Si se interpreta así lo dicho anteriormente, se practica una perfecta tergiversación. Quedan intactos los valores de la cultura; únicamente se niega su exclusivismo.",
+          "opciones": {
+            "a": "Ortega defiende la necesidad de rechazar la cultura porque impide el desarrollo pleno de la vida individual y auténtica.",
+            "b": "Ortega aclara que al criticar el exclusivismo cultural no está negando el valor de la cultura, sino que exige que se reconozca también el derecho de la vida concreta a expresarse plenamente.",
+            "c": "Ortega sostiene que la cultura debe someterse siempre a los dictados de la razón vital, por lo que pierde su valor cuando entra en conflicto con las creencias espontáneas del individuo."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "La tradición moderna nos ofrece dos maneras opuestas de hacer frente a la antinomia entre vida y cultura. Una de ellas, el racionalismo, para salvar la cultura niega todo sentido a la vida. La otra, el relativismo, ensaya la operación inversa: desvanece el valor objetivo de la cultura para dejar paso a la vida. Ambas soluciones, que a las generaciones anteriores parecían suficientes, no encuentran eco en nuestra sensibilidad.",
+          "opciones": {
+            "a": "Ortega valora el relativismo moderno porque permite devolver el protagonismo a la vida, superando así el intelectualismo excesivo de épocas anteriores.",
+            "b": "Ortega critica tanto al racionalismo como al relativismo, porque ambos extremos sacrifican uno de los términos: o la vida o la cultura; por eso ya no satisfacen la sensibilidad de su tiempo.",
+            "c": "Ortega defiende que la vida y la cultura son términos incompatibles, y por eso es preferible una vida auténtica aunque implique renunciar a valores culturales establecidos."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "El conocimiento es la adquisición de verdades, y en las verdades se nos manifiesta el universo trascendente (transubjetivo) de la realidad. Las verdades son eternas, únicas e invariables. ¿Cómo es posible su insaculación dentro del sujeto?",
+          "opciones": {
+            "a": "Ortega afirma que el conocimiento no puede ofrecernos acceso a verdades objetivas, ya que toda verdad depende del punto de vista subjetivo del individuo.",
+            "b": "Ortega plantea un problema central de la filosofía moderna: si las verdades son objetivas y eternas, ¿cómo pueden quedar contenidas en un sujeto individual y cambiante?",
+            "c": "Ortega sostiene que el conocimiento verdadero es siempre relativo a la época y cultura del sujeto, por lo que no cabe hablar de un universo transubjetivo."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "La respuesta del Racionalismo es taxativa: sólo es posible el conocimiento si la realidad puede penetrar en él sin la menor deformación.",
+          "opciones": {
+            "a": "Ortega comparte la visión racionalista de que el conocimiento verdadero debe reflejar la realidad tal como es, sin mediaciones subjetivas.",
+            "b": "Ortega expone la exigencia del racionalismo: que el conocimiento sea un espejo exacto de la realidad, sin que el sujeto introduzca distorsión alguna.",
+            "c": "Ortega afirma que la realidad siempre se deforma al entrar en contacto con el sujeto, por lo que no es posible ningún tipo de conocimiento verdadero."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "La respuesta del relativismo no es menos taxativa. El conocimiento es imposible; no hay una realidad trascendente, porque todo sujeto real es un recinto peculiarmente modelado. Al entrar en él la realidad se deformaría, y esta deformación individual sería lo que cada ser tomase por la pretendida realidad.",
+          "opciones": {
+            "a": "Ortega defiende la postura relativista según la cual la realidad es inalcanzable, ya que cada sujeto la deforma inevitablemente según su perspectiva.",
+            "b": "Ortega expone críticamente la tesis del relativismo: como cada sujeto tiene una estructura distinta, cualquier conocimiento sería solo una deformación subjetiva de la realidad.",
+            "c": "Ortega propone que la realidad solo puede conocerse si se adapta al modo de ser del sujeto, lo que convierte toda verdad en una construcción cultural."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "El sujeto, ni es un medio transparente, un «yo puro» idéntico e invariable, ni su recepción de la realidad produce en ésta deformaciones. Los hechos imponen una tercera opinión, síntesis ejemplar de ambas. Cuando se interpone un cedazo o retícula en una corriente, deja pasar unas cosas y detiene otras; se dirá que las selecciona, pero no que las deforma. Esta es la función del sujeto.",
+          "opciones": {
+            "a": "Ortega sostiene que el sujeto es como un filtro activo que selecciona la realidad sin distorsionarla, integrando así elementos del racionalismo y del relativismo en una nueva propuesta.",
+            "b": "Ortega cree que el sujeto, al no ser un medio transparente, impide cualquier acceso a la realidad, por lo que la única opción es asumir el escepticismo.",
+            "c": "Ortega retoma la idea cartesiana del “yo puro” para afirmar que el sujeto es un medio neutral que capta íntegramente la realidad tal como es."
+          },
+          "respuesta": "a"
+        },
+        {
+          "texto": "La estructura psíquica de cada individuo viene a ser un órgano perceptor, dotado de una forma determinada que permite la comprensión de ciertas verdades y está condenado a inexorable ceguera para otras. Así mismo, para cada pueblo y cada época tienen su alma típica, es decir, una retícula con mallas de amplitud y perfil definidos.",
+          "opciones": {
+            "a": "Ortega defiende que cada sujeto tiene una estructura psicológica distinta que deforma la realidad, por lo que nunca es posible acceder a la verdad.",
+            "b": "Ortega sostiene que cada individuo, pueblo o época tiene una forma particular de percibir la realidad, lo que le permite acceder a ciertas verdades, pero también le impide alcanzar otras.",
+            "c": "Ortega afirma que la verdad solo puede alcanzarse cuando el sujeto supera su perspectiva individual y se sitúa en una posición racional universal."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Esto supondría que hay un tercer paisaje auténtico, el cual no se halla sometido a las mismas condiciones que los otros dos. Ahora bien, ese paisaje arquetipo no existe ni puede existir. La realidad cósmica es tal, que sólo puede ser vista bajo una determinada perspectiva. La perspectiva es uno de los componentes de la realidad. Lejos de ser su deformación, es su organización.",
+          "opciones": {
+            "a": "Ortega sostiene que existe una única realidad objetiva que se revela por encima de cualquier perspectiva individual o cultural.",
+            "b": "Ortega niega que exista una perspectiva universal y auténtica desde la cual ver toda la realidad, y sostiene que toda visión del mundo es parcial, pero necesaria, porque la perspectiva forma parte constitutiva de la propia realidad.",
+            "c": "Ortega considera que todas las perspectivas son falsas y engañosas, ya que nos impiden conocer cómo es verdaderamente la realidad."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "La individualidad de cada sujeto era el indominable estorbo que la tradición intelectual de los últimos tiempos encontraba para que el conocimiento pudiese justificar su pretensión de conseguir la verdad. Dos sujetos diferentes -se pensaba- llegarán a verdades divergentes. Ahora vemos que la divergencia entre los mundos de dos sujetos no implica la falsedad de uno de ellos.",
+          "opciones": {
+            "a": "Ortega sostiene que si dos personas llegan a verdades diferentes, necesariamente una de ellas está equivocada, porque la verdad es única y objetiva.",
+            "b": "Ortega critica la tradición intelectual moderna que veía en la diversidad de sujetos un obstáculo para alcanzar la verdad, y propone que distintas perspectivas pueden ser verdaderas sin excluirse mutuamente.",
+            "c": "Ortega defiende que, al ser cada sujeto irrepetible, es imposible compartir verdades comunes, y cada uno debe encerrarse en su propia visión del mundo."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Cada individuo, persona, pueblo, época es un órgano insustituible para la conquista de la verdad. He aquí cómo ésta, que por sí misma es ajena a las variaciones históricas, adquiere una dimensión vital.",
+          "opciones": {
+            "a": "Ortega afirma que la verdad cambia constantemente con cada individuo, cultura o época, y que no existe ninguna verdad que trascienda lo histórico.",
+            "b": "Ortega sostiene que, aunque la verdad es en sí misma objetiva y ajena a las variaciones históricas, solo puede ser alcanzada a través de las perspectivas particulares de cada sujeto y época.",
+            "c": "Ortega considera que la historia es solo el marco en el que los individuos buscan la verdad, pero que este marco es irrelevante para comprender lo verdadero."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "La sola perspectiva falsa es esa que pretende ser la única. Dicho de otra manera: lo falso es la utopía, la verdad no localizada, vista desde «lugar ninguno». El utopista y esto ha sido en esencia el racionalismo es el que más yerra, porque es el hombre que no se conserva fiel a su punto de vista, que deserta de su puesto.",
+          "opciones": {
+            "a": "Ortega defiende que la única forma válida de acceder a la verdad es mediante una perspectiva neutra, que no esté condicionada por la posición del sujeto.",
+            "b": "Ortega dice que solo habrá una perspectiva que no tiene nada que ver con la verdad: la perspectiva que pretenda ser precisamente la única verdadera. Porque hace como si se pudiera conocer algo desde “ningún lugar”, ignorando la propia circunstancia.",
+            "c": "Ortega cree que el racionalismo se equivoca por no ofrecer una única verdad estable, sino muchas visiones cambiantes según el punto de vista del sujeto."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Ahora bien; la reducción o conversión del mundo a horizonte no resta lo más mínimo de realidad a aquél; simplemente lo refiere al sujeto viviente.",
+          "opciones": {
+            "a": "Ortega afirma que reducir el mundo a una perspectiva subjetiva equivale a negar su realidad objetiva, lo que conduce al escepticismo.",
+            "b": "Ortega sostiene que convertir el mundo en horizonte —es decir, en perspectiva— no lo hace menos real, sino que lo vincula necesariamente al sujeto que lo vive.",
+            "c": "Ortega cree que el mundo solo existe en la medida en que es pensado por el sujeto, lo cual significa que fuera del pensamiento no hay realidad alguna."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Ahora bien: esta suma de las perspectivas individuales, este conocimiento de lo que todos y cada uno han visto y saben, esta omnisciencia, esta verdadera «razón absoluta» es el sublime oficio que atribuimos a Dios.",
+          "opciones": {
+            "a": "Ortega sostiene que Dios representa una única perspectiva absoluta, superior a todas las demás, desde la cual puede conocerse la verdad total.",
+            "b": "Ortega afirma que Dios, en tanto símbolo de la omnisciencia, no tiene una única perspectiva privilegiada, sino que reúne todas las visiones individuales, como suma integradora de todas las experiencias.",
+            "c": "Ortega cree que la verdad solo puede alcanzarse si el sujeto humano renuncia a su perspectiva y adopta la visión total de la divinidad."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Dios es el símbolo del torrente vital, al través de cuyas infinitas retículas va pasando poco a poco el universo, que queda así impregnado de vida.",
+          "opciones": {
+            "a": "Ortega considera que Dios es un ser que observa el mundo desde una perspectiva eterna y única, al margen de la vida humana.",
+            "b": "Ortega presenta a Dios como símbolo de la vida que se realiza al atravesar una infinita pluralidad de retículas o perspectivas individuales; es la imagen de una realidad que se completa al pasar por todas las visiones posibles.",
+            "c": "Ortega afirma que Dios garantiza la objetividad absoluta del universo, ya que existe por encima del tiempo y del cambio."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "El «aquí» manifiesta cierta holgura dentro de la cual podemos movilizarnos a capricho, pero siempre tendremos que estar en algún preciso «aquí», del más amplio, pero no menos preciso «aquí» que es este mundo. Este mundo no se compone de cuerpos físicos. La física es una ciencia maravillosa, pero no es más que una ciencia, y el «mundo» que nos define es solo una interpretación del auténtico mundo que es ese en que vivimos y que, por ello, nos induce a hacer física. El mundo se compone de todo y solo lo que nos afecta o importa positiva o negativamente.",
+          "opciones": {
+            "a": "Ortega afirma que el mundo real está compuesto exclusivamente por cuerpos físicos, y que la ciencia es el único modo válido de conocerlo.",
+            "b": "Ortega sostiene que el auténtico mundo no es el descrito por la física, sino aquel en que vivimos, el que nos afecta y nos importa, y que precisamente por eso nos lleva a interpretar científicamente la realidad.",
+            "c": "Ortega defiende que solo podemos conocer el mundo desde la perspectiva del lenguaje científico, aunque no lo habitemos completamente desde ahí."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "El mundo se compone solo de lo que nos es. El «ser en sí y por sí» del mundo, aparte de nosotros, sin relación al cada cual que uno es, significa ya un ser secundario, derivado, interpretativo e hipotético. El sentido primordial de ser es ser-nos.",
+          "opciones": {
+            "a": "Ortega defiende que el mundo tiene un ser propio e independiente del sujeto, y que nosotros solo lo conocemos parcialmente a través de nuestras interpretaciones.",
+            "b": "Ortega afirma que el ser más auténtico no es el “en sí”, sino el “ser-nos”: la realidad es ante todo lo que se nos da, lo que nos afecta, y el ser abstracto e independiente es una construcción secundaria.",
+            "c": "Ortega sostiene que el ser del mundo es siempre colectivo, y que lo que nos es a nosotros debe coincidir con lo que es para los demás, porque el ser auténtico es común."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "También cada cual se-es, quiera o no, a sí mismo. No se trata, como creía el idealismo subjetivista, de que esta flor nos es porque la vemos ahora o porque ayer pensamos en ella. En tal caso no sería flor, sino «visión-de-flor», «pensamiento-de-flor». Mas la verdad es lo contrario: percibir la flor o pensar en ella es estarnos siendo esta flor efectivamente esta flor.",
+          "opciones": {
+            "a": "Ortega defiende la posición idealista según la cual los objetos solo existen en tanto son pensados o percibidos por el sujeto.",
+            "b": "Ortega rechaza el idealismo subjetivista y sostiene que los objetos no son meras representaciones, sino que se nos dan como reales: ver la flor no es ver una imagen mental, sino estar en presencia de la flor misma.",
+            "c": "Ortega cree que la conciencia humana no puede distinguir entre una flor real y una imaginada, porque todo es construcción mental según nuestras ideas previas."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Esta flor nos es o nos flor-és. Su ser es su «florear-nos», su «florecer-nos».",
+          "opciones": {
+            "a": "Ortega sostiene que el ser de la flor es independiente de cualquier relación con nosotros; florece por sí misma, aunque nadie la perciba.",
+            "b": "Ortega afirma que el ser de la flor consiste precisamente en su manera de afectarnos: su realidad no está al margen de nosotros, sino en su “florear-nos”, en cómo se nos da como flor.",
+            "c": "Ortega defiende que toda percepción de la flor es solo una metáfora del lenguaje, y que el florecer no tiene valor ontológico alguno."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Este carácter en que, por lo pronto, consiste el mundo —su ser-me— y, consecuentemente, el estar radicalmente referido a mí, me llevó, hace más de treinta años, a buscar otro término con que designarlo, ya que el vocablo «mundo» había significado siempre en filosofía «lo que no consiste en referencia a mí (o Yo)». Le llamé circunstancia.",
+          "opciones": {
+            "a": "Ortega define la circunstancia como el conjunto de condiciones externas que limitan la libertad del individuo, opuestas a su yo interior.",
+            "b": "Ortega propone el término “circunstancia” para referirse a la realidad que se nos da siempre en relación con nosotros mismos, frente al concepto tradicional de “mundo” entendido como algo ajeno al yo.",
+            "c": "Ortega usa el término “circunstancia” para hablar de la naturaleza o del entorno físico objetivo, tal como lo describe la ciencia."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Invertimos de esta suerte la concepción tradicional que es falsa, que es ingenua. Antes las circunstancias parecían darse en el mundo («se da la circunstancia...»); ahora es el mundo quien se da en la circunstancia, quien consiste en circunstancias.",
+          "opciones": {
+            "a": "Ortega reafirma la concepción tradicional del mundo como algo objetivo en el que ocasionalmente se dan circunstancias particulares.",
+            "b": "Ortega invierte la visión filosófica heredada: ya no se entiende que las circunstancias ocurren en el mundo, sino que el mundo mismo está hecho de circunstancias, es decir, de aquello que se nos da en nuestra vida concreta.",
+            "c": "Ortega sostiene que la circunstancia es solo un añadido subjetivo al mundo, que en sí mismo permanece idéntico y sin relación con el sujeto."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Ello nos obliga a prescindir del término «cosas», que, más que ningún otro, intercepta nuestra visión de la realidad.",
+          "opciones": {
+            "a": "Ortega defiende el uso del término “cosas” como la mejor manera de nombrar los objetos reales, tal como son en sí mismos.",
+            "b": "Ortega rechaza el término “cosas” porque sugiere que la realidad está hecha de objetos externos y separados de nosotros, cuando en realidad todo lo real se nos da como circunstancia, en relación con nuestra vida.",
+            "c": "Ortega sostiene que el término “cosas” es útil para describir científicamente la realidad, aunque no sirva para hablar de la experiencia vital."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Afortunadamente ha llegado el pensamiento occidental a descubrir que no sabe lo que es materia ni lo que es espíritu y que no lo sabe por la sencilla razón de que no hay materia ni hay espíritu. Ahora vemos que se trata de dos «mitos».",
+          "opciones": {
+            "a": "Ortega defiende la existencia real de la materia y el espíritu como dos dimensiones fundamentales del ser humano y del universo.",
+            "b": "Ortega considera que “materia” y “espíritu” son construcciones míticas de la tradición filosófica que no responden a la experiencia real del ser humano; frente a ellas, propone pensar la realidad desde la noción de circunstancia, es decir, como aquello que se nos da en relación con nuestra vida.",
+            "c": "Ortega sostiene que, aunque no podamos definirlos con precisión, materia y espíritu son nociones necesarias para mantener una visión racional del mundo."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Si no se entiende «cosa» como sinónimo de «algo» —que es un concepto vacío o formal, simple hueco mental preparado para que lo ocupe cualquier objeto—, o como mera noción práctica que no pretende representar realidades sino orientar nuestras manipulaciones gruesas, es inevitable la eliminación de este vocablo.",
+          "opciones": {
+            "a": "Ortega considera que el término “cosa” debe conservarse porque refleja adecuadamente la estructura profunda de la realidad.",
+            "b": "Ortega afirma que el término “cosa”, salvo cuando se use como noción vacía o práctica, debe ser eliminado porque encierra una falsa concepción del mundo como hecho de objetos externos; en su lugar, propone comprender lo real como circunstancia, como lo que nos afecta directamente.",
+            "c": "Ortega sostiene que el término “cosa” es útil en ciencia y en filosofía siempre que se utilice con precisión, ya que permite identificar los objetos reales sin ambigüedad."
+          },
+          "respuesta": "b"
+        }
+      ]
+    };
+
+    let preguntas = data.preguntas;
+    let preguntasElegidas = [];
+    let preguntaActual = 0;
+    let correctas = 0;
+
+    const quizContainer = document.getElementById('quiz-container');
+    const nextButton = document.getElementById('next-btn');
+    const restartButton = document.getElementById('restart-btn');
+    const startButton = document.getElementById('start-btn');
+    const infoContainer = document.getElementById('info-container');
+
+    infoContainer.innerHTML = `<p>El test contiene <strong>${preguntas.length}</strong> preguntas. Podrás elegir cuántas usar.</p>`;
+    startButton.style.display = 'block';
+
+    startButton.addEventListener('click', function() {
+      let numPreguntas = prompt(`El test tiene ${preguntas.length} preguntas. ¿Cuántas deseas jugar?`, preguntas.length);
+      numPreguntas = parseInt(numPreguntas);
+      if (isNaN(numPreguntas) || numPreguntas < 1 || numPreguntas > preguntas.length) {
+        alert('Número no válido. Se jugarán todas las preguntas.');
+        numPreguntas = preguntas.length;
+      }
+      // Seleccionar preguntas aleatorias
+      preguntasElegidas = shuffle([...preguntas]).slice(0, numPreguntas);
+      preguntaActual = 0;
+      correctas = 0;
+      startButton.style.display = 'none';
+      infoContainer.innerHTML = '';
+      mostrarPregunta();
+    });
+
+    function mostrarPregunta() {
+      if (preguntaActual < preguntasElegidas.length) {
+        quizContainer.innerHTML = '';
+        // Actualizar el contador de preguntas
+        document.getElementById('question-counter').textContent = `Pregunta ${preguntaActual + 1} de ${preguntasElegidas.length}`;
+        quizContainer.style.display = 'block';
+        nextButton.style.display = 'none';
+
+        let pregunta = preguntasElegidas[preguntaActual];
+        let preguntaTitulo = document.createElement('h2');
+        preguntaTitulo.textContent = pregunta.texto;
+        quizContainer.appendChild(preguntaTitulo);
+
+        // Convertir las opciones en un array de objetos y mezclarlas con Fisher–Yates
+        let opcionesArray = Object.entries(pregunta.opciones)
+          .map(([key, texto]) => ({ key, texto }));
+        opcionesArray = shuffle(opcionesArray);
+
+        opcionesArray.forEach(opcionObj => {
+          let opcion = document.createElement('div');
+          opcion.classList.add('option');
+          opcion.textContent = opcionObj.texto;
+          opcion.dataset.valor = opcionObj.key;
+          opcion.addEventListener('click', function() {
+            validarRespuesta(this, pregunta.respuesta);
+          });
+          quizContainer.appendChild(opcion);
+        });
+      } else {
+        quizContainer.innerHTML = `<h2>¡Test finalizado!</h2><p>Has acertado ${correctas} de ${preguntasElegidas.length} preguntas.</p>`;
+        nextButton.style.display = 'none';
+        restartButton.style.display = 'block';
+      }
+    }
+
+    function validarRespuesta(elemento, respuestaCorrecta) {
+      let opciones = document.querySelectorAll('.option');
+      opciones.forEach(op => op.style.pointerEvents = 'none');
+
+      if (elemento.dataset.valor === respuestaCorrecta) {
+        elemento.classList.add('correct');
+        correctas++;
+      } else {
+        elemento.classList.add('incorrect');
+        let correcta = document.querySelector(`.option[data-valor='${respuestaCorrecta}']`);
+        if (correcta) correcta.classList.add('correct');
+      }
+      nextButton.style.display = 'block';
+    }
+
+    nextButton.addEventListener('click', function() {
+      preguntaActual++;
+      mostrarPregunta();
+    });
+
+    restartButton.addEventListener('click', function() {
+      this.style.display = 'none';
+      startButton.style.display = 'none';
+      preguntaActual = 0;
+      correctas = 0;
+      infoContainer.innerHTML = `<p>El test contiene <strong>${preguntas.length}</strong> preguntas.</p>`;
+      // Limpiar el contador al reiniciar
+      document.getElementById('question-counter').textContent = '';
+      startButton.style.display = 'block';
+      quizContainer.innerHTML = '';
+      quizContainer.style.display = 'none';
+    });
+  </script>
+</body>
+</html>
