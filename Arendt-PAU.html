@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Textos de Arendt para la PAU. Andalucía 2025</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      text-align: center;
+      background-color: #f5f8ff;
+    }
+    .question-container {
+      display: none;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      max-width: 600px;
+      margin: 20px auto;
+      background: #ffffff;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .option {
+      display: block;
+      padding: 10px;
+      margin: 10px 0;
+      border: 2px solid #ddd;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+    .option:hover {
+      background: #e0ebff;
+      transform: scale(1.05);
+    }
+    .correct {
+      background: #c8e6c9;
+      border-color: green;
+    }
+    .incorrect {
+      background: #ffcdd2;
+      border-color: red;
+    }
+    #start-btn, #restart-btn {
+      display: none;
+      margin-top: 20px;
+      padding: 10px;
+      background: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    #restart-btn {
+      background: #28a745;
+    }
+    #next-btn {
+      position: fixed;
+      right: 20px;
+      top: 30%;
+      padding: 10px;
+      background: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      display: none;
+    }
+    #question-counter {
+      position: fixed;
+      right: 20px;
+      top: 37%;
+      font-size: 1.2em;
+      font-weight: bold;
+      color: #333;
+    }
+    #info-container {
+      margin-top: 20px;
+      font-size: 1.2em;
+    }
+    /* Sección para los enlaces extra */
+    #extra-links {
+      display: block;
+      margin-top: 20px;
+      font-size: 0.9em;
+      color: #444;
+      text-align: center;
+    }
+    #extra-links a {
+      color: #007BFF;
+      text-decoration: none;
+    }
+    #extra-links a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h1>Comprensión lectora: textos de Arendt para la PAU. Andalucía 2025</h1>
+  <h2 style="font-size: 0.6em; color: #555;">Tomás Cuesta. IES Juan de la Cierva</h2>
+  
+  <div id="info-container"></div>
+  
+  <!-- Botón de inicio -->
+  <button id="start-btn">Comenzar</button>
+  
+  <!-- Enlaces extra (se muestran al inicio y al reiniciar) -->
+  <div id="extra-links">
+    <p><strong>Manuales para el alumnado (Amazon)</strong></p>
+    <p><a href="https://www.amazon.es/dp/B0F48N325F/ref=tmm_pap_swatch_0" target="_blank">Itinerario Ético-Político</a></p>
+    <p><a href="https://www.amazon.es/dp/B0F48G3RHR/ref=tmm_pap_swatch_0" target="_blank">Itinerario Ontológico-Epistemológico</a></p>
+  </div>
+  
+  <div id="quiz-container" class="question-container"></div>
+  <button id="next-btn">Siguiente</button>
+  <div id="question-counter"></div>
+  <button id="restart-btn">Reiniciar</button>
+  
+  <script>
+    // Función para barajar un array (algoritmo de Fisher–Yates)
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    // Array de preguntas actualizado (se carga completo)
+    const data = {
+      "preguntas": [
+        {
+          "texto": "Con la expresión vita activa me propongo designar tres actividades fundamentales: labor, trabajo y acción. Son fundamentales porque cada una corresponde a las condiciones básicas bajo las que se ha dado al hombre la vida en la tierra.",
+          "opciones": {
+            "a": "La expresión 'vita activa' se refiere a tres actividades esenciales para la existencia humana: labor, trabajo y acción.",
+            "b": "Vita activa significa trabajar en actividades artísticas.",
+            "c": "Vita activa se refiere a la acción económica sin involucrar la vida política."
+          },
+          "respuesta": "a"
+        },
+        {
+          "texto": "Labor es la actividad correspondiente al proceso biológico del cuerpo humano, cuyo espontáneo crecimiento, metabolismo y decadencia final están ligados a las necesidades vitales.",
+          "opciones": {
+            "a": "La labor se relaciona con el funcionamiento natural del cuerpo, incluyendo crecimiento y decadencia.",
+            "b": "La labor es la creación de objetos que perduran en el tiempo.",
+            "c": "La labor se basa en la participación biopolítica activa."
+          },
+          "respuesta": "a"
+        },
+        {
+          "texto": "Trabajo es la actividad que corresponde a lo no natural de la exigencia del hombre, que no está inmerso en el ciclo vital repetitivo. El trabajo proporciona un mundo artificial de cosas, distintas de las circunstancias naturales.",
+          "opciones": {
+            "a": "El trabajo se encarga de satisfacer las necesidades biológicas.",
+            "b": "El trabajo es la creación de un mundo artificial con objetos que trascienden el ciclo natural de la vida.",
+            "c": "El trabajo se refiere únicamente a actividades políticas sin uso práctico."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "La acción, única actividad que se da entre los hombres sin la mediación de cosas, corresponde a la condición de la pluralidad, al hecho de que los hombres vivan en la Tierra y habiten en el mundo.",
+          "opciones": {
+            "a": "La acción es la interacción directa entre personas diferentes entre sí que comparten una realidad material.",
+            "b": "La acción es la repetición de procesos biológicos individuales o plurales.",
+            "c": "La acción se basa en la creación de objetos duraderos para la posteridad."
+          },
+          "respuesta": "a"
+        },
+        {
+          "texto": "El idioma de los romanos empleaba las expresiones 'vivir' y 'estar entre hombres' como sinónimos, así como 'morir' y 'cesar de estar entre hombres'.",
+          "opciones": {
+            "a": "Los romanos definían vivir como el hecho de estar en comunidad y morir como dejar de formar parte de ella.",
+            "b": "Para los romanos, vivir implicaba trabajar para los demás.",
+            "c": "Los romanos relacionaban vivir con la labor de cesar de morir."
+          },
+          "respuesta": "a"
+        },
+        {
+          "texto": "La acción sería un lujo innecesario si los hombres fueran repeticiones idénticas, sin diversidad y con una esencia predecible.",
+          "opciones": {
+            "a": "Si los hombres fueran idénticos, la acción carecería de sentido porque no habría novedad en sus comportamientos.",
+            "b": "La acción es innecesaria porque es suficiente con aceptar la diversidad humana.",
+            "c": "La acción se repite de forma idéntica en todos los individuos y por tanto para algunos es un lujo."
+          },
+          "respuesta": "a"
+        },
+        {
+          "texto": "La condición humana de la acción está implícita incluso en el Génesis, al crearse al hombre en forma de macho y hembra.",
+          "opciones": {
+            "a": "El Génesis muestra que los seres humanos fueron creados como individuos distintos, lo que permite la acción.",
+            "b": "El Génesis se refiere solo a la reproducción biológica sin implicar la acción.",
+            "c": "El Génesis indica que los humanos fueron creados idénticamente."
+          },
+          "respuesta": "a"
+        },
+        {
+          "texto": "Estas tres actividades (labor, trabajo y acción) están íntimamente relacionadas con la existencia humana: nacimiento y muerte, natalidad y mortalidad.",
+          "opciones": {
+            "a": "Las tres actividades son independientes de los procesos de nacimiento y muerte.",
+            "b": "Las actividades están vinculadas a la vida, ya que se relacionan con el comienzo y el final de la existencia humana.",
+            "c": "Cada parte de la acción tiene relación con una parte de la natalidad pero no de la mortalidad."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "La labor no solo asegura la supervivencia individual, sino también la continuidad de la especie.",
+          "opciones": {
+            "a": "La labor es esencial para el funcionamiento natural del cuerpo y la supervivencia de la especie.",
+            "b": "La labor se relaciona exclusivamente con actividades artísticas.",
+            "c": "La labor es irrelevante para la continuidad de la especie."
+          },
+          "respuesta": "a"
+        },
+        {
+          "texto": "El trabajo concede permanencia y durabilidad a la vida mortal, creando un mundo artificial que trasciende la existencia individual.",
+          "opciones": {
+            "a": "El trabajo ayuda a prolongar la vida biológica de una persona.",
+            "b": "El trabajo produce un entorno artificial que supera la fugacidad de la existencia humana.",
+            "c": "El trabajo es una parte de la muerte pero asegura el bienestar de los descendientes."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "La acción crea la condición para el recuerdo y, por ende, para la historia.",
+          "opciones": {
+            "a": "La acción permite que los hechos sean recordados y se conviertan en parte de la historia.",
+            "b": "La acción puede borrar el pasado y construir una huella nueva en cada acto.",
+            "c": "La acción solo se relaciona con la creación de objetos físicos y la labor con el recuerdo."
+          },
+          "respuesta": "a"
+        },
+        {
+          "texto": "Labor, trabajo y acción están enraizados en la natalidad, ya que ayudan a incorporar al constante aflujo de nuevos individuos.",
+          "opciones": {
+            "a": "Estas actividades impiden la llegada de nuevos individuos.",
+            "b": "Facilitan la incorporación de los recién llegados al mundo.",
+            "c": "Es en concreto la labor la que se relaciona con el nacimiento."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "La acción mantiene la más estrecha relación con la natalidad; el recién nacido posee la capacidad de empezar algo nuevo.",
+          "opciones": {
+            "a": "La acción no mantiene recuerdo de las actividades previas.",
+            "b": "La acción es la actividad que permite comenzar cosas nuevas, aprovechando la llegada de cada nuevo ser humano.",
+            "c": "La acción se basa en dejar de repetir comportamientos antiguos."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Los hombres son seres condicionados; todo lo que tocan o experimentan se convierte en parte de su existencia.",
+          "opciones": {
+            "a": "Los hombres son básicamente independientes de su entorno.",
+            "b": "El entorno influye en los seres humanos, afectando su forma de vivir.",
+            "c": "Solo las actividades políticas condicionan a los hombres."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Además, los hombres crean continuamente sus propias condiciones, que tienen el mismo poder condicionante que las cosas naturales.",
+          "opciones": {
+            "a": "Somos libres y no se puede inventar nada que realmente limite esa libertad.",
+            "b": "Los seres humanos también generan sus propias circunstancias, las cuales influyen en ellos tanto como las condiciones naturales.",
+            "c": "La experiencia es la creación continua de las variaciones humanas."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "La condición humana no es lo mismo que la naturaleza humana, y la suma de las actividades humanas no define la esencia del ser.",
+          "opciones": {
+            "a": "La condición y la naturaleza humana son conceptos problemáticos.",
+            "b": "La condición humana describe las circunstancias y actividades de la vida, sin determinar una esencia inmutable.",
+            "c": "La condición humana determina por completo quiénes somos porque es la suma de actividades."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "El cambio más radical en la condición humana sería que los hombres emigraran a otro planeta, viviendo bajo condiciones hechas por ellos mismos.",
+          "opciones": {
+            "a": "La emigración a otro planeta implicaría que los humanos dejaran de estar condicionados.",
+            "b": "Si los humanos dejaran el planeta, crearían condiciones de vida tan diferentes que cambiaría mucho de su condición humana.",
+            "c": "La emigración a otro planeta es lo mismo que vivir en la Tierra porque los humanos seguirían siendo diversos."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "El problema de definir la naturaleza humana es que se crea una imagen idealizada y casi divina del ser, que no refleja la realidad.",
+          "opciones": {
+            "a": "Definir la naturaleza humana nos permite conocer nuestra esencia aunque más adelante cambie.",
+            "b": "Intentar definir la naturaleza humana suele dar lugar a una imagen distorsionada que no capta la verdadera diversidad humana.",
+            "c": "La naturaleza humana es fácil de definir sin complicaciones pero no siempre se sabe hacer."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Los intentos de definir la naturaleza humana terminan casi invariablemente en la creación de una deidad o imagen superhumana.",
+          "opciones": {
+            "a": "Definir la naturaleza humana ayuda a resaltar la individualidad de cada persona.",
+            "b": "El esfuerzo por definir qué es el ser humano a menudo resulta en una imagen que no representa la realidad.",
+            "c": "La definición de la naturaleza humana es un proceso sencillo y directo, al contrario que la definición de la divinidad."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Las condiciones de la existencia – vida, natalidad, mortalidad y la Tierra – nunca pueden explicar por completo quiénes somos.",
+          "opciones": {
+            "a": "Las circunstancias de la vida definen la esencia humana aunque esa esencia cambia con el tiempo.",
+            "b": "Aunque influyen, las condiciones de la existencia no logran explicar en su totalidad la identidad de una persona.",
+            "c": "Solo la biología determina la identidad de los seres humanos."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "La moderna ciencia natural ha demostrado que, aunque vivamos bajo condiciones terrenas, no somos simples criaturas sujetas únicamente a la Tierra.",
+          "opciones": {
+            "a": "La ciencia ha probado que los humanos son simplemente una más de las criaturas de la Tierra.",
+            "b": "La ciencia muestra que, pese a vivir en la Tierra, la existencia humana tiene el potencial de ir más allá de las condiciones materiales en las que se encuentra.",
+            "c": "La ciencia niega cualquier influencia de la Tierra en la vida humana porque somos libres de escoger nuestro lugar."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "La expresión vita activa está cargada de tradición y surgió del juicio a Sócrates y del conflicto entre el filósofo y la polis.",
+          "opciones": {
+            "a": "Vita activa es un concepto griego defendido por los sofistas.",
+            "b": "El término vita activa proviene de antiguas experiencias políticas, como el juicio a Sócrates y su conflicto con la ciudad.",
+            "c": "Vita activa se refiere a procesos biológicos que ya estudiaron los presocráticos."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "En la filosofía medieval, la traducción de 'bios politikos' se usaba para designar una vida dedicada a los asuntos públicos.",
+          "opciones": {
+            "a": "Bios politikos hacía referencia a la vida religiosa.",
+            "b": "Bios politikos era el término empleado para describir una vida orientada a la política y los asuntos públicos.",
+            "c": "Bios politikos se refería a la actividad fundamentalmente laboral."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Aristóteles distinguió tres modos de vida que podían elegirse libremente, descartando aquellas basadas en la necesidad de sobrevivir.",
+          "opciones": {
+            "a": "Aristóteles consideraba que solo las formas de vida de los filósofos eran libres.",
+            "b": "Aristóteles diferenciaba entre formas de vida libres y aquellas determinadas por la necesidad, descartando las últimas.",
+            "c": "Aristóteles distinguió tres formas de vida inferiores: bárbaros, esclavos, mujeres."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "La forma de vida del déspota, basada en la necesidad, no podía considerarse libre ni formar parte del bios politikos.",
+          "opciones": {
+            "a": "Las personas que pasan necesidades se convierten en déspotas.",
+            "b": "Una persona poderosa pero que actúa solo por intereses materiales no es libre.",
+            "c": "El déspota se distinguía por su necesidad política."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Con la desaparición de la antigua ciudad-estado, la expresión vita activa perdió su significado político original y se generalizó a cualquier actividad.",
+          "opciones": {
+            "a": "La desaparición de la ciudad-estado reforzó el sentido político de la vita activa.",
+            "b": "Al desaparecer la ciudad-estado, vita activa dejó de tener un sentido exclusivamente político.",
+            "c": "Vita activa se convirtió finalmente en un término biológico."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "La vida contemplativa fue considerada la forma de vida verdaderamente libre, en contraste con la actividad mundana.",
+          "opciones": {
+            "a": "La vida contemplativa sirvió para ser feliz.",
+            "b": "La vida contemplativa fue sinónimo de alcanzar la libertad mediante la sabiduría.",
+            "c": "La vida contemplativa fue sinónimo de alcanzar la felicidad mediante el estudio."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "La actitud cristiana de apartarse de los asuntos terrenales surgió de la tradición que exaltaba la contemplación.",
+          "opciones": {
+            "a": "El cristianismo impulsó la participación activa en la política.",
+            "b": "El cristianismo aprovechó la idea griega de superioridad de la sabiduría.",
+            "c": "El cristianismo aprovechó la idea griega de superioridad de la compasión."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "La superioridad de la contemplación se basa en que ningún trabajo humano puede igualar la perfección del cosmos inmutable.",
+          "opciones": {
+            "a": "La contemplación es inferior a la acción porque el cosmos es inalcanzable.",
+            "b": "La contemplación valora que nada humano puede compararse con el universo en sí.",
+            "c": "La contemplación dejó de depender del trabajo manual."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "La tradición filosófica ha subordinado la vita activa a la vita contemplativa, ubicando a esta última en la cúspide del ideal de libertad.",
+          "opciones": {
+            "a": "La tradición filosófica valora más la acción que la contemplación.",
+            "b": "Históricamente, la contemplación se ha considerado superior y más libre que la actividad en el mundo.",
+            "c": "La tradición filosófica ignora la vida compasiva."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "El marco conceptual tradicional se mantuvo intacto, aun cuando Marx y Nietzsche intentaron invertir la jerarquía entre acción y contemplación.",
+          "opciones": {
+            "a": "Marx y Nietzsche eliminaron la distinción entre acción y contemplación.",
+            "b": "A pesar de los intentos modernos, la base que privilegia la contemplación siguió vigente.",
+            "c": "Marx y Nietzsche dieron la vuelta a cualquier forma de acción que acabara en contemplación."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "La inmortalidad en el plano humano se alcanza dejando un legado mediante actos, obras y palabras que perduren.",
+          "opciones": {
+            "a": "La inmortalidad se logra replicando como especie la vida biológica indefinidamente.",
+            "b": "La inmortalidad humana se logra dejando huella en el tiempo.",
+            "c": "La inmortalidad depende del legado intergeneracional de la labor o de la pasión."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "La diferencia entre inmortalidad y eternidad es que la primera se refiere a la duración en el tiempo, mientras que la segunda trasciende el tiempo.",
+          "opciones": {
+            "a": "Inmortalidad y eternidad son sinónimos pero la eternidad no es biológica.",
+            "b": "La inmortalidad deja un legado en el tiempo y la eternidad no cuantifica ese tiempo.",
+            "c": "La eternidad se consigue a través del trabajo manual y la inmortalidad a través de la acción biológica."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "La grandeza de los mortales radica en su habilidad de producir actos, obras y palabras que puedan perdurar, otorgándoles una inmortalidad simbólica.",
+          "opciones": {
+            "a": "La grandeza humana se basa en el mantenimiento del ciclo biológico y el legado cultural.",
+            "b": "La verdadera grandeza reside en la capacidad de dejar una huella que supere la finitud de la vida.",
+            "c": "La producción de obras contemplativas es un paso previo a la inmortalidad simbólica."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Sólo los mejores, aquellos que prefieren la fama inmortal a los placeres temporales, son considerados verdaderamente humanos.",
+          "opciones": {
+            "a": "Todos los humanos son iguales en cuanto a sus cuerpos diversos.",
+            "b": "Se valora como verdaderamente humano a quien se esfuerza por dejar un legado duradero.",
+            "c": "La fama temporal es mejor que el placer temporal."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "La experiencia del filósofo sobre lo eterno, descrita como indecible y sin palabra, se da al margen de los asuntos humanos y de la pluralidad.",
+          "opciones": {
+            "a": "La experiencia de lo eterno es tan diversa como la humanidad.",
+            "b": "La experiencia de lo eterno es interna y vinculada a la contemplación.",
+            "c": "La experiencia de lo eterno es análoga a la participación política diaria."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Mientras que todos los aspectos de la condición humana están de algún modo relacionados con la política, esta pluralidad es específicamente la condición – no sólo la conditio sine qua non, sino la conditio per quam – de toda vida política.",
+          "opciones": {
+            "a": "La experiencia humana es definitiva y no condicionada, aunque la política diversa sea posible.",
+            "b": "La política es plural en el caso de los humanos.",
+            "c": "Los humanos somos diversos y esta diferencia no es un obstáculo, sino la base de la política. Sin pluralidad, no habría acción ni libertad, solo obediencia."
+          },
+          "respuesta": "c"
+        },
+        {
+          "texto": "El problema de la naturaleza humana [...] Resulta muy improbable que nosotros, que podemos saber, determinar, definir las esencias naturales de todas las cosas que nos rodean, seamos capaces de hacer lo mismo con nosotros mismos, ya que eso supondría saltar de nuestra propia sombra.",
+          "opciones": {
+            "a": "Es imposible alcanzar la definición de las esencias que nos rodean y que se relacionan con nosotros.",
+            "b": "El ser humano no es capaz de saltar más allá de la definición que ya conoce.",
+            "c": "No podemos definir al ser humano como si fuera un objeto, porque es a la vez un sujeto que se crea a sí mismo al pensar y relacionarse con los demás."
+          },
+          "respuesta": "c"
+        }
+      ]
+    };
+
+    let preguntas = data.preguntas;
+    let preguntasElegidas = [];
+    let preguntaActual = 0;
+    let correctas = 0;
+
+    const quizContainer = document.getElementById('quiz-container');
+    const nextButton = document.getElementById('next-btn');
+    const restartButton = document.getElementById('restart-btn');
+    const startButton = document.getElementById('start-btn');
+    const infoContainer = document.getElementById('info-container');
+    const extraLinks = document.getElementById('extra-links');
+
+    infoContainer.innerHTML = `<p>El test contiene <strong>${preguntas.length}</strong> preguntas. Podrás elegir cuántas usar.</p>`;
+    startButton.style.display = 'block';
+
+    startButton.addEventListener('click', function() {
+      let numPreguntas = prompt(`El test tiene ${preguntas.length} preguntas. ¿Cuántas deseas jugar?`, preguntas.length);
+      numPreguntas = parseInt(numPreguntas);
+      if (isNaN(numPreguntas) || numPreguntas < 1 || numPreguntas > preguntas.length) {
+        alert('Número no válido. Se jugarán todas las preguntas.');
+        numPreguntas = preguntas.length;
+      }
+      // Seleccionar preguntas aleatorias
+      preguntasElegidas = shuffle([...preguntas]).slice(0, numPreguntas);
+      preguntaActual = 0;
+      correctas = 0;
+      startButton.style.display = 'none';
+      // Ocultar los enlaces extra al comenzar el test
+      extraLinks.style.display = 'none';
+      infoContainer.innerHTML = '';
+      mostrarPregunta();
+    });
+
+    function mostrarPregunta() {
+      if (preguntaActual < preguntasElegidas.length) {
+        quizContainer.innerHTML = '';
+        document.getElementById('question-counter').textContent = `Pregunta ${preguntaActual + 1} de ${preguntasElegidas.length}`;
+        quizContainer.style.display = 'block';
+        nextButton.style.display = 'none';
+
+        let pregunta = preguntasElegidas[preguntaActual];
+        let preguntaTitulo = document.createElement('h2');
+        preguntaTitulo.textContent = pregunta.texto;
+        quizContainer.appendChild(preguntaTitulo);
+
+        let opcionesArray = Object.entries(pregunta.opciones)
+          .map(([key, texto]) => ({ key, texto }));
+        opcionesArray = shuffle(opcionesArray);
+
+        opcionesArray.forEach(opcionObj => {
+          let opcion = document.createElement('div');
+          opcion.classList.add('option');
+          opcion.textContent = opcionObj.texto;
+          opcion.dataset.valor = opcionObj.key;
+          opcion.addEventListener('click', function() {
+            validarRespuesta(this, pregunta.respuesta);
+          });
+          quizContainer.appendChild(opcion);
+        });
+      } else {
+        quizContainer.innerHTML = `<h2>¡Test finalizado!</h2><p>Has acertado ${correctas} de ${preguntasElegidas.length} preguntas.</p>`;
+        nextButton.style.display = 'none';
+        restartButton.style.display = 'block';
+      }
+    }
+
+    function validarRespuesta(elemento, respuestaCorrecta) {
+      let opciones = document.querySelectorAll('.option');
+      opciones.forEach(op => op.style.pointerEvents = 'none');
+
+      if (elemento.dataset.valor === respuestaCorrecta) {
+        elemento.classList.add('correct');
+        correctas++;
+      } else {
+        elemento.classList.add('incorrect');
+        let correcta = document.querySelector(`.option[data-valor='${respuestaCorrecta}']`);
+        if (correcta) correcta.classList.add('correct');
+      }
+      nextButton.style.display = 'block';
+    }
+
+    nextButton.addEventListener('click', function() {
+      preguntaActual++;
+      mostrarPregunta();
+    });
+
+    restartButton.addEventListener('click', function() {
+      this.style.display = 'none';
+      // Reinicia el test: oculta el contenedor, resetea contadores y muestra el botón de inicio y los enlaces extra
+      preguntaActual = 0;
+      correctas = 0;
+      infoContainer.innerHTML = `<p>El test contiene <strong>${preguntas.length}</strong> preguntas.</p>`;
+      document.getElementById('question-counter').textContent = '';
+      startButton.style.display = 'block';
+      extraLinks.style.display = 'block';
+      quizContainer.innerHTML = '';
+      quizContainer.style.display = 'none';
+    });
+  </script>
+</body>
+</html>
