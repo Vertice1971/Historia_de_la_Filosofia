@@ -81,13 +81,41 @@
       margin-top: 20px;
       font-size: 1.2em;
     }
+    /* Estilos para los enlaces extra */
+    #extra-links {
+      display: block;
+      position: absolute;
+      bottom: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.9em;
+      color: #444;
+      text-align: center;
+    }
+    #extra-links a {
+      color: #007BFF;
+      text-decoration: none;
+    }
+    #extra-links a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
   <h1>Comprensión lectora: textos de Ortega para la PAU. Andalucía 2025</h1>
   <h2 style="font-size: 0.6em; color: #555;">Tomás Cuesta. IES Juan de la Cierva</h2>
+  
   <div id="info-container"></div>
+  
   <button id="start-btn">Comenzar</button>
+  
+  <!-- Contenedor de enlaces extra para la pantalla inicial -->
+  <div id="extra-links">
+    <p><strong>Manuales para el alumnado (Amazon)</strong></p>
+    <p><a href="https://www.amazon.es/gp/product/B0F46YCRXK?ref_=dbs_m_mng_rwt_calw_tkin_4&storeType=ebooks" target="_blank">Itinerario Ético-Político</a></p>
+    <p><a href="https://www.amazon.es/dp/B0F468GNN1?ref_=saga_dp_ss_dsk_dp" target="_blank">Itinerario Ontológico-Epistemológico</a></p>
+  </div>
+  
   <div id="quiz-container" class="question-container"></div>
   <button id="next-btn">Siguiente</button>
   <!-- Contenedor para el contador de preguntas -->
@@ -128,7 +156,7 @@
         {
           "texto": "En primer lugar, si no existe la verdad, no puede el relativismo tomarse a sí mismo en serio. En segundo lugar, la fe en la verdad es un hecho radical de la vida humana: si la amputamos queda ésta convertida en algo ilusorio y absurdo. La amputación misma que ejecutamos carecerá de sentido y valor. El relativismo es, a la postre, escepticismo.",
           "opciones": {
-            "a": "Ortega sostiene que, aunque el relativismo sea contradictorio, es útil porque respeta la pluralidad de puntos de vista y permite una vida más libre.",
+            "a": "Ortega defiende que, aunque el relativismo sea contradictorio, es útil porque respeta la pluralidad de puntos de vista y permite una vida más libre.",
             "b": "Ortega afirma que el relativismo es incoherente, porque al negar la verdad niega también la posibilidad de afirmarse a sí mismo; además, sin una mínima fe en la verdad, la vida se vuelve absurda.",
             "c": "Ortega defiende una forma matizada de relativismo, pues cree que toda verdad es válida solo dentro del marco de la experiencia personal de cada uno."
           },
@@ -355,7 +383,7 @@
           "opciones": {
             "a": "Ortega defiende el uso del término “cosas” como la mejor manera de nombrar los objetos reales, tal como son en sí mismos.",
             "b": "Ortega rechaza el término “cosas” porque sugiere que la realidad está hecha de objetos externos y separados de nosotros, cuando en realidad todo lo real se nos da como circunstancia, en relación con nuestra vida.",
-            "c": "Ortega sostiene que el término “cosas” es útil para describir científicamente la realidad, aunque no sirva para hablar de la experiencia vital."
+            "c": "Ortega sostiene que el término “cosas” es útil en ciencia y en filosofía siempre que se utilice con precisión, ya que permite identificar los objetos reales sin ambigüedad."
           },
           "respuesta": "b"
         },
@@ -406,6 +434,8 @@
       preguntaActual = 0;
       correctas = 0;
       startButton.style.display = 'none';
+      // Ocultar los enlaces extra al comenzar el test
+      document.getElementById('extra-links').style.display = 'none';
       infoContainer.innerHTML = '';
       mostrarPregunta();
     });
@@ -473,7 +503,9 @@
       infoContainer.innerHTML = `<p>El test contiene <strong>${preguntas.length}</strong> preguntas.</p>`;
       // Limpiar el contador al reiniciar
       document.getElementById('question-counter').textContent = '';
+      // Volver a mostrar el botón de inicio y los enlaces extra
       startButton.style.display = 'block';
+      document.getElementById('extra-links').style.display = 'block';
       quizContainer.innerHTML = '';
       quizContainer.style.display = 'none';
     });

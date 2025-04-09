@@ -81,6 +81,22 @@
       font-weight: bold;
       color: #333;
     }
+    /* Enlaces extra para el alumnado */
+    #extra-links {
+      display: block;
+      margin-top: 20px;
+      font-size: 0.9em;
+      color: #444;
+      text-align: center;
+    }
+    #extra-links a {
+      color: #007BFF;
+      text-decoration: none;
+      margin: 0 5px;
+    }
+    #extra-links a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
@@ -88,6 +104,14 @@
   <h2 style="font-size: 0.6em; color: #555;">Tomás Cuesta. IES Juan de la Cierva</h2>
   <div id="info-container"></div>
   <button id="start-btn">Comenzar</button>
+  
+  <!-- Sección de enlaces extra a Amazon -->
+  <div id="extra-links">
+    <p><strong>Manuales para el alumnado (Amazon)</strong></p>
+    <p><a href="https://www.amazon.es/gp/product/B0F46YCRXK?ref_=dbs_m_mng_rwt_calw_tkin_4&storeType=ebooks" target="_blank">Itinerario Ético-Político</a></p>
+    <p><a href="https://www.amazon.es/dp/B0F468GNN1?ref_=saga_dp_ss_dsk_dp" target="_blank">Itinerario Ontológico-Epistemológico</a></p>
+  </div>
+  
   <div id="quiz-container" class="question-container"></div>
   <button id="next-btn">Siguiente</button>
   <div id="question-counter"></div>
@@ -182,7 +206,7 @@
           "texto": "Además, reconocemos esto: que si lo hemos pensado no es posible pensarlo, sino a partir del hecho de ver o de tocar o de alguna otra percepción de los sentidos.",
           "opciones": {
             "a": "Platón sostiene que todo conocimiento proviene exclusivamente de la percepción sensorial, ya que solo a través de los sentidos podemos formar ideas en nuestra mente.",
-            "b": "Platón reconoce que, aunque el conocimiento verdadero no proviene de los sentidos, estos funcionan como un punto de partida para recordar verdades que nuestra alma ya conocía previamente.",
+            "b": "Platón reconoce que, aunque el conocimiento verdadero no proviene de los sentidos, éstos funcionan como un punto de partida para recordar verdades que nuestra alma ya conocía previamente.",
             "c": "Platón afirma que el alma racional debe gobernar sobre las demás partes del alma, ya que solo así el ser humano puede alcanzar la justicia y vivir de acuerdo con la verdad."
           },
           "respuesta": "b"
@@ -523,6 +547,8 @@
       preguntaActual = 0;
       correctas = 0;
       startButton.style.display = 'none';
+      // Ocultar los enlaces extra al comenzar el test
+      document.getElementById('extra-links').style.display = 'none';
       infoContainer.innerHTML = '';
       mostrarPregunta();
     });
@@ -530,6 +556,7 @@
     function mostrarPregunta() {
       if (preguntaActual < preguntasElegidas.length) {
         quizContainer.innerHTML = '';
+        // Actualizar el contador de preguntas
         document.getElementById('question-counter').textContent = `Pregunta ${preguntaActual + 1} de ${preguntasElegidas.length}`;
         quizContainer.style.display = 'block';
         nextButton.style.display = 'none';
@@ -589,6 +616,8 @@
       infoContainer.innerHTML = `<p>El test contiene <strong>${preguntas.length}</strong> preguntas.</p>`;
       document.getElementById('question-counter').textContent = '';
       startButton.style.display = 'block';
+      // Volver a mostrar los enlaces extra al reiniciar
+      document.getElementById('extra-links').style.display = 'block';
       quizContainer.innerHTML = '';
       quizContainer.style.display = 'none';
     });

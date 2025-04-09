@@ -82,18 +82,45 @@
       margin-top: 20px;
       font-size: 1.2em;
     }
+    /* Estilos para los enlaces extra */
+    #extra-links {
+      display: block;
+      position: absolute;
+      bottom: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.9em;
+      color: #444;
+      text-align: center;
+    }
+    #extra-links a {
+      color: #007BFF;
+      text-decoration: none;
+    }
+    #extra-links a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
   <h1>Comprensión lectora: textos de Kant para la PAU. Andalucía 2025</h1>
   <h2 style="font-size: 0.6em; color: #555;">Tomás Cuesta. IES Juan de la Cierva</h2>
+
   <div id="info-container"></div>
   <button id="start-btn">Comenzar</button>
+
+  <!-- Contenedor de enlaces extra para la pantalla inicial -->
+  <div id="extra-links">
+    <p><strong>Manuales para el alumnado (Amazon)</strong></p>
+    <p><a href="https://www.amazon.es/gp/product/B0F46YCRXK?ref_=dbs_m_mng_rwt_calw_tkin_4&storeType=ebooks" target="_blank">Itinerario Ético-Político</a></p>
+    <p><a href="https://www.amazon.es/dp/B0F468GNN1?ref_=saga_dp_ss_dsk_dp" target="_blank">Itinerario Ontológico-Epistemológico</a></p>
+  </div>
+
   <div id="quiz-container" class="question-container"></div>
   <button id="next-btn">Siguiente</button>
   <div id="question-counter"></div>
   <button id="restart-btn">Reiniciar</button>
-  
+
   <script>
     // Función para barajar un array usando el algoritmo de Fisher–Yates
     function shuffle(array) {
@@ -104,7 +131,7 @@
       return array;
     }
 
-    // JSON con todas las 46 preguntas sobre Kant
+    // JSON con las 46 preguntas sobre Kant
     const data = {
       "preguntas": [
         {
@@ -508,7 +535,6 @@
     const startButton = document.getElementById('start-btn');
     const infoContainer = document.getElementById('info-container');
 
-    // Mostrar información inicial y habilitar el botón de inicio
     infoContainer.innerHTML = `<p>El test contiene <strong>${preguntas.length}</strong> preguntas. Podrás elegir cuántas usar.</p>`;
     startButton.style.display = 'block';
 
@@ -524,6 +550,8 @@
       preguntaActual = 0;
       correctas = 0;
       startButton.style.display = 'none';
+      // Ocultar los enlaces extra al comenzar el test
+      document.getElementById('extra-links').style.display = 'none';
       infoContainer.innerHTML = '';
       mostrarPregunta();
     });
@@ -541,7 +569,7 @@
         preguntaTitulo.textContent = pregunta.texto;
         quizContainer.appendChild(preguntaTitulo);
 
-        // Convertir las opciones en un array de objetos y mezclarlas con Fisher–Yates
+        // Mezclar las opciones
         let opcionesArray = Object.entries(pregunta.opciones)
           .map(([key, texto]) => ({ key, texto }));
         opcionesArray = shuffle(opcionesArray);
@@ -589,9 +617,9 @@
       preguntaActual = 0;
       correctas = 0;
       infoContainer.innerHTML = `<p>El test contiene <strong>${preguntas.length}</strong> preguntas.</p>`;
-      // Limpiar el contador al reiniciar
       document.getElementById('question-counter').textContent = '';
       startButton.style.display = 'block';
+      document.getElementById('extra-links').style.display = 'block';
       quizContainer.innerHTML = '';
       quizContainer.style.display = 'none';
     });

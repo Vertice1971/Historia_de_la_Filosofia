@@ -81,6 +81,22 @@
       margin-top: 20px;
       font-size: 1.2em;
     }
+    /* Enlaces extra para el alumnado */
+    #extra-links {
+      display: block;
+      margin-top: 20px;
+      font-size: 0.9em;
+      color: #444;
+      text-align: center;
+    }
+    #extra-links a {
+      color: #007BFF;
+      text-decoration: none;
+      margin: 0 5px;
+    }
+    #extra-links a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
@@ -90,9 +106,16 @@
 
   <div id="info-container"></div>
   <button id="start-btn">Comenzar</button>
+  
+  <!-- Sección de enlaces extra a Amazon -->
+  <div id="extra-links">
+    <p><strong>Manuales para el alumnado (Amazon)</strong></p>
+    <p><a href="https://www.amazon.es/gp/product/B0F46YCRXK?ref_=dbs_m_mng_rwt_calw_tkin_4&storeType=ebooks" target="_blank">Itinerario Ético-Político</a></p>
+    <p><a href="https://www.amazon.es/dp/B0F468GNN1?ref_=saga_dp_ss_dsk_dp" target="_blank">Itinerario Ontológico-Epistemológico</a></p>
+  </div>
+  
   <div id="quiz-container" class="question-container"></div>
   <button id="next-btn">Siguiente</button>
-  <!-- Contenedor para el contador de preguntas -->
   <div id="question-counter"></div>
   <button id="restart-btn">Reiniciar</button>
   
@@ -265,7 +288,7 @@
         {
           "texto": "Propiamente hablando, el estado de naturaleza es aquel en el que los hombres viven juntos conforme a la razón, sin un poder terrenal, común y superior a todos, con autoridad para juzgarlos.",
           "opciones": {
-            "a": "El estado de naturaleza es una situación de caos absoluto en la que los seres humanos viven en constante conflicto, sin ninguna regla ni posibilidad de convivencia pacífica.",
+            "a": "El estado de naturaleza es una situación de caos absoluto en el que los seres humanos viven en constante conflicto, sin ninguna regla ni posibilidad de convivencia pacífica.",
             "b": "En el estado de naturaleza, los hombres conviven siguiendo la razón y la ley natural, pero no existe una autoridad superior que tenga poder sobre todos ellos para resolver disputas.",
             "c": "La igualdad entre los seres humanos implica que todos deben obedecer las mismas leyes establecidas por un poder soberano que garantice el orden en la sociedad."
           },
@@ -445,7 +468,7 @@
         {
           "texto": "Pues como en el estado de naturaleza todos son reyes lo mismo que él, cada hombre es igual a los demás; y como la mayor parte de ellos no observa estrictamente la equidad y la justicia, el disfrute de la propiedad que un hombre tiene en un estado así es sumamente inseguro.",
           "opciones": {
-            "a": "Locke explica que en el estado de naturaleza todos los hombres tienen los mismos derechos, pero la falta de normas y autoridad hace que algunos acumulen más poder que otros.",
+            "a": "Locke explica que en el estado de naturaleza existen normas claras que todos respetan de manera natural, por lo que no es necesario un sistema de leyes formales.",
             "b": "Locke señala que, aunque en el estado de naturaleza todos son iguales, la falta de un poder que garantice la justicia hace que la propiedad y los derechos sean inseguros.",
             "c": "Locke argumenta que la principal función del gobierno es establecer normas morales y religiosas que regulen el comportamiento de los ciudadanos."
           },
@@ -552,6 +575,8 @@
       preguntaActual = 0;
       correctas = 0;
       startButton.style.display = 'none';
+      // Ocultar los enlaces extra al comenzar el test
+      document.getElementById('extra-links').style.display = 'none';
       infoContainer.innerHTML = '';
       mostrarPregunta();
     });
@@ -620,6 +645,8 @@
       // Limpiar el contador al reiniciar
       document.getElementById('question-counter').textContent = '';
       startButton.style.display = 'block';
+      // Volver a mostrar los enlaces extra al reiniciar
+      document.getElementById('extra-links').style.display = 'block';
       quizContainer.innerHTML = '';
       quizContainer.style.display = 'none';
     });

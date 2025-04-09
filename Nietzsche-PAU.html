@@ -81,6 +81,22 @@
       margin-top: 20px;
       font-size: 1.2em;
     }
+    /* Sección de enlaces extra para el alumnado */
+    #extra-links {
+      display: block;
+      margin-top: 20px;
+      font-size: 0.9em;
+      color: #444;
+      text-align: center;
+    }
+    #extra-links a {
+      color: #007BFF;
+      text-decoration: none;
+      margin: 0 5px;
+    }
+    #extra-links a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
@@ -88,9 +104,16 @@
   <h2 style="font-size: 0.6em; color: #555;">Tomás Cuesta. IES Juan de la Cierva</h2>
   <div id="info-container"></div>
   <button id="start-btn">Comenzar</button>
+  
+  <!-- Sección de enlaces extra a Amazon -->
+  <div id="extra-links">
+    <p><strong>Manuales para el alumnado (Amazon)</strong></p>
+    <p><a href="https://www.amazon.es/gp/product/B0F46YCRXK?ref_=dbs_m_mng_rwt_calw_tkin_4&storeType=ebooks" target="_blank">Itinerario Ético-Político</a></p>
+    <p><a href="https://www.amazon.es/dp/B0F468GNN1?ref_=saga_dp_ss_dsk_dp" target="_blank">Itinerario Ontológico-Epistemológico</a></p>
+  </div>
+  
   <div id="quiz-container" class="question-container"></div>
   <button id="next-btn">Siguiente</button>
-  <!-- Contenedor para el contador de preguntas -->
   <div id="question-counter"></div>
   <button id="restart-btn">Reiniciar</button>
   
@@ -164,7 +187,7 @@
         {
           "texto": "No comprendo por qué hay que desear la omnipotencia y la tiranía de la verdad; me basta saber que la verdad posee un gran poder. Pero es preciso que pueda luchar, que tenga una oposición.",
           "opciones": {
-            "a": "Nietzsche defiende que la verdad debe imponerse de manera absoluta sobre todas las demás perspectivas, eliminando cualquier tipo de oposición que intente desafiarla.",
+            "a": "Nietzsche sostiene que la verdad debe imponerse de manera absoluta sobre todas las demás perspectivas, eliminando cualquier tipo de oposición que intente desafiarla.",
             "b": "Nietzsche sostiene que la verdad no debe ser absoluta ni tiránica, sino que necesita enfrentarse a la oposición y al conflicto para mantener su fuerza y relevancia.",
             "c": "Nietzsche argumenta que la verdad es siempre una construcción subjetiva y relativa, por lo que no tiene sentido hablar de lucha o conflicto en torno a ella."
           },
@@ -173,7 +196,7 @@
         {
           "texto": "¡Qué sed tenéis de estos momentos en que vuestra pasión os confiere un derecho pleno y absoluto ante vosotros mismos!",
           "opciones": {
-            "a": "Nietzsche critica la pasión como una emoción negativa que siempre nubla el juicio y aleja a las personas del conocimiento verdadero.",
+            "a": "Nietzsche sostiene que la pasión es una emoción negativa que siempre nubla el juicio y aleja a las personas del conocimiento verdadero.",
             "b": "Nietzsche señala que las personas ansían los momentos en los que su pasión les da la ilusión de estar completamente justificadas ante sí mismas, permitiéndoles evitar cualquier duda o crítica interna.",
             "c": "Nietzsche defiende que la pasión es la fuente más pura de conocimiento y que solo aquellos que se dejan guiar por ella pueden alcanzar la verdad."
           },
@@ -334,6 +357,8 @@
       preguntaActual = 0;
       correctas = 0;
       startButton.style.display = 'none';
+      // Ocultar los enlaces extra al comenzar el test
+      document.getElementById('extra-links').style.display = 'none';
       infoContainer.innerHTML = '';
       mostrarPregunta();
     });
@@ -351,7 +376,7 @@
         preguntaTitulo.textContent = pregunta.texto;
         quizContainer.appendChild(preguntaTitulo);
 
-        // Convertir las opciones en un array de objetos y mezclarlas con Fisher–Yates
+        // Convertir el objeto de opciones en un array de objetos y mezclarlo con Fisher–Yates
         let opcionesArray = Object.entries(pregunta.opciones)
           .map(([key, texto]) => ({ key, texto }));
         opcionesArray = shuffle(opcionesArray);
@@ -402,6 +427,8 @@
       // Limpiar el contador al reiniciar
       document.getElementById('question-counter').textContent = '';
       startButton.style.display = 'block';
+      // Volver a mostrar los enlaces extra al reiniciar
+      document.getElementById('extra-links').style.display = 'block';
       quizContainer.innerHTML = '';
       quizContainer.style.display = 'none';
     });
