@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Práctica de Disertación Filosófica</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f6f8; margin: 40px; color: #333; }
+    h1 { text-align: center; color: #2c3e50; margin-bottom: 5px; }
+    #enlace-util {
+      text-align: center;
+      margin: 5px 0;
+    }
+    #enlace-util a {
+      color: #2c3e50;
+      text-decoration: none;
+      font-size: 0.95em;
+    }
+    #enlace-util a:hover {
+      text-decoration: underline;
+    }
+    #correo-fijo {
+      text-align: center;
+      font-size: 0.9em;
+      color: #555;
+      margin-bottom: 30px;
+    }
+    #titulo-section {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    #titulo-disertacion {
+      width: 60%;
+      padding: 10px;
+      font-size: 1.1em;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+    #total-palabras {
+      text-align: center;
+      font-size: 1em;
+      margin-bottom: 30px;
+      color: #555;
+    }
+    #contador-total.limit-reached {
+      color: #d9534f;
+    }
+    .advertencia-limite {
+      font-size: 0.85em;
+      color: #b94a48;
+      margin-top: 4px;
+      text-align: center;
+    }
+    .section {
+      background: #fff;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 30px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+    .section h2 {
+      margin-top: 0;
+      color: #1a252f;
+    }
+    .description {
+      font-size: 0.9em;
+      color: #555;
+      margin-bottom: 10px;
+    }
+    textarea {
+      width: 100%;
+      height: 120px;
+      font-size: 1em;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      resize: vertical;
+      box-sizing: border-box;
+    }
+    .word-count {
+      margin-top: 5px;
+      font-size: 0.85em;
+      text-align: right;
+      color: #888;
+    }
+    .word-count.limit-reached {
+      color: #d9534f !important;
+    }
+    .export-buttons {
+      text-align: center;
+      margin-top: 30px;
+    }
+    button {
+      background: #2c3e50;
+      color: #fff;
+      padding: 10px 20px;
+      font-size: 1em;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 5px;
+    }
+    button:hover {
+      background: #1a252f;
+    }
+  </style>
+</head>
+<body>
+  <h1>Práctica de Disertación Filosófica – Simulador de Plantilla</h1>
+
+  <div id="enlace-util">
+    <a href="https://www.amazon.es/C%C3%B3mo-hacer-Disertaci%C3%B3n-Filos%C3%B3fica-Selectividad-ebook/dp/B0DY4LMN46?ref_=ast_author_dp_rw&dib=eyJ2IjoiMSJ9.zAYyVx_e6W6N4Eu30adKM2GXGA0Z3lrW4Mw5qWVaXtF5SAalwV0gfBJXOkZdxQNIZQhpE71WOa0Fs1XPQ-p91Q--DVd1bwAN7Q_WuEFsbAe78AiCl-rHrXnyIFcISZnPT9wBz9RHyIwJ5tlgQHJuCA.O4q2Aje_7KCnh7RQFF7Dhp55U_vmT6byDswTySi0UlE&dib_tag=AUTHOR" target="_blank">
+      Visita el recurso complementario aquí
+    </a>
+  </div>
+
+  <div id="correo-fijo"><em>tomcue@iesjuandelacierva.com</em></div>
+
+  <div id="titulo-section">
+    <label for="titulo-disertacion"><strong>Título de tu disertación:</strong></label><br>
+    <input type="text" id="titulo-disertacion" placeholder="Escribe aquí tu título personalizado..." />
+  </div>
+
+  <div id="total-palabras">
+    <strong>Palabras totales escritas:
+      <span id="contador-total">0</span> / 400 (máximo recomendado)
+    </strong>
+    <div class="advertencia-limite">
+      En cada apartado tienes un máximo al que es aconsejable que no llegues.
+      Si apuras siempre al máximo, tu disertación llegaría a 500 palabras.
+    </div>
+  </div>
+
+  <!-- Secciones -->
+  <div class="section">
+    <h2>Introducción</h2>
+    <p class="description">
+      Presenta el tema, define términos clave y anuncia la estructura.
+      Incluye los autores y sus corrientes.
+    </p>
+    <textarea id="intro"></textarea>
+    <div class="word-count" id="intro-count">0 / 100 palabras</div>
+  </div>
+
+  <div class="section">
+    <h2>Desarrollo – Autor 1</h2>
+    <p class="description">
+      Expón el pensamiento general del autor y deduce su postura sobre el tema.
+    </p>
+    <textarea id="autor1"></textarea>
+    <div class="word-count" id="autor1-count">0 / 100 palabras</div>
+  </div>
+
+  <div class="section">
+    <h2>Desarrollo – Autor 2</h2>
+    <p class="description">
+      Expón la postura contraria o complementaria de otro autor y deduce su postura sobre el tema.
+    </p>
+    <textarea id="autor2"></textarea>
+    <div class="word-count" id="autor2-count">0 / 100 palabras</div>
+  </div>
+
+  <div class="section">
+    <h2>Caso práctico</h2>
+    <p class="description">
+      Ejemplo real o imaginario que exprese el conflicto
+      o la diferencia entre las dos posturas filosóficas.
+    </p>
+    <textarea id="caso"></textarea>
+    <div class="word-count" id="caso-count">0 / 120 palabras</div>
+  </div>
+
+  <div class="section">
+    <h2>Conclusión</h2>
+    <p class="description">
+      Muestra las consecuencias de todo tu análisis, plantea tu propia tesis
+      o deja una pregunta abierta.
+    </p>
+    <textarea id="conclusion"></textarea>
+    <div class="word-count" id="conclusion-count">0 / 80 palabras</div>
+  </div>
+
+  <div class="export-buttons">
+    <button onclick="exportRTF()">Exportar como RTF</button>
+  </div>
+
+  <script>
+    const campos = {
+      intro: 100,
+      autor1: 100,
+      autor2: 100,
+      caso: 120,
+      conclusion: 80
+    };
+
+    for (let id in campos) {
+      const ta = document.getElementById(id);
+      ta.addEventListener('input', () => actualizar(id));
+      ta.addEventListener('keydown', e => {
+        const texto = ta.value;
+        const palabras = texto.trim().split(/\s+/).filter(w => w);
+        const max = campos[id];
+        const ultimaLetraEspacio = /\s$/.test(texto);
+        const teclasPermitidas = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'];
+
+        if (
+          palabras.length >= max &&
+          ultimaLetraEspacio &&
+          !teclasPermitidas.includes(e.key)
+        ) {
+          e.preventDefault();
+        }
+      });
+    }
+
+    function actualizar(id) {
+      const ta = document.getElementById(id);
+      const max = campos[id];
+      const cnt = document.getElementById(id + '-count');
+      const palabras = ta.value.trim().split(/\s+/).filter(w => w).length;
+      cnt.textContent = `${palabras} / ${max} palabras`;
+      cnt.className = palabras >= max ? 'word-count limit-reached' : 'word-count';
+
+      let total = 0;
+      for (let k in campos) {
+        total += document.getElementById(k).value.trim().split(/\s+/).filter(w => w).length;
+      }
+      const totalElem = document.getElementById('contador-total');
+      totalElem.textContent = total;
+      totalElem.className = total >= 399 ? 'limit-reached' : '';
+    }
+
+    function rtfEncode(str) {
+      let out = '';
+      for (let ch of str) {
+        const code = ch.charCodeAt(0);
+        if (code > 127) {
+          out += `\\u${code}?`;
+        } else {
+          if (ch === '\\' || ch === '{' || ch === '}') out += '\\' + ch;
+          else if (ch === '\n') out += '\\par ';
+          else out += ch;
+        }
+      }
+      return out;
+    }
+
+    function exportRTF() {
+      const title = document.getElementById('titulo-disertacion').value.trim() || 'Disertación';
+      const secciones = ['intro', 'autor1', 'autor2', 'caso', 'conclusion'];
+      let total = 0, body = '';
+
+      secciones.forEach(id => {
+        const raw = document.getElementById(id).value.trim();
+        const palabras = raw.split(/\s+/).filter(w => w).length;
+        total += palabras;
+        const norm = raw.replace(/\r?\n/g, '\n');
+        body += rtfEncode(norm) + '\\par\n';
+      });
+
+      let rtf = '{\\rtf1\\ansi\\ansicpg1252\\deff0\\qj\n';
+      rtf += `\\b ${rtfEncode(title)}\\b0 (${total} palabras)\\par\\par\n`;
+      rtf += body;
+      rtf += '}';
+
+      const blob = new Blob([rtf], { type: 'application/rtf' });
+      const a = document.createElement('a');
+      const fname = title.toLowerCase()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+        .replace(/[^a-z0-9 ]/g, '').trim()
+        .replace(/\s+/g,'_') || 'disertacion';
+      a.href = URL.createObjectURL(blob);
+      a.download = fname + '.rtf';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+  </script>
+</body>
+</html>
