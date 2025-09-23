@@ -87,7 +87,7 @@
     </div>
 
     <div style="text-align: center;">
-        <button id="submit-btn">Comprobar respuestas</button>
+        <button id="submit-btn">Verificar respuestas</button>
         <button id="retry-btn">Intentar de nuevo</button>
     </div>
 
@@ -95,7 +95,7 @@
     <div id="feedback" class="feedback"></div>
 
     <script>
-        const preguntas = [
+      const preguntas = [
             ["La filosofía surgió como conocimiento sistemático en Grecia.", true],
             ["La polis griega favoreció el desarrollo de la reflexión filosófica.", true],
             ["Las polis griegas eran ciudades-estado independientes.", true],
@@ -112,73 +112,70 @@
             ["Los mitos griegos proporcionaban explicaciones religiosas sobre la naturaleza.", true],
             ["El sistema esclavista de Grecia permitió a una clase ociosa dedicarse al pensamiento.", true],
             ["La filosofía griega rechazaba completamente la religión.", false],
-            ["Tales de Mileto creía que el arjé de todo era el agua.", true],
-            ["Anaxímenes consideraba que el aire era el arjé.", true],
+            ["Tales de Mileto creía que el arjé de todo era el fuego.", false],
+            ["Anaxímenes consideraba que el agua era el arjé.", false],
             ["Anaximandro propuso el ápeiron como el origen indefinido de todas las cosas.", true],
-            ["Heráclito pensaba que el fuego era el arjé y símbolo del cambio constante.", true],
-            ["Parménides afirmaba que el Ser es inmutable y eterno.", true],
-            ["Zenón usó paradojas para demostrar que el movimiento no existía y que Heráclito tenía razón.", false],
+            ["Heráclito pensaba que el aire era el arjé y símbolo del cambio constante.", false],
+            ["Parménides afirmaba que el Ser es mutable y temporal.", false],
+            ["Zenón usó paradojas para demostrar que el movimiento no existía y apoyar a Parménides.", true],
             ["Los atomistas creían que todo estaba compuesto por átomos y vacío.", true],
-            ["Empédocles sostenía que el mundo se componía de los cuatro elementos: fuego, aire, tierra y agua.", true],
+            ["Empédocles sostenía que el mundo se componía de cinco elementos: fuego, aire, tierra, agua y éter.", false],
             ["Anaxágoras introdujo el Nous como un principio ordenante del universo.", true],
-            ["Leucipo fue el fundador del atomismo.", true],
+            ["Demócrito fue el fundador del atomismo.", false],
             ["Demócrito desarrolló la idea de que las percepciones son subjetivas y causadas por átomos.", true],
             ["Los presocráticos buscaban respuestas sobre la physis o naturaleza.", true],
-            ["Los pitagóricos creían que el arjé era el número.", true],
-            ["Pitágoras pensaba que el alma era inmortal y se reencarnaba.", true],
+            ["Los pitagóricos creían que el arjé era el agua.", false],
+            ["Pitágoras pensaba que el alma era mortal y se desintegraba tras la muerte.", false],
             ["La escuela pitagórica era una secta religiosa y filosófica.", true],
             ["La filosofía se difundió principalmente en las colonias griegas de Asia Menor.", true],
-            ["Los filósofos jónicos centraron su estudio en la naturaleza y el origen del universo.", true],
+            ["Los filósofos jónicos centraron su estudio en la ética y la política.", false],
             ["Tales viajó por Egipto y Caldea adquiriendo conocimientos científicos.", true],
             ["Los filósofos griegos separaron el pensamiento racional del pensamiento religioso.", true],
             ["El mito y la superstición desaparecieron completamente tras la llegada de la filosofía.", false],
             ["El mito de Perséfone explicaba la sucesión de las estaciones.", true],
-            ["La idea de la inmortalidad del alma fue fundamental en el orfismo.", true],
+            ["La idea de la mortalidad definitiva del alma fue fundamental en el orfismo.", false],
             ["Tucídides es considerado el padre de la Historia por su método racional de análisis.", true],
-            ["Hipócrates consideraba que las enfermedades tenían causas naturales.", true],
+            ["Hipócrates consideraba que las enfermedades tenían causas sobrenaturales.", false],
             ["Los pitagóricos influenciaron a Platón en su visión filosófica.", true],
-            ["Heráclito afirmaba que todo fluye y nada permanece igual.", true],
+            ["Heráclito afirmaba que todo es estático y nada cambia.", false],
             ["Parménides sostenía que el no-ser no existe.", true],
             ["La filosofía griega incluyó tanto la ciencia como la ética y la política.", true],
-            ["Los atomistas creían que los átomos eran indivisibles y eternos.", true],
-            ["Los pitagóricos promovían una vida ascética y disciplinada.", true],
+            ["Los atomistas creían que los átomos eran divisibles y temporales.", false],
+            ["Los pitagóricos promovían una vida hedonista y libertina.", false],
             ["Los primeros filósofos griegos también estudiaron temas científicos.", true],
-            ["Anaxágoras afirmó que todo estaba compuesto por semillas o homeomerías.", true],
-            ["El Nous de Anaxágoras era un principio espiritual, no material.", true],
+            ["Anaxágoras afirmó que todo estaba compuesto por un solo elemento homogéneo.", false],
+            ["El Nous de Anaxágoras era un principio material, no espiritual.", false],
             ["Los atomistas creían que el alma estaba hecha de átomos.", true],
             ["Empédocles consideraba que el cambio en el mundo se producía por la combinación y separación de elementos.", true],
             ["Demócrito creía que la percepción sensible era causada por imágenes que emitían los cuerpos.", true],
-            ["La filosofía griega se desarrolló en un contexto de prosperidad económica.", true],
+            ["La filosofía griega se desarrolló en un contexto de crisis económica.", false],
             ["El ágora era el lugar donde se discutían temas filosóficos y políticos.", true],
             ["Los filósofos presocráticos buscaban entender el origen y la composición de la materia.", true],
             ["El arjé es el principio fundamental del universo según los presocráticos.", true],
             ["La concepción racional del mundo sustituyó completamente la visión mítica.", false],
             ["El paso del mito al logos representa la adopción de una mentalidad racional.", true],
-            ["La escuela eleática, fundada por Parménides, afirmaba que el Ser es único e inmutable.", true],
-            ["Los filósofos presocráticos no diferenciaban entre filosofía y ciencia.", true],
+            ["La escuela eleática, fundada por Heráclito, afirmaba que todo cambia constantemente.", false],
+            ["Los filósofos presocráticos diferenciaban claramente entre filosofía y ciencia.", false],
             ["Los atomistas introdujeron la idea del vacío para explicar el movimiento de los átomos.", true],
             ["La filosofía jónica se desarrolló en las colonias griegas de Asia Menor.", true],
-            ["Heráclito creía que el conflicto era el motor de cambio en el universo.", true],
-            ["Parménides argumentaba que el cambio era imposible y que los sentidos nos engañaban.", true],
+            ["Heráclito creía que la armonía era el motor de estabilidad en el universo.", false],
+            ["Parménides argumentaba que el cambio era la única realidad y que la razón nos engañaba.", false],
             ["Los pitagóricos influyeron en Platón con su idea de la inmortalidad del alma.", true],
             ["El Nous de Anaxágoras era la inteligencia que ordenaba el cosmos.", true],
             ["Los filósofos de Mileto se centraron en encontrar el arjé de la naturaleza.", true],
-            ["La libertad de pensamiento fue crucial para el surgimiento de la filosofía en Grecia.", true],
+            ["La restricción del pensamiento fue crucial para el surgimiento de la filosofía en Grecia.", false],
             ["El mito griego influyó profundamente en la mentalidad griega antes de la filosofía.", true],
-            ["La filosofía presocrática se centraba principalmente en el estudio de la naturaleza.", true],
+            ["La filosofía presocrática se centraba principalmente en el estudio de los dioses.", false],
             ["El método científico se desarrolló a partir del pensamiento racional griego.", true],
-            ["Los filósofos jónicos rechazaban las explicaciones sobrenaturales de los fenómenos naturales.", true],
+            ["Los filósofos jónicos aceptaban las explicaciones sobrenaturales de los fenómenos naturales.", false],
             ["La filosofía griega influyó en la medicina, la política y la ciencia.", true],
-            ["La observación y la razón eran las herramientas principales de los primeros filósofos griegos.", true],
+            ["La superstición y la magia eran las herramientas principales de los primeros filósofos griegos.", false],
             ["El \"arjé\" es un término que significa \"principio\" u \"origen\" en griego.", true],
             ["La mitología griega dejó de tener influencia después del surgimiento de la filosofía.", false],
-            ["La inquietud filosófica ha existido desde que existe humanidad.", true],
-            ["La ética es una rama de la filosofía que estudia la moral y el comportamiento humano.", true],
-            ["Los filósofos griegos buscaban explicar el mundo a través de la razón y la experiencia.", true],
-            ["El \"logos\" representa la razón o el principio racional del universo.", true],
-            ["La democracia ateniense permitió el florecimiento del pensamiento crítico y filosófico.", true]
-        ];
-
+            ["La inquietud filosófica surgió por primera vez en Grecia en el siglo VI a.C.", false],
+            ["La ética es una rama de la filosofía que se desarrolla más con Sócrates que con los Presocráticos.", true],
+            ["Los filósofos griegos buscaban explicar el mundo a través de la razón y la experiencia.", true]
+];
         let preguntasSeleccionadas = [];
 
         function shuffle(array) {
