@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relativismo vs Universalismo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 900px;
+            width: 100%;
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .scoreboard {
+            display: flex;
+            justify-content: space-around;
+            padding: 20px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .score-item {
+            text-align: center;
+        }
+        
+        .score-label {
+            font-size: 12px;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .score-value {
+            font-size: 32px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        
+        .correct { color: #28a745; }
+        .incorrect { color: #dc3545; }
+        .progress { color: #667eea; }
+        
+        .game-area {
+            position: relative;
+            height: 400px;
+            background: linear-gradient(to bottom, #e3f2fd 0%, #ffffff 100%);
+            overflow: hidden;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        .phrase {
+            position: absolute;
+            width: 80%;
+            left: 10%;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            text-align: center;
+            font-size: 18px;
+            line-height: 1.6;
+            transition: top 0.05s linear;
+            border: 3px solid #667eea;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 20px;
+            padding: 30px;
+            justify-content: center;
+        }
+        
+        .answer-btn {
+            flex: 1;
+            max-width: 250px;
+            padding: 30px 20px;
+            font-size: 20px;
+            font-weight: bold;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .relativismo-btn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+        
+        .universalismo-btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+        
+        .answer-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        
+        .answer-btn:active {
+            transform: translateY(-2px);
+        }
+        
+        .answer-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .controls {
+            padding: 20px 30px 30px;
+            text-align: center;
+        }
+        
+        .restart-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .restart-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        
+        .game-over {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            z-index: 100;
+            max-width: 400px;
+            width: 90%;
+        }
+        
+        .game-over h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 32px;
+        }
+        
+        .game-over p {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        
+        .feedback {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 60px;
+            font-weight: bold;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 50;
+        }
+        
+        .feedback.show {
+            animation: feedbackAnim 0.6s ease-out;
+        }
+        
+        @keyframes feedbackAnim {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
+        }
+        
+        @media (max-width: 600px) {
+            h1 { font-size: 22px; }
+            .phrase { font-size: 16px; padding: 15px; }
+            .answer-btn { font-size: 16px; padding: 20px 15px; }
+            .buttons { flex-direction: column; }
+            .answer-btn { max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚖️ Relativismo vs Universalismo ⚖️</h1>
+            <p class="subtitle">Clasifica las frases según su perspectiva ética</p>
+            <p class="subtitle">Tomás Cuesta - IES Juan de la Cierva</p>
+            <a href="https://www.amazon.es/dp/B0F61P4TXK"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="enlace-aprende"
+                style="color:yellow; text-decoration:underline;">
+                Aprende a hacerlo por tu cuenta
+            </a>
+        </div>
+        
+        <div class="scoreboard">
+            <div class="score-item">
+                <div class="score-label">Aciertos</div>
+                <div class="score-value correct" id="correct">0</div>
+            </div>
+            <div class="score-item">
+                <div class="score-label">Errores</div>
+                <div class="score-value incorrect" id="incorrect">0</div>
+            </div>
+            <div class="score-item">
+                <div class="score-label">Restantes</div>
+                <div class="score-value progress" id="remaining">10</div>
+            </div>
+        </div>
+        
+        <div class="game-area" id="gameArea">
+            <div class="phrase" id="phrase"></div>
+            <div class="feedback" id="feedback"></div>
+            <div class="game-over" id="gameOver">
+                <h2>¡Juego Terminado!</h2>
+                <p>Aciertos: <span id="finalCorrect"></span></p>
+                <p>Errores: <span id="finalIncorrect"></span></p>
+                <p>Precisión: <span id="accuracy"></span>%</p>
+                <button class="restart-btn" onclick="restartGame()">Jugar de Nuevo</button>
+            </div>
+        </div>
+        
+        <div class="buttons">
+            <button class="answer-btn relativismo-btn" id="relativBtn" onclick="checkAnswer('relativismo')">
+                Relativismo
+            </button>
+            <button class="answer-btn universalismo-btn" id="universBtn" onclick="checkAnswer('universalismo')">
+                Universalismo
+            </button>
+        </div>
+        
+        <div class="controls">
+            <button class="restart-btn" onclick="restartGame()">Reiniciar Juego</button>
+        </div>
+    </div>
+
+    <script>
+        const phrases = [
+            { text: "En algunos países, beber alcohol es un delito; en otros, es parte de la vida social", type: "relativismo" },
+            { text: "Para ciertas culturas, mostrar el rostro es obligatorio; para otras, cubrirlo es lo correcto", type: "relativismo" },
+            { text: "Mientras en unos lugares abortar es un derecho, en otros es un crimen", type: "relativismo" },
+            { text: "Lo que aquí se llama corrupción, en otro sitio se considera agradecimiento", type: "relativismo" },
+            { text: "El concepto de infancia varía tanto que en unos sitios se trabaja a los 12 y en otros no hasta los 18", type: "relativismo" },
+            { text: "En algunos pueblos se come perro; en otros, eso sería impensable", type: "relativismo" },
+            { text: "Lo que para unos es libertad de expresión, para otros es un insulto intolerable", type: "relativismo" },
+            { text: "La forma de educar con gritos o castigos físicos aún es vista como necesaria en muchas familias", type: "relativismo" },
+            { text: "Un grupo considera que el género se define al nacer; otro que se elige más adelante", type: "relativismo" },
+            { text: "Lo que aquí es una pareja amorosa, allí es una relación prohibida", type: "relativismo" },
+            { text: "En algunos países es normal pagar por saltarse colas o procesos", type: "relativismo" },
+            { text: "Hay lugares donde besar en público es delito", type: "relativismo" },
+            { text: "En ciertas comunidades se entiende la violencia como parte del honor", type: "relativismo" },
+            { text: "En unas escuelas se canta el himno a diario, en otras se evita cualquier símbolo nacional", type: "relativismo" },
+            { text: "Lo que se considera humor cambia tanto que una misma broma puede provocar carcajadas o despidos", type: "relativismo" },
+            { text: "En algunos grupos, no pagar impuestos se ve como resistencia legítima", type: "relativismo" },
+            { text: "Mientras unos creen que educar sin reglas es dañino, otros lo ven como progreso", type: "relativismo" },
+            { text: "Para ciertos colectivos, los animales tienen derechos; para otros, son recursos", type: "relativismo" },
+            { text: "Un político admirado aquí puede ser odiado en otro país por razones culturales", type: "relativismo" },
+            { text: "En algunos sitios se celebran funerales con música y baile", type: "relativismo" },
+            { text: "Lo que se considera obsceno en televisión varía enormemente de un país a otro", type: "relativismo" },
+            { text: "En algunas culturas se respeta al anciano sin discusión; en otras, se valoran más las ideas nuevas", type: "relativismo" },
+            { text: "Mientras unos rechazan toda intervención estética, otros la promueven desde la adolescencia", type: "relativismo" },
+            { text: "En algunos países, hay exámenes para poder votar; en otros, se considera un derecho sin condiciones", type: "relativismo" },
+            { text: "En unos lugares el graffiti se considera arte urbano; en otros, delito grave", type: "relativismo" },
+            { text: "La censura en internet puede verse como protección o como represión, según el entorno", type: "relativismo" },
+            { text: "Lo que se considera traición a la patria varía según la historia del país", type: "relativismo" },
+            { text: "Un símbolo religioso puede ser sagrado en una plaza y ofensivo en otra", type: "relativismo" },
+            { text: "En algunos lugares se permite el duelo armado entre hombres; en otros, eso es homicidio", type: "relativismo" },
+            { text: "El deber de cuidar a los padres mayores no existe en todas las culturas", type: "relativismo" },
+            { text: "Golpear a un niño en casa o en la escuela está mal, sin excepciones", type: "universalismo" },
+            { text: "Nadie debería ser condenado por pensar diferente", type: "universalismo" },
+            { text: "No está bien encarcelar a una mujer por quitarse un velo", type: "universalismo" },
+            { text: "El trabajo forzado no debe existir, ni con niños ni con adultos", type: "universalismo" },
+            { text: "Matar a alguien por ser homosexual siempre está mal", type: "universalismo" },
+            { text: "Usar la tortura para obtener confesiones no puede aceptarse nunca", type: "universalismo" },
+            { text: "Negar educación a una niña por el lugar donde nació es un error", type: "universalismo" },
+            { text: "Quemar a alguien por brujería no está bien, en ningún siglo", type: "universalismo" },
+            { text: "El derecho a expresar lo que uno piensa no depende del gobierno", type: "universalismo" },
+            { text: "Golpear a la pareja no es discutible, es violencia", type: "universalismo" },
+            { text: "La esclavitud no puede verse como tradición o costumbre válida", type: "universalismo" },
+            { text: "Impedir que una persona acceda al médico por su raza siempre es inaceptable", type: "universalismo" },
+            { text: "No hay ningún argumento válido para prohibir que una niña aprenda a leer", type: "universalismo" },
+            { text: "Un tribunal sin defensa legal no es un tribunal justo", type: "universalismo" },
+            { text: "Un niño no debe ser soldado, aunque lo autorice su gobierno", type: "universalismo" },
+            { text: "Insultar o agredir por motivos religiosos nunca es excusable", type: "universalismo" },
+            { text: "La mutilación genital no es cultura, es agresión", type: "universalismo" },
+            { text: "Quemar libros por su contenido crítico siempre es censura", type: "universalismo" },
+            { text: "Amenazar a periodistas no es protección de la patria, es coacción", type: "universalismo" },
+            { text: "Toda persona tiene derecho a beber agua sin enfermar", type: "universalismo" },
+            { text: "No hay cultura que justifique encerrar a mujeres por salir solas", type: "universalismo" },
+            { text: "Un golpe de Estado no puede llamarse defensa de los valores si elimina derechos", type: "universalismo" },
+            { text: "Negar refugio a quien huye de la guerra no es legítimo", type: "universalismo" },
+            { text: "Castigar con latigazos en público no es justicia", type: "universalismo" },
+            { text: "Un contrato que permite explotar a trabajadores no es ético aunque sea legal", type: "universalismo" },
+            { text: "No se puede casar a una menor con un adulto aunque lo firme la familia", type: "universalismo" },
+            { text: "Obligar a callar a alguien por su identidad de género no está bien", type: "universalismo" },
+            { text: "Robar al pueblo bajo apariencia de ley sigue siendo robar", type: "universalismo" },
+            { text: "Negarse a ayudar a alguien en peligro por su nacionalidad no es opción válida", type: "universalismo" },
+            { text: "Pegar a un preso no es disciplina, es maltrato", type: "universalismo" }
+        ];
+
+        let currentPhrases = [];
+        let currentIndex = 0;
+        let correct = 0;
+        let incorrect = 0;
+        let phraseElement = document.getElementById('phrase');
+        let position = -100;
+        let animationId;
+        let answered = false;
+        
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playBeep(frequency, duration) {
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = frequency;
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + duration);
+        }
+        
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+        
+        function initGame() {
+            const shuffled = shuffleArray(phrases);
+            currentPhrases = shuffled.slice(0, 10);
+            currentIndex = 0;
+            correct = 0;
+            incorrect = 0;
+            updateScoreboard();
+            document.getElementById('gameOver').style.display = 'none';
+            loadNextPhrase();
+        }
+        
+        function loadNextPhrase() {
+            if (currentIndex >= currentPhrases.length) {
+                endGame();
+                return;
+            }
+            
+            answered = false;
+            position = -100;
+            phraseElement.textContent = currentPhrases[currentIndex].text;
+            phraseElement.style.top = position + 'px';
+            document.getElementById('relativBtn').disabled = false;
+            document.getElementById('universBtn').disabled = false;
+            animatePhrase();
+        }
+        
+        function animatePhrase() {
+            if (answered) return;
+            
+            position += 1;
+            phraseElement.style.top = position + 'px';
+            
+            if (position < 500) {
+                animationId = requestAnimationFrame(animatePhrase);
+            } else {
+                loadNextPhrase();
+            }
+        }
+        
+        function checkAnswer(answer) {
+            if (answered) return;
+            
+            answered = true;
+            cancelAnimationFrame(animationId);
+            
+            const currentPhrase = currentPhrases[currentIndex];
+            const isCorrect = answer === currentPhrase.type;
+            
+            if (isCorrect) {
+                correct++;
+                showFeedback('✓', '#28a745');
+                playBeep(800, 0.2);
+            } else {
+                incorrect++;
+                showFeedback('✗', '#dc3545');
+                playBeep(200, 0.3);
+            }
+            
+            updateScoreboard();
+            
+            document.getElementById('relativBtn').disabled = true;
+            document.getElementById('universBtn').disabled = true;
+            
+            setTimeout(() => {
+                currentIndex++;
+                loadNextPhrase();
+            }, 800);
+        }
+        
+        function showFeedback(symbol, color) {
+            const feedback = document.getElementById('feedback');
+            feedback.textContent = symbol;
+            feedback.style.color = color;
+            feedback.classList.add('show');
+            setTimeout(() => feedback.classList.remove('show'), 600);
+        }
+        
+        function updateScoreboard() {
+            document.getElementById('correct').textContent = correct;
+            document.getElementById('incorrect').textContent = incorrect;
+            document.getElementById('remaining').textContent = 10 - currentIndex;
+        }
+        
+        function endGame() {
+            cancelAnimationFrame(animationId);
+            const accuracy = Math.round((correct / 10) * 100);
+            document.getElementById('finalCorrect').textContent = correct;
+            document.getElementById('finalIncorrect').textContent = incorrect;
+            document.getElementById('accuracy').textContent = accuracy;
+            document.getElementById('gameOver').style.display = 'block';
+            phraseElement.style.display = 'none';
+        }
+        
+        function restartGame() {
+            phraseElement.style.display = 'block';
+            initGame();
+        }
+        
+        // Iniciar el juego al cargar
+        initGame();
+    </script>
+</body>
+</html>
