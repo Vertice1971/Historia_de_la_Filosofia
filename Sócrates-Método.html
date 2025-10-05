@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Método Socrático - Teoría y Práctica</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .nav-buttons {
+            display: flex;
+            background: #34495e;
+            border-bottom: 1px solid #2c3e50;
+        }
+
+        .nav-btn {
+            flex: 1;
+            padding: 15px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .nav-btn.active {
+            background: rgba(52, 152, 219, 0.8);
+        }
+
+        .nav-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #3498db;
+        }
+
+        .screen {
+            display: none;
+            padding: 40px;
+            min-height: 500px;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        .theory-section {
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            border-left: 5px solid #3498db;
+        }
+
+        .theory-section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        .theory-section p {
+            line-height: 1.8;
+            color: #34495e;
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        .example-box {
+            background: rgba(52, 152, 219, 0.1);
+            border-left: 4px solid #3498db;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .example-box h4 {
+            color: #2c3e50;
+            margin-bottom: 12px;
+            font-size: 1.2em;
+        }
+
+        .example-box p {
+            color: #495057;
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+
+        .dialogue {
+            font-style: italic;
+            color: #5a6c7d;
+            margin-left: 15px;
+            padding: 10px;
+            border-left: 3px solid #95a5a6;
+        }
+
+        .practice-step {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 1px solid #dee2e6;
+        }
+
+        .practice-step h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        .practice-step p {
+            margin-bottom: 15px;
+            color: #495057;
+            line-height: 1.6;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 15px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1em;
+            resize: vertical;
+            transition: border-color 0.3s ease;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            margin: 10px 5px;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #27ae60, #229954);
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+        }
+
+        .btn-success:hover {
+            box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
+        }
+
+        .current-word {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #e74c3c;
+            background: rgba(231, 76, 60, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .contradiction-box {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .synthesis-box {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: #3498db;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .progress-bar {
+            background: #ecf0f1;
+            height: 8px;
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #3498db, #2980b9);
+            height: 100%;
+            transition: width 0.5s ease;
+            border-radius: 4px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .screen {
+                padding: 20px;
+            }
+            
+            .nav-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏛️ Método Socrático</h1>
+            <p>La sabiduría comienza con el reconocimiento de la propia ignorancia</p>
+            <p style="font-size: 0.95em;">tomcue@iesjuandelacierva.com</p>
+            <a href="https://www.amazon.es/dp/B0F61P4TXK" target="_blank" style="font-size: 0.95em; color: inherit; text-decoration: underline;">Puedes aprender a programarlo tú</a>
+        </div>
+
+        <div class="nav-buttons">
+            <button class="nav-btn active" onclick="showScreen('theory')">📚 Teoría</button>
+            <button class="nav-btn" onclick="showScreen('practice')">⚡ Práctica</button>
+        </div>
+
+        <div id="theory" class="screen active">
+            <div class="theory-section">
+                <h2>🎭 La Ironía Socrática</h2>
+                <p>La ironía socrática es el primer paso del método desarrollado por Sócrates. Consiste en la simulación de la ignorancia por parte del filósofo para llevar a su interlocutor a reconocer que aquello que creía saber con certeza, en realidad no lo conoce verdaderamente.</p>
+                
+                <p>Esta técnica se basa en el principio de que <strong>"solo sé que no sé nada"</strong>. Mediante preguntas aparentemente inocentes, Sócrates llevaba a sus interlocutores a contradicciones que revelaban la fragilidad de sus conocimientos supuestos.</p>
+                
+                <p>El proceso incluye:</p>
+                <p><strong>• Definición inicial:</strong> Se solicita una definición del concepto a examinar</p>
+                <p><strong>• Ejemplificación:</strong> Se buscan casos concretos que ilustren la definición</p>
+                <p><strong>• Contraejemplos:</strong> Se identifican situaciones que contradicen la definición inicial</p>
+                <p><strong>• Revelación de la contradicción:</strong> Se demuestra la inconsistencia del conocimiento inicial</p>
+
+                <div class="example-box">
+                    <h4>📖 Ejemplo clásico: El diálogo sobre la belleza (Hipias Mayor)</h4>
+                    <p>En el diálogo platónico <em>Hipias Mayor</em>, Sócrates pregunta a Hipias qué es lo bello. Hipias responde con ejemplos concretos:</p>
+                    
+                    <div class="dialogue">
+                        <p><strong>Hipias:</strong> "Una doncella hermosa es bella"</p>
+                    </div>
+                    
+                    <p>Sócrates acepta el ejemplo, pero luego introduce un contraejemplo que revela la contradicción:</p>
+                    
+                    <div class="dialogue">
+                        <p><strong>Sócrates:</strong> "Pero si comparamos a esa doncella con una diosa, ¿no resulta fea la doncella? Y si la comparamos con una olla, ¿no es bella la doncella?"</p>
+                    </div>
+                    
+                    <p><strong>💡 La contradicción revelada:</strong> La misma doncella es bella y fea a la vez, dependiendo del contexto de comparación. Esto demuestra que la definición inicial de Hipias ("una doncella hermosa es lo bello") no captura la esencia universal de la belleza, sino solo casos particulares que varían según las circunstancias.</p>
+                    
+                    <p>Esta contradicción obliga a Hipias a reconocer su ignorancia inicial y buscar una definición más profunda y universal de lo bello, lo que abre paso a la fase mayéutica del método.</p>
+                </div>
+            </div>
+
+            <div class="theory-section">
+                <h2>🤱 La Mayéutica</h2>
+                <p>La mayéutica, cuyo nombre proviene del oficio de partera de la madre de Sócrates, es el "arte de dar a luz" las ideas. Una vez que la ironía ha demostrado la ignorancia, la mayéutica ayuda a construir un conocimiento más sólido y fundamentado.</p>
+                
+                <p>Esta segunda fase del método socrático busca que el interlocutor, a través de la reflexión guiada, llegue por sí mismo a conclusiones más profundas y universales sobre el concepto examinado.</p>
+                
+                <p>El proceso mayéutico incluye:</p>
+                <p><strong>• Síntesis integradora:</strong> Se construye una nueva definición que incorpore las contradicciones encontradas</p>
+                <p><strong>• Verificación por casos límite:</strong> Se buscan situaciones no contempladas en la nueva definición</p>
+                <p><strong>• Definición universal:</strong> Se alcanza una comprensión más completa y universal del concepto</p>
+                
+                <div class="example-box">
+                    <h4>🔍 El método inductivo en la mayéutica</h4>
+                    <p>La mayéutica socrática emplea fundamentalmente el <strong>razonamiento inductivo</strong>. A diferencia de la deducción (que va de lo general a lo particular), la inducción parte de casos particulares para ascender hacia principios universales.</p>
+                    
+                    <p><strong>El proceso inductivo funciona así:</strong></p>
+                    
+                    <p><strong>1. Examen de múltiples casos particulares:</strong> Se analizan diversos ejemplos concretos del concepto en cuestión (como diferentes actos justos, bellos o virtuosos).</p>
+                    
+                    <p><strong>2. Identificación de elementos comunes:</strong> Se busca aquello que todos los casos comparten, lo que permanece constante a pesar de las diferencias superficiales.</p>
+                    
+                    <p><strong>3. Abstracción del principio universal:</strong> A partir de los elementos comunes, se formula una definición que trasciende los casos particulares y captura la esencia del concepto.</p>
+                    
+                    <p><strong>💡 Ejemplo del método inductivo:</strong> Si examinamos múltiples actos justos (devolver lo prestado, castigar al culpable, respetar los acuerdos), y descubrimos que todos comparten el dar a cada uno lo que le corresponde, podemos inducir que la justicia es "dar a cada cual lo suyo". Esta definición universal surge del examen de los casos particulares, no de una teoría previa.</p>
+                    
+                    <p>Este método inductivo es revolucionario porque sitúa el conocimiento en la experiencia concreta y en la capacidad de razonamiento del interlocutor, no en autoridades externas o dogmas establecidos. El conocimiento verdadero "nace" desde dentro, como un parto intelectual.</p>
+                </div>
+                
+                <p>La mayéutica no pretende dar respuestas definitivas, sino desarrollar la capacidad de pensar críticamente y construir conocimiento más sólido a través del diálogo y la reflexión. El objetivo último es que el interlocutor descubra por sí mismo las verdades universales mediante el análisis inductivo de su propia experiencia.</p>
+            </div>
+        </div>
+
+        <div id="practice" class="screen">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+
+            <div id="step0" class="practice-step">
+                <h3><span class="step-number">🎯</span>Comenzar el Ejercicio Socrático</h3>
+                <p>Vamos a practicar el método socrático completo. El programa te presentará un concepto ético-político al azar y te guiará a través de las dos fases: ironía socrática y mayéutica.</p>
+                <button class="btn" onclick="startExercise()">Comenzar Ejercicio</button>
+            </div>
+
+            <div id="step1" class="practice-step" style="display: none;">
+                <h3><span class="step-number">1</span>Fase de Ironía: Definición Inicial</h3>
+                <div class="current-word" id="currentWord"></div>
+                <p>Define este concepto según tu comprensión inicial. No busques la definición "correcta", sino escribe lo que TÚ entiendes por este término:</p>
+                <textarea id="initialDefinition" placeholder="Escribe tu definición inicial aquí..."></textarea>
+                <button class="btn" onclick="nextStep(2)">Continuar</button>
+            </div>
+
+            <div id="step2" class="practice-step" style="display: none;">
+                <h3><span class="step-number">2</span>Ejemplo Práctico</h3>
+                <p>Ahora proporciona un ejemplo concreto y específico que ilustre tu definición anterior:</p>
+                <textarea id="practicalExample" placeholder="Describe una situación específica que ejemplifique tu definición..."></textarea>
+                <button class="btn" onclick="nextStep(3)">Continuar</button>
+            </div>
+
+            <div id="step3" class="practice-step" style="display: none;">
+                <h3><span class="step-number">3</span>Contraejemplo</h3>
+                <p>Piensa ahora en una situación que contradiga o ponga en duda tu definición inicial. Busca un caso donde tu definición no funcione o genere problemas:</p>
+                <textarea id="counterExample" placeholder="Describe una situación que contradiga tu definición inicial..."></textarea>
+                <button class="btn" onclick="showContradiction()">Ver Contradicción</button>
+            </div>
+
+            <div id="step4" class="practice-step" style="display: none;">
+                <h3><span class="step-number">💥</span>Contradicción Revelada</h3>
+                <div class="contradiction-box" id="contradictionBox"></div>
+                <p>Como puedes ver, tu definición inicial entra en contradicción. Esta es la esencia de la ironía socrática: revelar que lo que creíamos saber con certeza, en realidad presenta inconsistencias.</p>
+                <button class="btn" onclick="nextStep(5)">Comenzar Mayéutica</button>
+            </div>
+
+            <div id="step5" class="practice-step" style="display: none;">
+                <h3><span class="step-number">4</span>Fase Mayéutica: Definición Integradora</h3>
+                <p>Ahora construye una nueva definición que integre tanto tu ejemplo como tu contraejemplo. Esta definición debe ser más compleja y matizada que la inicial:</p>
+                <textarea id="integrativeDefinition" placeholder="Escribe una definición que incorpore las contradicciones encontradas..."></textarea>
+                <button class="btn" onclick="nextStep(6)">Continuar</button>
+            </div>
+
+            <div id="step6" class="practice-step" style="display: none;">
+                <h3><span class="step-number">5</span>Caso Límite</h3>
+                <p>Proporciona un caso o situación que NO esté recogido en tu nueva definición integradora. Busca los límites de tu comprensión actual:</p>
+                <textarea id="edgeCase" placeholder="Describe un caso que tu nueva definición no contempla..."></textarea>
+                <button class="btn" onclick="nextStep(7)">Continuar</button>
+            </div>
+
+            <div id="step7" class="practice-step" style="display: none;">
+                <h3><span class="step-number">6</span>Definición Universal</h3>
+                <div class="synthesis-box" id="synthesisBox"></div>
+                <p>Finalmente, intenta formular una definición lo más universal posible que incluya todos los casos anteriores. Esta debe ser tu comprensión más madura del concepto:</p>
+                <textarea id="universalDefinition" placeholder="Escribe tu definición universal final..."></textarea>
+                <button class="btn-success btn" onclick="completeExercise()">Completar y Descargar Resumen</button>
+            </div>
+
+            <div id="step8" class="practice-step" style="display: none;">
+                <h3><span class="step-number">✅</span>Ejercicio Completado</h3>
+                <p>¡Excelente! Has completado un ciclo completo del método socrático. Tu reflexión ha evolucionado desde una definición inicial hasta una comprensión más profunda y universal.</p>
+                <p>El archivo con todo tu proceso de reflexión se ha generado y se descargará automáticamente.</p>
+                <button class="btn" onclick="startNewExercise()">Nuevo Ejercicio</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const ethicalPoliticalConcepts = [
+            'Justicia', 'Libertad', 'Igualdad', 'Democracia', 'Autoridad', 'Poder', 'Derecho', 'Deber',
+            'Responsabilidad', 'Dignidad', 'Respeto', 'Tolerancia', 'Solidaridad', 'Fraternidad', 
+            'Soberanía', 'Ciudadanía', 'Legitimidad', 'Legalidad', 'Equidad', 'Imparcialidad',
+            'Transparencia', 'Corrupción', 'Honestidad', 'Integridad', 'Lealtad', 'Traición',
+            'Patriotismo', 'Nacionalismo', 'Cosmopolitismo', 'Humanismo', 'Individualismo', 'Colectivismo',
+            'Liberalismo', 'Conservadurismo', 'Progresismo', 'Tradición', 'Revolución', 'Reforma',
+            'Consenso', 'Disenso', 'Pluralismo', 'Fundamentalismo', 'Radicalismo', 'Moderación'
+        ];
+
+        let currentConcept = '';
+        let exerciseData = {};
+
+        function showScreen(screen) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(screen).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function startExercise() {
+            currentConcept = ethicalPoliticalConcepts[Math.floor(Math.random() * ethicalPoliticalConcepts.length)];
+            document.getElementById('currentWord').textContent = currentConcept;
+            exerciseData = { concept: currentConcept };
+            showStep(1);
+            updateProgress(1);
+        }
+
+        function showStep(stepNumber) {
+            document.querySelectorAll('.practice-step').forEach(step => step.style.display = 'none');
+            document.getElementById('step' + stepNumber).style.display = 'block';
+        }
+
+        function updateProgress(step) {
+            const progress = (step / 8) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function nextStep(stepNumber) {
+            switch(stepNumber) {
+                case 2:
+                    exerciseData.initialDefinition = document.getElementById('initialDefinition').value;
+                    break;
+                case 3:
+                    exerciseData.practicalExample = document.getElementById('practicalExample').value;
+                    break;
+                case 5:
+                    exerciseData.counterExample = document.getElementById('counterExample').value;
+                    break;
+                case 6:
+                    exerciseData.integrativeDefinition = document.getElementById('integrativeDefinition').value;
+                    break;
+                case 7:
+                    exerciseData.edgeCase = document.getElementById('edgeCase').value;
+                    showSynthesis();
+                    showStep(7);
+                    updateProgress(7);
+                    return;
+            }
+            
+            showStep(stepNumber);
+            updateProgress(stepNumber);
+        }
+
+        function showContradiction() {
+            exerciseData.counterExample = document.getElementById('counterExample').value;
+            
+            const contradictionText = `
+                <h4>🔍 Análisis de la Contradicción:</h4>
+                <p><strong>Tu definición inicial sugiere:</strong> ${exerciseData.initialDefinition || 'No definido'}</p>
+                <p><strong>Tu ejemplo confirma:</strong> ${exerciseData.practicalExample || 'No definido'}</p>
+                <p><strong>Pero tu contraejemplo revela:</strong> ${exerciseData.counterExample || 'No definido'}</p>
+                <p><strong>💡 Conclusión:</strong> Existe una tensión irresuelta en tu comprensión inicial del concepto "${currentConcept}". Esta contradicción revela que necesitas una comprensión más profunda.</p>
+            `;
+            
+            document.getElementById('contradictionBox').innerHTML = contradictionText;
+            showStep(4);
+            updateProgress(4);
+        }
+
+        function showSynthesis() {
+            const synthesisText = `
+                <h4>🔍 Síntesis del Proceso Mayéutico:</h4>
+                <p><strong>Tu definición integradora propone:</strong> ${exerciseData.integrativeDefinition || 'No definido'}</p>
+                <p><strong>Pero el caso límite revela:</strong> ${exerciseData.edgeCase || 'No definido'}</p>
+                <p><strong>💡 Observación:</strong> Incluso tu definición más elaborada presenta limitaciones. Esto demuestra la complejidad del concepto "${currentConcept}" y la necesidad de una comprensión verdaderamente universal.</p>
+            `;
+            
+            document.getElementById('synthesisBox').innerHTML = synthesisText;
+        }
+
+        function completeExercise() {
+            exerciseData.universalDefinition = document.getElementById('universalDefinition').value;
+            generateTextFile();
+            showStep(8);
+            updateProgress(8);
+        }
+
+        function startNewExercise() {
+            document.querySelectorAll('textarea').forEach(ta => ta.value = '');
+            document.getElementById('contradictionBox').innerHTML = '';
+            document.getElementById('synthesisBox').innerHTML = '';
+            showStep(0);
+            updateProgress(0);
+        }
+
+        function generateTextFile() {
+            const currentDate = new Date().toLocaleDateString('es-ES');
+            
+            const textContent = `EJERCICIO DEL MÉTODO SOCRÁTICO
+=====================================
+
+Concepto analizado: ${exerciseData.concept}
+Fecha: ${currentDate}
+
+FASE 1: IRONÍA SOCRÁTICA
+========================
+
+1. Definición inicial:
+${exerciseData.initialDefinition || 'No proporcionada'}
+
+2. Ejemplo práctico:
+${exerciseData.practicalExample || 'No proporcionado'}
+
+3. Contraejemplo:
+${exerciseData.counterExample || 'No proporcionado'}
+
+FASE 2: MAYÉUTICA
+==================
+
+4. Definición integradora:
+${exerciseData.integrativeDefinition || 'No proporcionada'}
+
+5. Caso límite:
+${exerciseData.edgeCase || 'No proporcionado'}
+
+6. Definición universal:
+${exerciseData.universalDefinition || 'No proporcionada'}
+`;
+
+            const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `metodo-socratico-${exerciseData.concept}-${currentDate.replace(/\//g, '-')}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        updateProgress(0);
+    </script>
+</body>
+</html>
