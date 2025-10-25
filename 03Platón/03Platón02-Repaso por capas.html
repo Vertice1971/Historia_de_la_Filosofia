@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis Filosófico en Capas- Platón</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:linear-gradient(135deg,#667eea 0%,#764ba2 100%); min-height:100vh; padding:20px; }
+        .container { max-width:1200px; margin:0 auto; background:white; border-radius:20px; box-shadow:0 20px 60px rgba(0,0,0,0.3); overflow:hidden; }
+        .intro-page { padding:40px; }
+        .intro-page h1 { color:#667eea; font-size:2.5em; margin-bottom:30px; text-align:center; }
+        .intro-page h2 { color:#764ba2; font-size:1.8em; margin-top:30px; margin-bottom:15px; border-left:5px solid #667eea; padding-left:15px; }
+        .intro-page p { line-height:1.8; color:#333; margin-bottom:15px; font-size:1.1em; }
+        .warning-box { background:#fff3cd; border-left:5px solid #ff6b6b; padding:20px; margin:25px 0; border-radius:5px; }
+        .warning-box h3 { color:#d63031; margin-bottom:10px; font-size:1.4em; }
+        .warning-box p { color:#555; font-size:1.05em; line-height:1.7; }
+        .level-example { background:#f8f9fa; padding:20px; margin:15px 0; border-radius:8px; border-left:5px solid #667eea; }
+        .level-example h4 { color:#667eea; margin-bottom:10px; }
+        .level-example p { font-style:italic; color:#555; }
+        .start-button { display:block; margin:40px auto 0; padding:15px 50px; background:linear-gradient(135deg,#667eea 0%,#764ba2 100%); color:white; border:none; border-radius:50px; font-size:1.3em; cursor:pointer; transition:transform 0.2s; box-shadow:0 5px 15px rgba(102,126,234,0.4); }
+        .start-button:hover { transform:translateY(-2px); box-shadow:0 7px 20px rgba(102,126,234,0.6); }
+        .exercise-page { padding:30px; display:none; }
+        h1 { text-align:center; color:#667eea; margin-bottom:10px; font-size:2em; }
+        .progress { text-align:center; color:#666; margin-bottom:20px; font-size:1.1em; }
+        .btn-volver-teoria { display:block; margin:0 auto 20px; padding:10px 25px; background:#6c757d; color:white; border:none; border-radius:25px; font-size:0.95em; cursor:pointer; transition:all 0.3s; }
+        .btn-volver-teoria:hover { background:#5a6268; transform:translateY(-2px); }
+        .niveles-leyenda { background:#f8f9fa; border-radius:10px; padding:15px; margin-bottom:20px; border:2px solid #dee2e6; }
+        .niveles-leyenda h4 { color:#495057; font-size:1em; margin-bottom:12px; text-align:center; }
+        .nivel-item { display:flex; align-items:center; gap:10px; padding:8px; margin-bottom:8px; border-radius:5px; font-size:0.9em; }
+        .nivel-item.superficial { background:linear-gradient(135deg,#ffeaa7 0%,#fdcb6e 100%); }
+        .nivel-item.intermedia { background:linear-gradient(135deg,#74b9ff 0%,#0984e3 100%); }
+        .nivel-item.profunda { background:linear-gradient(135deg,#a29bfe 0%,#6c5ce7 100%); }
+        .nivel-item-emoji { font-size:1.2em; }
+        .nivel-item-texto { flex:1; color:#2d3436; font-weight:500; }
+        .capas-container { display:flex; flex-direction:column; gap:20px; margin-bottom:40px; }
+        .capa { border:3px solid #ddd; border-radius:15px; padding:20px; min-height:100px; position:relative; transition:all 0.3s ease; }
+        .capa.superficial { background:linear-gradient(135deg,#ffeaa7 0%,#fdcb6e 100%); border-color:#fdcb6e; }
+        .capa.intermedia { background:linear-gradient(135deg,#74b9ff 0%,#0984e3 100%); border-color:#0984e3; }
+        .capa.profunda { background:linear-gradient(135deg,#a29bfe 0%,#6c5ce7 100%); border-color:#6c5ce7; }
+        .capa-label { position:absolute; top:-15px; left:20px; background:white; padding:5px 15px; border-radius:20px; font-weight:bold; font-size:0.9em; box-shadow:0 2px 8px rgba(0,0,0,0.1); }
+        .capa.superficial .capa-label { color:#d63031; }
+        .capa.intermedia .capa-label { color:#0984e3; }
+        .capa.profunda .capa-label { color:#6c5ce7; }
+        .capa-content { font-size:1.1em; line-height:1.6; color:#2d3436; }
+        .capa.vacia { background:#f8f9fa; border:3px dashed #ddd; display:flex; align-items:center; justify-content:center; cursor:pointer; }
+        .capa.vacia .capa-content { color:#aaa; font-style:italic; }
+        .capa.drop-active { border-color:#00b894; background:#e8f8f5; transform:scale(1.02); }
+        .fichas-container { background:#f8f9fa; border-radius:15px; padding:25px; margin-bottom:30px; }
+        .fichas-titulo { text-align:center; font-weight:bold; color:#2d3436; margin-bottom:20px; font-size:1.2em; }
+        .fichas-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:15px; }
+        .ficha { background:white; border:2px solid #ddd; border-radius:10px; padding:15px; cursor:pointer; transition:all 0.3s ease; box-shadow:0 4px 6px rgba(0,0,0,0.1); user-select:none; }
+        .ficha:hover:not(.colocada) { transform:translateY(-5px); box-shadow:0 8px 15px rgba(0,0,0,0.2); border-color:#667eea; }
+        .ficha.colocada { opacity:0.3; cursor:not-allowed; pointer-events:none; }
+        .ficha.seleccionada { outline:3px solid #667eea; outline-offset:2px; }
+        .ficha-texto { font-size:0.95em; line-height:1.5; color:#2d3436; }
+        .botones { display:flex; justify-content:center; gap:20px; }
+        button { padding:15px 40px; font-size:1.1em; border:none; border-radius:10px; cursor:pointer; font-weight:bold; transition:all 0.3s ease; box-shadow:0 4px 6px rgba(0,0,0,0.1); }
+        .btn-siguiente { background:linear-gradient(135deg,#00b894 0%,#00cec9 100%); color:white; }
+        .btn-siguiente:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 6px 12px rgba(0,0,0,0.2); }
+        .btn-siguiente:disabled { background:#dfe6e9; cursor:not-allowed; color:#b2bec3; }
+        .btn-reiniciar { background:linear-gradient(135deg,#fdcb6e 0%,#e17055 100%); color:white; }
+        .btn-reiniciar:hover { transform:translateY(-2px); box-shadow:0 6px 12px rgba(0,0,0,0.2); }
+        .mensaje { text-align:center; padding:15px; border-radius:10px; margin-bottom:20px; font-weight:bold; display:none; }
+        .mensaje.exito { background:#d4edda; color:#155724; border:2px solid #c3e6cb; }
+        .mensaje.error { background:#f8d7da; color:#721c24; border:2px solid #f5c6cb; }
+        .mensaje.visible { display:block; animation:aparecer 0.3s ease; }
+        @keyframes aparecer { from{opacity:0; transform:translateY(-10px);} to{opacity:1; transform:translateY(0);} }
+        .instrucciones { background:#e8f4f8; border-left:4px solid #0984e3; padding:15px; border-radius:5px; margin-bottom:20px; }
+        .instrucciones p { margin:5px 0; color:#2d3436; }
+        .estadisticas-finales { background:white; padding:30px; border-radius:15px; margin-top:20px; border:3px solid #00b894; }
+        .estadisticas-finales h3 { color:#00b894; text-align:center; margin-bottom:20px; font-size:1.5em; }
+        .estadistica-item { display:flex; justify-content:space-between; align-items:center; padding:12px; margin:10px 0; background:#f8f9fa; border-radius:8px; font-size:1.1em; }
+        .estadistica-label { color:#495057; font-weight:500; }
+        .estadistica-valor { color:#667eea; font-weight:bold; font-size:1.2em; }
+        .porcentaje-exito { text-align:center; font-size:3em; font-weight:bold; color:#00b894; margin:20px 0; }
+        .porcentaje-exito.excelente { color:#00b894; }
+        .porcentaje-exito.bueno { color:#0984e3; }
+        .porcentaje-exito.mejorable { color:#fdcb6e; }
+        @media (max-width:768px) {
+            .container { padding:15px; }
+            h1 { font-size:1.5em; }
+            .fichas-grid { grid-template-columns:1fr; }
+            .niveles-leyenda { font-size:0.85em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="intro-page" id="introPage">
+            <h1>Los Tres Niveles de Respuesta en Filosofía-Platón</h1>
+            <h2 style="font-size:16px; text-decoration:underline;">
+                <a href="https://github.com/Vertice1971/Historia_de_la_Filosofia/blob/main/PAU%202026.md" style="color:inherit; text-decoration:underline;">
+                    Clic para acceso a materiales - Tomás Cuesta - IES Juan de la Cierva
+                </a>
+            </h2>
+            <p>En un texto de caracter filosófico no basta con <strong>decir algo correcto sacado de los apuntes</strong>. Es fundamental entender que existen diferentes niveles de profundidad en tus respuestas. Aquí te explicamos cómo distinguirlos:</p>
+            <h2>📌 Nivel 1: Básico (Descriptivo)</h2>
+            <div class="level-example">
+                <h4>Características:</h4>
+                <p>• Simplemente mencionas los conceptos sin elaborarlos<br>• Información correcta pero superficial<br>• No usas terminología filosófica precisa<br>• No explicas el porqué ni las conexiones</p>
+                <h4>Ejemplo:</h4>
+                <p>"Platón decía que había dos mundos, el nuestro y el superior donde estaban las ideas."</p>
+            </div>
+            <h2>📚 Nivel 2: Mejorado (Terminología precisa)</h2>
+            <div class="level-example">
+                <h4>Características:</h4>
+                <p>• Usas vocabulario filosófico adecuado<br>• Estructuras mejor tu respuesta<br>• Etiquetas los conceptos correctamente<br>• Mayor precisión técnica</p>
+                <h4>Ejemplo:</h4>
+                <p>"El dualismo ontológico de Platón distingue entre el mundo sensible y el mundo inteligible, situando en este último las Ideas o Formas universales."</p>
+            </div>
+            <h2>🎯 Nivel 3: Excelente (Contextualización e interpretación)</h2>
+            <div class="level-example">
+                <h4>Características:</h4>
+                <p>• Explicas la motivación filosófica (el PORQUÉ)<br>• Conectas con la tradición filosófica anterior<br>• Estableces influencias y relaciones<br>• Muestras comprensión profunda del problema filosófico</p>
+                <h4>Ejemplo:</h4>
+                <p>"Platón necesita demostrar que las Ideas universales existen objetivamente y no son meras opiniones o construcciones mentales. Por ello, recurre al dualismo que ya habían explorado los presocráticos como Pitágoras, quien propuso una realidad no material. Platón desarrolla esto proponiendo el mundo inteligible como ámbito donde las Ideas tienen existencia real e inmutable."</p>
+            </div>
+            <div class="warning-box">
+                <h3>⚠️ ¡CUIDADO CON EL NIVEL BÁSICO!</h3>
+                <p><strong>El mayor peligro es creer que has terminado cuando solo has empezado.</strong></p>
+                <p>Prácticamente cualquier alumno puede alcanzar el nivel básico: basta con memorizar un par de datos. Pero <strong>decir algo correcto NO es lo mismo que decir todo lo posible</strong> ni profundizar en el tema.</p>
+                <p>Muchos estudiantes cometen el error de pensar: <em>"He dicho algo que venía en los apuntes, así que ya está, he respondido bien"</em>. <strong>Error.</strong> Has dado el primer paso, pero falta demostrar que comprendes, contextualizas y conectas ideas.</p>
+            </div>
+            <p style="margin-top:30px; font-size:1.15em; text-align:center;">Ahora vas a practicar identificando y colocando correctamente las diferentes capas de análisis.</p>
+            <p style="text-align:center; font-size:1.05em; color:#666; margin-top:20px;">En cada ejercicio verás una de las tres capas y deberás arrastrar las fichas correctas para completar las otras dos.</p>
+
+            <!-- Botón que muestra el selector -->
+            <button class="start-button" onclick="mostrarSelector()">Comenzar Práctica</button>
+
+            <!-- Selector de práctica (aparece tras pulsar Comenzar) -->
+            <div id="selectorArea" style="display:none; margin-top:25px; text-align:center;">
+                <p style="margin-bottom:12px; color:#444;">Elige el ámbito de práctica.</p>
+                <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
+                    <button class="start-button" style="margin:0" onclick="cargarModulo('Ontologia')">Ontología</button>
+                    <button class="start-button" style="margin:0" onclick="cargarModulo('Epistemologia')">Epistemología</button>
+                    <button class="start-button" style="margin:0" onclick="cargarModulo('Antropologia')">Antropología</button>
+                    <button class="start-button" style="margin:0" onclick="cargarModulo('Politica')">Política</button>
+                </div>
+                <div id="estadoCarga" style="margin-top:10px; font-size:0.95em; color:#555;"></div>
+            </div>
+        </div>
+
+        <div class="exercise-page" id="exercisePage">
+            <h1>📚 Análisis Filosófico en Capas</h1>
+            <h2 style="font-size:16px; text-decoration:underline;">
+                <a href="https://github.com/Vertice1971/Historia_de_la_Filosofia/blob/main/PAU%202026.md" style="color:inherit; text-decoration:underline;">
+                    Clic para acceso a materiales - Tomás Cuesta - IES Juan de la Cierva
+                </a>
+            </h2>
+            <div class="progress" id="progreso"></div>
+
+            <button class="btn-volver-teoria" onclick="volverTeoria()">← Volver a la teoría</button>
+
+            <div class="niveles-leyenda">
+                <h4>📋 Guía de Niveles:</h4>
+                <div class="nivel-item superficial">
+                    <span class="nivel-item-emoji">🟡</span>
+                    <span class="nivel-item-texto">Superficial: Explicación con tus palabras</span>
+                </div>
+                <div class="nivel-item intermedia">
+                    <span class="nivel-item-emoji">🔵</span>
+                    <span class="nivel-item-texto">Intermedia: Conceptos y nomenclatura filosófica</span>
+                </div>
+                <div class="nivel-item profunda">
+                    <span class="nivel-item-emoji">🟣</span>
+                    <span class="nivel-item-texto">Profunda: Interpretación y análisis crítico</span>
+                </div>
+            </div>
+
+            <div class="instrucciones">
+                <p><strong>🎯 Tu tarea:</strong> Haz clic en las fichas correctas y luego en los espacios vacíos para completar las tres capas de análisis.</p>
+            </div>
+
+            <div class="mensaje" id="mensaje"></div>
+
+            <div class="capas-container" id="capasContainer"></div>
+
+            <div class="fichas-container">
+                <div class="fichas-titulo">🎯 Selecciona las fichas correctas:</div>
+                <div class="fichas-grid" id="fichasGrid"></div>
+            </div>
+
+            <div class="botones">
+                <button class="btn-siguiente" id="btnSiguiente" disabled>Siguiente Ejercicio →</button>
+                <button class="btn-reiniciar" id="btnReiniciar">↻ Reiniciar Ejercicio</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lógica -->
+    <script>
+        let datosFilosoficos = null;
+        let ejercicioActual = 0;
+        let colocaciones = {};
+        let seleccionActual = null;
+        let capaMostrada = null;
+
+        let estadisticas = { totalEjercicios: 0, acertadosPrimeraVez: 0, intentosPorEjercicio: [] };
+        let intentosEjercicioActual = 0;
+
+        // ---- Selección y carga del módulo ----
+        function mostrarSelector() {
+            const area = document.getElementById('selectorArea');
+            area.style.display = 'block';
+            document.getElementById('estadoCarga').textContent = '';
+            area.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function cargarModulo(nombre) {
+            const estado = document.getElementById('estadoCarga');
+            estado.textContent = `Cargando módulo: Platon-${nombre}.js ...`;
+
+            // Evitar dobles cargas del mismo módulo
+            if (window.__scriptModuloActual) {
+                window.__scriptModuloActual.remove();
+                window.__scriptModuloActual = null;
+            }
+
+            const s = document.createElement('script');
+            s.src = `Platon-${nombre}.js`;
+            s.onload = () => {
+                if (window.DATOS_FILO && Array.isArray(window.DATOS_FILO.ejemplos)) {
+                    estado.textContent = `Módulo "${nombre}" cargado. Iniciando práctica...`;
+                    cargarDatos(window.DATOS_FILO);
+                    startExercises();
+                } else {
+                    estado.textContent = 'Error: el archivo cargado no define window.DATOS_FILO con "ejemplos".';
+                    alert('El módulo no contiene datos válidos.');
+                }
+            };
+            s.onerror = () => {
+                estado.textContent = `No se pudo encontrar/leer "Platon-${nombre}.js".`;
+                alert(`Error cargando Platon-${nombre}.js`);
+            };
+            document.body.appendChild(s);
+            window.__scriptModuloActual = s;
+        }
+
+        // ---- Navegación ----
+        function startExercises() {
+            document.getElementById('introPage').style.display = 'none';
+            document.getElementById('exercisePage').style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+
+        function volverTeoria() {
+            if (confirm('¿Seguro que quieres volver a la teoría? Se perderá tu progreso actual.')) {
+                document.getElementById('exercisePage').style.display = 'none';
+                document.getElementById('introPage').style.display = 'block';
+                window.scrollTo(0, 0);
+                ejercicioActual = 0;
+                estadisticas = { totalEjercicios: 0, acertadosPrimeraVez: 0, intentosPorEjercicio: [] };
+                seleccionActual = null;
+            }
+        }
+
+        // ---- Datos ----
+        function cargarDatos(datos) {
+            datosFilosoficos = datos;
+            ejercicioActual = 0;
+            estadisticas.totalEjercicios = Array.isArray(datos?.ejemplos) ? datos.ejemplos.length : 0;
+            iniciarEjercicio();
+        }
+
+        // ---- Utilidades ----
+        function mezclar(array) {
+            const arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        function obtenerDistractores(indiceActual, capaMostrada) {
+            const distractores = [];
+            const indicesDisponibles = [];
+            for (let i = 0; i < datosFilosoficos.ejemplos.length; i++) if (i !== indiceActual) indicesDisponibles.push(i);
+            const indicesMezclados = mezclar(indicesDisponibles);
+            let count = 0;
+
+            for (let idx of indicesMezclados) {
+                if (count >= 3) break;
+                const ejemplo = datosFilosoficos.ejemplos[idx];
+                const capasDisponibles = ['superficial', 'intermedia', 'profunda'].filter(c => c !== capaMostrada);
+                const capaMezclada = mezclar(capasDisponibles);
+                for (let capa of capaMezclada) {
+                    if (count >= 3) break;
+                    distractores.push({ texto: ejemplo[capa], esCorrecta: false, capa: capa });
+                    count++;
+                }
+            }
+            return distractores.slice(0, 3);
+        }
+
+        // ---- Flujo de ejercicios ----
+        function iniciarEjercicio() {
+            if (!datosFilosoficos || ejercicioActual >= datosFilosoficos.ejemplos.length) {
+                mostrarMensajeFinal();
+                return;
+            }
+
+            colocaciones = {};
+            seleccionActual = null;
+            intentosEjercicioActual = 0;
+
+            const msg = document.getElementById('mensaje');
+            msg.className = 'mensaje';
+            msg.textContent = '';
+
+            const ejemplo = datosFilosoficos.ejemplos[ejercicioActual];
+            const capas = ['superficial', 'intermedia', 'profunda'];
+            capaMostrada = capas[Math.floor(Math.random() * 3)];
+            const capasVacias = capas.filter(c => c !== capaMostrada);
+
+            document.getElementById('progreso').textContent =
+                `Ejercicio ${ejercicioActual + 1} de ${datosFilosoficos.ejemplos.length}`;
+
+            const container = document.getElementById('capasContainer');
+            container.innerHTML = '';
+
+            capas.forEach(capa => {
+                const divCapa = document.createElement('div');
+                divCapa.className = `capa ${capa}`;
+                divCapa.dataset.capa = capa;
+
+                const label = document.createElement('div');
+                label.className = 'capa-label';
+                label.textContent = capa.charAt(0).toUpperCase() + capa.slice(1);
+
+                const content = document.createElement('div');
+                content.className = 'capa-content';
+
+                if (capa === capaMostrada) {
+                    content.textContent = ejemplo[capa];
+                } else {
+                    divCapa.classList.add('vacia');
+                    content.textContent = 'Haz clic aquí para colocar la ficha seleccionada';
+                    divCapa.addEventListener('click', manejarClicCapa);
+                }
+
+                divCapa.appendChild(label);
+                divCapa.appendChild(content);
+                container.appendChild(divCapa);
+            });
+
+            const fichasCorrectas = capasVacias.map(capa => ({ texto: ejemplo[capa], esCorrecta: true, capa }));
+            const distractores = obtenerDistractores(ejercicioActual, capaMostrada);
+            const todasFichas = mezclar([...fichasCorrectas, ...distractores]);
+
+            const fichasGrid = document.getElementById('fichasGrid');
+            fichasGrid.innerHTML = '';
+
+            todasFichas.forEach((ficha, index) => {
+                const divFicha = document.createElement('div');
+                divFicha.className = 'ficha';
+                divFicha.dataset.index = index;
+                divFicha.dataset.capa = ficha.capa;
+                divFicha.dataset.correcta = ficha.esCorrecta;
+
+                const texto = document.createElement('div');
+                texto.className = 'ficha-texto';
+                texto.textContent = ficha.texto;
+
+                divFicha.appendChild(texto);
+                divFicha.addEventListener('click', manejarClicFicha);
+                fichasGrid.appendChild(divFicha);
+            });
+
+            document.getElementById('btnSiguiente').disabled = true;
+        }
+
+        function manejarClicFicha(e) {
+            const ficha = e.currentTarget;
+            const idx = ficha.dataset.index;
+            if (ficha.classList.contains('colocada')) return;
+            if (seleccionActual === idx) { deseleccionarFicha(); return; }
+            seleccionarFicha(ficha);
+        }
+
+        function seleccionarFicha(ficha) {
+            deseleccionarFicha();
+            seleccionActual = ficha.dataset.index;
+            ficha.classList.add('seleccionada');
+        }
+
+        function deseleccionarFicha() {
+            if (seleccionActual === null) return;
+            const prev = document.querySelector(`.ficha[data-index="${seleccionActual}"]`);
+            if (prev) prev.classList.remove('seleccionada');
+            seleccionActual = null;
+        }
+
+        function manejarClicCapa(e) {
+            const capaDiv = e.currentTarget;
+            const capaNombre = capaDiv.dataset.capa;
+            const content = capaDiv.querySelector('.capa-content');
+
+            if (seleccionActual === null) {
+                if (!capaDiv.classList.contains('vacia') && colocaciones[capaNombre] !== undefined) {
+                    const fichaIndex = colocaciones[capaNombre];
+                    const ficha = document.querySelector(`.ficha[data-index="${fichaIndex}"]`);
+                    if (ficha) ficha.classList.remove('colocada');
+                    delete colocaciones[capaNombre];
+                    capaDiv.classList.add('vacia');
+                    content.textContent = 'Haz clic aquí para colocar la ficha seleccionada';
+                    verificarRespuestas();
+                }
+                return;
+            }
+
+            const fichaSel = document.querySelector(`.ficha[data-index="${seleccionActual}"]`);
+            if (!fichaSel || fichaSel.classList.contains('colocada')) { deseleccionarFicha(); return; }
+
+            for (const capa in colocaciones) {
+                if (colocaciones[capa] === seleccionActual) {
+                    const capaOrigen = document.querySelector(`.capa[data-capa="${capa}"]`);
+                    if (capaOrigen) {
+                        capaOrigen.classList.add('vacia');
+                        const c = capaOrigen.querySelector('.capa-content');
+                        if (c) c.textContent = 'Haz clic aquí para colocar la ficha seleccionada';
+                    }
+                    delete colocaciones[capa];
+                    break;
+                }
+            }
+
+            if (colocaciones[capaNombre] !== undefined) {
+                const fichaAnteriorIdx = colocaciones[capaNombre];
+                const fichaAnterior = document.querySelector(`.ficha[data-index="${fichaAnteriorIdx}"]`);
+                if (fichaAnterior) fichaAnterior.classList.remove('colocada');
+            }
+
+            colocaciones[capaNombre] = seleccionActual;
+            capaDiv.classList.remove('vacia');
+            content.textContent = fichaSel.querySelector('.ficha-texto').textContent;
+            fichaSel.classList.add('colocada');
+            deseleccionarFicha();
+            verificarRespuestas();
+        }
+
+        function mostrarMensaje(texto, tipo) {
+            const msg = document.getElementById('mensaje');
+            msg.classList.remove('exito', 'error', 'visible');
+            msg.textContent = texto;
+            if (tipo === 'exito') msg.classList.add('exito');
+            if (tipo === 'error') msg.classList.add('error');
+            msg.classList.add('visible');
+        }
+
+        function verificarRespuestas() {
+            const capas = ['superficial', 'intermedia', 'profunda'];
+            const capasQueDebenEstarLlenas = capas.filter(c => c !== capaMostrada);
+            const todasLlenas = capasQueDebenEstarLlenas.every(capa => colocaciones[capa] !== undefined);
+            if (!todasLlenas) return;
+
+            intentosEjercicioActual++;
+            let esTodoCorrecto = true;
+            let errores = [];
+
+            for (const capaNombre of capasQueDebenEstarLlenas) {
+                const fichaIndex = colocaciones[capaNombre];
+                const ficha = document.querySelector(`.ficha[data-index="${fichaIndex}"]`);
+                if (!ficha) { esTodoCorrecto = false; continue; }
+                const esCorrecta = ficha.dataset.correcta === 'true';
+                const esCapaCorrecta = ficha.dataset.capa === capaNombre;
+                if (!esCorrecta || !esCapaCorrecta) { esTodoCorrecto = false; errores.push(capaNombre); }
+            }
+
+            if (esTodoCorrecto) {
+                if (intentosEjercicioActual === 1) estadisticas.acertadosPrimeraVez++;
+                estadisticas.intentosPorEjercicio.push(intentosEjercicioActual);
+                mostrarMensaje('Correcto. Pulsa "Siguiente Ejercicio".', 'exito');
+                document.querySelectorAll('.ficha').forEach(f => f.style.pointerEvents = 'none');
+                document.querySelectorAll('.capa.vacia').forEach(c => c.removeEventListener('click', manejarClicCapa));
+                document.getElementById('btnSiguiente').disabled = false;
+            } else {
+                const mensajeError = errores.length > 0
+                    ? `Hay errores en: ${errores.map(c => c.charAt(0).toUpperCase() + c.slice(1)).join(', ')}.`
+                    : 'Hay errores. Revisa las fichas colocadas.';
+                mostrarMensaje(mensajeError, 'error');
+            }
+        }
+
+        function siguienteEjercicio() {
+            ejercicioActual++;
+            if (ejercicioActual >= estadisticas.totalEjercicios) mostrarMensajeFinal();
+            else iniciarEjercicio();
+        }
+
+        function reiniciarEjercicio() { iniciarEjercicio(); }
+
+        function porcentaje(n, d) { if (d === 0) return 0; return Math.round((n / d) * 100); }
+
+        function mostrarMensajeFinal() {
+            const cont = document.getElementById('exercisePage');
+            cont.innerHTML = '';
+
+            const wrapper = document.createElement('div');
+            wrapper.className = 'estadisticas-finales';
+
+            const total = estadisticas.totalEjercicios;
+            const enPrimerIntento = estadisticas.acertadosPrimeraVez;
+            const pct = porcentaje(enPrimerIntento, total);
+
+            const h3 = document.createElement('h3'); h3.textContent = 'Resultados de la práctica';
+            const pPct = document.createElement('div'); pPct.className = 'porcentaje-exito';
+            if (pct >= 85) pPct.classList.add('excelente'); else if (pct >= 60) pPct.classList.add('bueno'); else pPct.classList.add('mejorable');
+            pPct.textContent = pct + '% aciertos al primer intento';
+
+            const item1 = document.createElement('div'); item1.className = 'estadistica-item';
+            item1.innerHTML = `<span class="estadistica-label">Ejercicios totales</span><span class="estadistica-valor">${total}</span>`;
+
+            const item2 = document.createElement('div'); item2.className = 'estadistica-item';
+            item2.innerHTML = `<span class="estadistica-label">Aciertos al primer intento</span><span class="estadistica-valor">${enPrimerIntento}</span>`;
+
+            const item3 = document.createElement('div'); item3.className = 'estadistica-item';
+            const mediaIntentos = (estadisticas.intentosPorEjercicio.length > 0)
+                ? (estadisticas.intentosPorEjercicio.reduce((a,b)=>a+b,0) / estadisticas.intentosPorEjercicio.length).toFixed(2)
+                : '—';
+            item3.innerHTML = `<span class="estadistica-label">Media de intentos por ejercicio</span><span class="estadistica-valor">${mediaIntentos}</span>`;
+
+            const btnVolver = document.createElement('button');
+            btnVolver.className = 'start-button';
+            btnVolver.textContent = 'Volver a empezar';
+            btnVolver.style.marginTop = '30px';
+            btnVolver.onclick = () => { location.reload(); };
+
+            wrapper.appendChild(h3);
+            wrapper.appendChild(pPct);
+            wrapper.appendChild(item1);
+            wrapper.appendChild(item2);
+            wrapper.appendChild(item3);
+            wrapper.appendChild(btnVolver);
+            cont.appendChild(wrapper);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const btnSig = document.getElementById('btnSiguiente');
+            const btnRei = document.getElementById('btnReiniciar');
+            if (btnSig) btnSig.addEventListener('click', siguienteEjercicio);
+            if (btnRei) btnRei.addEventListener('click', reiniciarEjercicio);
+            // IMPORTANTE: ya no se carga ningún módulo por defecto aquí.
+            // Se elige tras pulsar "Comenzar Práctica".
+        });
+    </script>
+</body>
+</html>

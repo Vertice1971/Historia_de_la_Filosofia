@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Puzzle de la Línea Platónica</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        #controls {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        #word-pool {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 20px;
+            min-height: 100px;
+            background-color: #fafafa;
+            border: 2px solid #999;
+            border-radius: 8px;
+            padding: 10px;
+        }
+        .word {
+            background-color: #ffffff;
+            border: 2px solid #333333;
+            border-radius: 5px;
+            padding: 10px 15px;
+            margin: 5px;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.2s;
+        }
+        .word:hover {
+            background-color: #f0f0f0;
+        }
+        .word.selected {
+            background-color: #1e90ff;
+            color: white;
+            border-color: #0056b3;
+            transform: scale(1.05);
+        }
+        .dropzone {
+            background-color: #ffffff;
+            border: 2px dashed #666666;
+            border-radius: 5px;
+            width: 200px;
+            min-height: 150px;
+            margin: 10px;
+            padding: 10px;
+            transition: all 0.3s;
+        }
+        .dropzone.highlight {
+            border-color: #0000ff;
+            background-color: #e0e0ff;
+        }
+        .dropzone .word {
+            cursor: pointer;
+        }
+        .columns {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+        .column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .column h3 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+        #score {
+            text-align: center;
+            font-size: 1.3em;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 8px;
+            display: none;
+        }
+        button {
+            padding: 12px 24px;
+            margin: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #1e90ff;
+            color: white;
+            transition: background-color 0.3s;
+        }
+        button:hover:not(:disabled) {
+            background-color: #0056b3;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .instructions {
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+            margin: 10px 0;
+        }
+        @media (max-width: 800px) {
+            .dropzone {
+                width: 45%;
+                min-width: 150px;
+            }
+            .word {
+                font-size: 0.9em;
+                padding: 8px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<h1>Puzzle de la Línea Platónica</h1>
+<h2 style="font-size:16px; text-decoration:underline;">
+    <a href="https://github.com/Vertice1971/Historia_de_la_Filosofia/blob/main/PAU%202026.md" style="color:inherit; text-decoration:underline;">
+      Clic para acceso a materiales - Tomás Cuesta - IES Juan de la Cierva
+    </a>
+</h2>
+
+<div id="controls">
+    <button id="start-btn">Iniciar Juego</button>
+    <button id="check-btn" disabled>Verificar Puntuación</button>
+    <button id="reset-btn" disabled>Volver a Jugar</button>
+</div>
+
+<p class="instructions" id="instructions" style="display:none;">
+    Haz clic en una palabra para seleccionarla, luego haz clic en una categoría para colocarla. 
+    Haz clic en una palabra colocada para devolverla al banco.
+</p>
+
+<h2>Palabras Disponibles</h2>
+<div id="word-pool"></div>
+
+<div class="columns">
+    <div class="column">
+        <h3>Eikasia (Ilusión)</h3>
+        <div class="dropzone" data-category="eikasia"></div>
+    </div>
+    <div class="column">
+        <h3>Pistis (Creencia)</h3>
+        <div class="dropzone" data-category="pistis"></div>
+    </div>
+    <div class="column">
+        <h3>Dianoia (Razonamiento)</h3>
+        <div class="dropzone" data-category="dianoia"></div>
+    </div>
+    <div class="column">
+        <h3>Noesis (Conocimiento puro)</h3>
+        <div class="dropzone" data-category="noesis"></div>
+    </div>
+</div>
+
+<div id="score"></div>
+
+<script>
+    // Listas de ejemplos con lenguaje moderno
+    const eikasia = [
+        "Creer fake news sin contrastar la fuente",
+        "Caer en bulos sobre vacunas en redes sociales",
+        "Pensar que la Tierra es plana",
+        "Compartir cadenas de WhatsApp con información falsa",
+        "Confiar en imágenes retocadas con filtros y Photoshop",
+        "Creer que los deepfakes son vídeos reales",
+        "Dar crédito al horóscopo diario",
+        "Pensar que el 5G causa enfermedades",
+        "Creer en teorías conspiranoicas sin pruebas",
+        "Asumir que usamos solo el 10% del cerebro",
+        "Confiar en remedios milagrosos de internet",
+        "Pensar que los reality shows no están guionizados",
+        "Creer titulares clickbait sin leer la noticia",
+        "Fiarse de publicidad engañosa de productos adelgazantes",
+        "Pensar que los gatos negros dan mala suerte",
+        "Creer en estafas piramidales online",
+        "Confundir memes satíricos con noticias reales",
+        "Pensar que la química de sangre revela tu personalidad",
+        "Creer en pseudoterapias sin base científica",
+        "Fiarse de influencers que venden humo",
+        "Pensar que las chemtrails son una conspiración real",
+        "Creer bulos sobre alimentos que curan el cáncer",
+        "Ver caras o figuras en objetos (pareidolia)",
+        "Confiar en cadenas de mala suerte por WhatsApp",
+        "Creer que los videojuegos reflejan la realidad",
+        "Pensar que la Luna no existe o es un holograma",
+        "Fiarse de testimonios falsos en webs de ventas",
+        "Creer que las pirámides las construyeron alienígenas",
+        "Confundir series de ficción con documentales",
+        "Pensar que los cristales curan enfermedades",
+        "Creer montajes fotográficos de Instagram como reales",
+        "Fiarse de perfiles fake en redes sociales",
+        "Pensar que leer el café predice el futuro",
+        "Creer en dietas detox milagrosas sin respaldo científico",
+        "Confundir satélites con ovnis",
+        "Pensar que las vacunas tienen chips de control",
+        "Creer en la numerología y su poder místico",
+        "Fiarse de noticias de portales sin credibilidad",
+        "Pensar que el Triángulo de las Bermudas es mágico",
+        "Creer que ciertas marcas roban órganos",
+        "Confundir efectos especiales con fenómenos paranormales",
+        "Pensar que hay una cura secreta contra el cáncer",
+        "Creer en fantasmas captados en vídeos trucados",
+        "Fiarse de supuestos videntes y tarotistas online",
+        "Pensar que ciertos números traen suerte o desgracia",
+        "Creer que Bill Gates quiere despoblarnos",
+        "Confundir publicidad subliminal con control mental",
+        "Pensar que ciertos alimentos son mágicos",
+        "Creer cualquier testimonio viral sin verificar",
+        "Fiarse de diagnósticos médicos de Google"
+    ];
+
+    const pistis = [
+        "Confiar en que el sol saldrá mañana",
+        "Seguir una receta de cocina paso a paso",
+        "Respetar las señales de tráfico al conducir",
+        "Saber que si sueltas algo, cae al suelo",
+        "Tomar la medicación que te receta el médico",
+        "Confiar en que el puente no se va a caer",
+        "Plantar semillas sabiendo que crecerán",
+        "Entender por qué hace más frío en invierno",
+        "Saber que hacer ejercicio mejora tu salud",
+        "Comprender que los árboles producen oxígeno",
+        "Aceptar que la Tierra es redonda (casi esférica)",
+        "Saber que el sol sale por el este",
+        "Observar que hay más tráfico en hora punta",
+        "Entender que el fuego necesita oxígeno",
+        "Notar que las familias se reúnen en Navidad",
+        "Saber que la Luna gira alrededor de la Tierra",
+        "Comprender por qué existen las estaciones del año",
+        "Notar que las frutas son más baratas en temporada",
+        "Saber que el sonido viaja más rápido en el agua que en el aire",
+        "Entender cómo se forman los glaciares",
+        "Celebrar los cumpleaños cada año",
+        "Saber qué pasa cuando un volcán entra en erupción",
+        "Entender cómo funcionan las tormentas",
+        "Valorar la importancia de tener WiFi en casa",
+        "Comprender por qué hay mareas altas y bajas",
+        "Saber que los peces respiran bajo el agua",
+        "Notar que en los pueblos la gente se conoce más",
+        "Observar que las plantas crecen hacia la luz",
+        "Saber que los imanes atraen el hierro",
+        "Agradecer que el súper abre todos los días",
+        "Entender cómo se descompone la basura orgánica",
+        "Valorar que los niños vayan al colegio",
+        "Saber que la luz es más rápida que el sonido",
+        "Disfrutar de las comidas típicas en las fiestas",
+        "Notar que en verano los días son más largos",
+        "Saber de qué están hechas las estrellas",
+        "Entender por qué en el desierto hay tanto calor",
+        "Saber que el sol puede quemar tu piel",
+        "Comprender cómo se produce un eco",
+        "Disfrutar del ocio los fines de semana",
+        "Saber que no puedes beber agua del mar",
+        "Entender qué son los fósiles",
+        "Usar Google Maps para llegar a un sitio",
+        "Confiar en que al darle al interruptor se enciende la luz",
+        "Seguir las instrucciones de Ikea para montar un mueble",
+        "Consultar Wikipedia para buscar información",
+        "Observar patrones del clima en la app del tiempo",
+        "Usar el móvil o el ordenador a diario",
+        "Seguir tutoriales de YouTube para aprender algo",
+        "Confiar en que el avión despegará",
+        "Saber que si no comes te da hambre",
+        "Entender que necesitas dormir para descansar",
+        "Notar que los coches eléctricos no hacen ruido",
+        "Saber que Netflix tiene series y pelis"
+    ];
+
+    const dianoia = [
+        "Resolver ecuaciones en clase de mates",
+        "Hacer una demostración geométrica con triángulos",
+        "Analizar gráficos de datos estadísticos",
+        "Programar una app o crear código",
+        "Crear un modelo para predecir la bolsa",
+        "Plantear una hipótesis científica y testarla",
+        "Hacer un problema de cálculo paso a paso",
+        "Diseñar un experimento de laboratorio",
+        "Aplicar las leyes de la física a problemas reales",
+        "Explorar conceptos abstractos de álgebra",
+        "Planificar estrategias con plan B incluido",
+        "Resolver un sudoku o un escape room",
+        "Hacer TFG analizando datos y sacando conclusiones",
+        "Aplicar fórmulas matemáticas en ingeniería",
+        "Desarrollar software o webs desde cero",
+        "Calcular la esperanza de vida con estadísticas",
+        "Repartir una cuenta entre amigos a partes iguales",
+        "Calcular la velocidad media de un viaje",
+        "Predecir cuánta gente habrá en una ciudad en 10 años",
+        "Estimar lo que costará un proyecto o negocio",
+        "Hacer un presupuesto mensual con Excel",
+        "Calcular cuánta pintura necesitas para tu habitación",
+        "Medir un terreno para saber cuánto vale",
+        "Calcular el descuento real de las rebajas",
+        "Analizar tendencias del mercado con gráficas",
+        "Comparar precios en Amazon para ver cuál sale mejor",
+        "Usar Waze o Google Maps para la ruta más corta",
+        "Hacer predicciones meteorológicas con modelos",
+        "Analizar resultados de encuestas con porcentajes",
+        "Calcular probabilidades en un juego o apuesta",
+        "Diseñar una dieta equilibrada con proporciones exactas",
+        "Ajustar las cantidades de una receta si cocinas para más gente",
+        "Calcular los intereses de tu cuenta de ahorros",
+        "Usar geometría para montar un mueble o hacer bricolaje",
+        "Comparar la eficiencia energética de electrodomésticos",
+        "Calcular cuánta gasolina gastarás en un roadtrip",
+        "Hacer un Excel con tus gastos fijos y variables",
+        "Estimar cuánto tardarás en acabar un proyecto",
+        "Calcular probabilidades de éxito en un experimento",
+        "Comparar relación calidad-precio en el súper",
+        "Hacer un plan de negocio con proyecciones financieras",
+        "Optimizar rutas de reparto con algoritmos",
+        "Calcular proporciones de materiales para una obra",
+        "Diseñar una encuesta representativa de población",
+        "Predecir elecciones basándote en encuestas",
+        "Estimar riesgos de enfermedades con datos",
+        "Analizar desigualdad económica con estadísticas",
+        "Calcular cuánto peso aguanta un puente",
+        "Buscar patrones en big data histórico",
+        "Debatir filosofía usando lógica formal",
+        "Crear algoritmos de ciberseguridad",
+        "Modelar escenarios de cambio climático",
+        "Diseñar circuitos electrónicos complejos",
+        "Estudiar física cuántica con matemáticas avanzadas"
+    ];
+
+    const noesis = [
+        "Reflexionar sobre qué es realmente la Justicia",
+        "Preguntarse qué es la Belleza en sí misma",
+        "Pensar en qué significa la Igualdad como ideal",
+        "Contemplar la esencia de la Bondad absoluta",
+        "Cuestionar qué es la Verdad en sentido profundo",
+        "Intentar comprender qué es el Infinito",
+        "Preguntarse qué significa SER humano",
+        "Reflexionar sobre la idea pura de Belleza",
+        "Buscar el modelo perfecto de Justicia",
+        "Pensar en la Verdad como concepto universal",
+        "Preguntarse qué es el Bien supremo",
+        "Reflexionar sobre qué es la Amistad verdadera",
+        "Pensar en la idea perfecta de Caballo (más allá de los caballos reales)",
+        "Buscar qué es la Simetría perfecta",
+        "Preguntarse qué define a un Mamífero de forma universal",
+        "Imaginar la Ciudad ideal como concepto",
+        "Reflexionar sobre qué es el Orden perfecto",
+        "Pensar en la forma ideal del Triángulo",
+        "Contemplar la perfección del Círculo como idea",
+        "Preguntarse qué es la Belleza en la Naturaleza",
+        "Reflexionar sobre qué es la Paz universal",
+        "Buscar el modelo ideal de Familia",
+        "Pensar en la Unidad de todas las cosas",
+        "Preguntarse por el Árbol perfecto como forma",
+        "Reflexionar sobre el concepto universal de Justicia",
+        "Buscar el Equilibrio ideal",
+        "Preguntarse qué es la Armonía universal",
+        "Pensar en la Amistad como forma pura",
+        "Reflexionar sobre la Bondad sin límites",
+        "Buscar el modelo ideal de Bondad",
+        "Preguntarse qué es la Sabiduría pura",
+        "Reflexionar sobre el Bien común como ideal",
+        "Pensar en qué es el Amor perfecto",
+        "Buscar la esencia de la Felicidad absoluta",
+        "Contemplar la Belleza perfecta en el arte",
+        "Reflexionar sobre el Tiempo en su esencia",
+        "Pensar en la idea universal de Casa",
+        "Buscar el modelo perfecto de Silla",
+        "Reflexionar sobre la forma ideal de Reloj",
+        "Preguntarse por la Mesa como concepto puro",
+        "Pensar en el arquetipo de Vehículo",
+        "Reflexionar sobre el sentido de la existencia",
+        "Preguntarse qué es el Amor como forma abstracta",
+        "Pensar en la naturaleza del Ser",
+        "Buscar qué es la Perfección en sí misma",
+        "Reflexionar sobre principios éticos universales",
+        "Preguntarse qué es el Tiempo como concepto puro",
+        "Pensar en qué es la Conciencia en esencia",
+        "Imaginar la Sociedad perfecta",
+        "Reflexionar sobre verdades matemáticas universales",
+        "Preguntarse qué es el Conocimiento en sí",
+        "Pensar en las leyes universales de la Lógica",
+        "Buscar la forma de la Belleza pura",
+        "Reflexionar sobre la realidad última",
+        "Pensar en la conexión universal de todo"
+    ];
+
+    // Variables de estado
+    let selectedWords = [];
+    let correctAssignments = {};
+    let currentSelectedWord = null;
+
+    // Elementos del DOM
+    const startBtn = document.getElementById('start-btn');
+    const checkBtn = document.getElementById('check-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const wordPool = document.getElementById('word-pool');
+    const scoreDiv = document.getElementById('score');
+    const instructions = document.getElementById('instructions');
+    const dropzones = document.querySelectorAll('.dropzone');
+
+    // Función para obtener elementos aleatorios
+    function getRandomElements(arr, n) {
+        const shuffled = [...arr];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        return shuffled.slice(0, n);
+    }
+
+    // Función para mezclar array
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    // Inicializar juego
+    function initializeGame() {
+        wordPool.innerHTML = '';
+        scoreDiv.style.display = 'none';
+        instructions.style.display = 'block';
+        dropzones.forEach(dz => dz.innerHTML = '');
+        checkBtn.disabled = true;
+        resetBtn.disabled = true;
+        currentSelectedWord = null;
+
+        const selectedEikasia = getRandomElements(eikasia, 3);
+        const selectedPistis = getRandomElements(pistis, 3);
+        const selectedDianoia = getRandomElements(dianoia, 3);
+        const selectedNoesis = getRandomElements(noesis, 3);
+
+        correctAssignments = {};
+        selectedEikasia.forEach(word => correctAssignments[word] = 'eikasia');
+        selectedPistis.forEach(word => correctAssignments[word] = 'pistis');
+        selectedDianoia.forEach(word => correctAssignments[word] = 'dianoia');
+        selectedNoesis.forEach(word => correctAssignments[word] = 'noesis');
+
+        selectedWords = [...selectedEikasia, ...selectedPistis, ...selectedDianoia, ...selectedNoesis];
+        shuffleArray(selectedWords);
+
+        selectedWords.forEach(word => {
+            const wordDiv = document.createElement('div');
+            wordDiv.classList.add('word');
+            wordDiv.textContent = word;
+            wordDiv.addEventListener('click', handleWordClick);
+            wordPool.appendChild(wordDiv);
+        });
+
+        dropzones.forEach(dz => {
+            dz.addEventListener('click', handleDropzoneClick);
+        });
+    }
+
+    // Manejar clic en palabra
+    function handleWordClick(e) {
+        const word = e.target;
+        
+        // Si la palabra está en una dropzone, devolverla al pool
+        if (word.parentElement.classList.contains('dropzone')) {
+            wordPool.appendChild(word);
+            clearSelection();
+            checkAllPlaced();
+            return;
+        }
+
+        // Si está en el pool, seleccionarla o deseleccionarla
+        if (currentSelectedWord === word) {
+            clearSelection();
+        } else {
+            clearSelection();
+            currentSelectedWord = word;
+            word.classList.add('selected');
+        }
+    }
+
+    // Manejar clic en dropzone
+    function handleDropzoneClick(e) {
+        const dropzone = e.currentTarget;
+        
+        // Si no hay palabra seleccionada, no hacer nada
+        if (!currentSelectedWord) return;
+
+        // Si la dropzone ya tiene 3 palabras, mostrar mensaje
+        if (dropzone.children.length >= 3) {
+            dropzone.style.borderColor = '#ff0000';
+            setTimeout(() => {
+                dropzone.style.borderColor = '';
+            }, 300);
+            return;
+        }
+
+        // Mover la palabra a la dropzone
+        dropzone.appendChild(currentSelectedWord);
+        clearSelection();
+        checkAllPlaced();
+    }
+
+    // Limpiar selección
+    function clearSelection() {
+        if (currentSelectedWord) {
+            currentSelectedWord.classList.remove('selected');
+        }
+        currentSelectedWord = null;
+        dropzones.forEach(dz => dz.classList.remove('highlight'));
+    }
+
+    // Verificar si todas las palabras están colocadas
+    function checkAllPlaced() {
+        let totalPlaced = 0;
+        dropzones.forEach(dz => {
+            totalPlaced += dz.children.length;
+        });
+        checkBtn.disabled = (totalPlaced !== 12);
+    }
+
+    // Verificar puntuación
+    function checkScore() {
+        let score = 0;
+        
+        dropzones.forEach(dropzone => {
+            const category = dropzone.getAttribute('data-category');
+            const words = Array.from(dropzone.children);
+            
+            words.forEach(wordDiv => {
+                const wordText = wordDiv.textContent;
+                if (correctAssignments[wordText] === category) {
+                    score++;
+                    wordDiv.style.backgroundColor = '#90EE90';
+                } else {
+                    wordDiv.style.backgroundColor = '#FFB6C1';
+                }
+            });
+        });
+
+        scoreDiv.textContent = `Tienes ${score} aciertos de 12.`;
+        scoreDiv.style.display = 'block';
+        resetBtn.disabled = false;
+        checkBtn.disabled = true;
+
+        // Deshabilitar clics después de verificar
+        document.querySelectorAll('.word').forEach(w => {
+            w.style.cursor = 'default';
+            w.onclick = null;
+        });
+    }
+
+    // Event listeners de botones
+    startBtn.addEventListener('click', () => {
+        initializeGame();
+        startBtn.disabled = true;
+    });
+
+    checkBtn.addEventListener('click', checkScore);
+
+    resetBtn.addEventListener('click', () => {
+        initializeGame();
+        startBtn.disabled = false;
+        scoreDiv.style.display = 'none';
+    });
+</script>
+
+</body>
+</html>

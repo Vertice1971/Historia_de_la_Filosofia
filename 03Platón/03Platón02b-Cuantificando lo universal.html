@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cuantificando lo Universal</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 20px;
+    }
+    input, button {
+      padding: 10px;
+      margin: 5px;
+    }
+    .results-table {
+      margin-top: 20px;
+      width: 100%;
+      max-width: 600px;
+      border-collapse: collapse;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .results-table th, .results-table td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: center;
+    }
+    .results-table th {
+      background-color: #f2f2f2;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Cuantificando lo Universal</h1>
+<div id="intro-text">
+  <p>Introduce seis Ideas Universales distintas y la cantidad de personas en clase.</p>
+</div>
+
+<div id="input-section">
+  <label>Ideas Universales:</label><br>
+  <input type="text" id="idea1" placeholder="Idea 1"><br>
+  <input type="text" id="idea2" placeholder="Idea 2"><br>
+  <input type="text" id="idea3" placeholder="Idea 3"><br>
+  <input type="text" id="idea4" placeholder="Idea 4"><br>
+  <input type="text" id="idea5" placeholder="Idea 5"><br>
+  <input type="text" id="idea6" placeholder="Idea 6"><br><br>
+  <label>Número de personas en clase:</label><br>
+  <input type="number" id="numAlumnos" min="5" placeholder="Número de alumnos"><br><br>
+  <button onclick="startGame()">Iniciar Evaluación</button>
+</div>
+
+<div id="rating-section" style="display:none;">
+  <h2>Puntúa la idea:</h2>
+  <p id="current-idea"></p>
+  <p id="current-student"></p>
+  <label>Puntuación (0-10):</label><br>
+  <input type="number" id="score" min="0" max="10" placeholder="Puntuación"><br><br>
+  <button onclick="submitRating()">Enviar Puntuación</button>
+</div>
+
+<div id="result-section" style="display:none;">
+  <h2>Ranking de Universalidad</h2>
+  <table class="results-table">
+    <thead>
+      <tr>
+        <th>Idea Universal</th>
+        <th>Puntuación Media (Alumnado)</th>
+        <th>Puntuación Platón</th>
+      </tr>
+    </thead>
+    <tbody id="results"></tbody>
+  </table>
+</div>
+
+<script>
+  let ideas = [];
+  let numAlumnos = 0;
+  let currentIdeaIndex = 0;
+  let currentStudentIndex = 0;
+  let ratingsPerIdea = [];
+  let selectedStudents = [];
+
+  document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("numAlumnos").addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        startGame();
+      }
+    });
+    document.getElementById("score").addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        submitRating();
+      }
+    });
+  });
+
+  function startGame() {
+    ideas = [
+      document.getElementById('idea1').value,
+      document.getElementById('idea2').value,
+      document.getElementById('idea3').value,
+      document.getElementById('idea4').value,
+      document.getElementById('idea5').value,
+      document.getElementById('idea6').value
+    ];
+    numAlumnos = parseInt(document.getElementById('numAlumnos').value);
+    
+    if (ideas.some(idea => idea === "") || ideas.length !== new Set(ideas).size || isNaN(numAlumnos) || numAlumnos < 5) {
+      alert("Introduce seis ideas únicas y un número válido de alumnos (mínimo 5).");
+      return;
+    }
+
+    document.getElementById('intro-text').style.display = "none"; // Oculta el texto introductorio
+    ratingsPerIdea = Array(ideas.length).fill(0).map(() => []);
+    document.getElementById('input-section').style.display = "none";
+    document.getElementById('rating-section').style.display = "block";
+    displayIdeaAndStudent();
+  }
+
+  function displayIdeaAndStudent() {
+    if (currentStudentIndex === 0) {
+      selectedStudents = [];
+      while (selectedStudents.length < 5) {
+        let randStudent = Math.floor(Math.random() * numAlumnos) + 1;
+        if (!selectedStudents.includes(randStudent)) selectedStudents.push(randStudent);
+      }
+    }
+
+    document.getElementById('current-idea').innerText = `Idea: ${ideas[currentIdeaIndex]}`;
+    document.getElementById('current-student').innerText = `Alumno: ${selectedStudents[currentStudentIndex]}`;
+    document.getElementById('score').value = "";
+  }
+
+  function submitRating() {
+    let score = parseInt(document.getElementById('score').value);
+    if (isNaN(score) || score < 0 || score > 10) {
+      alert("Introduce una puntuación válida entre 0 y 10.");
+      return;
+    }
+
+    ratingsPerIdea[currentIdeaIndex].push(score);
+    currentStudentIndex++;
+
+    if (currentStudentIndex === 5) {
+      currentStudentIndex = 0;
+      currentIdeaIndex++;
+      
+      if (currentIdeaIndex < ideas.length) {
+        displayIdeaAndStudent();
+      } else {
+        calculateResults();
+      }
+    } else {
+      displayIdeaAndStudent();
+    }
+  }
+
+  function calculateResults() {
+    document.getElementById('rating-section').style.display = "none";
+    document.getElementById('result-section').style.display = "block";
+    
+    let resultsArray = ideas.map((idea, index) => {
+      let avgScore = ratingsPerIdea[index].reduce((a, b) => a + b, 0) / ratingsPerIdea[index].length;
+      return { idea: idea, avgScore: avgScore.toFixed(2) };
+    });
+
+    resultsArray.sort((a, b) => b.avgScore - a.avgScore);
+
+    let resultsTable = document.getElementById('results');
+    resultsArray.forEach(result => {
+      let row = `<tr><td>${result.idea}</td><td>${result.avgScore}</td><td>10</td></tr>`;
+      resultsTable.innerHTML += row;
+    });
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plan de Platón — Ontología, Epistemología, Antropología y Política</title>
+<style>
+  :root{
+    --bg:#0f1115; --panel:#171a21; --ink:#e6e8ee; --muted:#9aa3b2; --accent:#4da3ff; --ok:#2ecc71; --bad:#ff6b6b; --card:#1d2230; --cardSel:#23324a; --border:#2b3344;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:linear-gradient(180deg,#0e1117,#0f1219);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Noto Sans","Helvetica Neue",Arial,"Apple Color Emoji","Segoe UI Emoji";}
+  .wrap{max-width:980px;margin:0 auto;padding:24px}
+  .slide{display:none}
+  .slide.active{display:block}
+  h1,h2{margin:0 0 12px 0;line-height:1.2}
+  p{color:var(--muted);line-height:1.6;margin:0 0 10px 0}
+  .panel{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:20px}
+  .grid{display:grid;gap:12px}
+  @media (min-width:720px){.grid{grid-template-columns:repeat(2,1fr)}}
+  @media (min-width:980px){.grid{grid-template-columns:repeat(2,1fr)}}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;cursor:pointer;user-select:none;transition:transform .08s ease, border-color .2s ease, background-color .2s ease}
+  .card:hover{transform:translateY(-1px);border-color:#3a4660}
+  .card.selected{background:var(--cardSel);border-color:var(--accent);outline:2px solid transparent}
+  .meta{display:flex;justify-content:space-between;align-items:center;margin:10px 0 0 0;color:var(--muted);font-size:14px}
+  .controls{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+  button{appearance:none;border:1px solid var(--border);background:#1a2030;color:var(--ink);padding:10px 14px;border-radius:10px;font-weight:600;cursor:pointer}
+  button.primary{background:var(--accent);color:#08111f;border-color:transparent}
+  button.ghost{background:transparent}
+  button.ok{background:var(--ok);border-color:transparent;color:#08110a}
+  button.bad{background:var(--bad);border-color:transparent;color:#1a0b0b}
+  button[disabled]{opacity:.5;cursor:not-allowed}
+  .feedback{margin-top:12px;font-weight:700}
+  .feedback.ok{color:var(--ok)}
+  .feedback.bad{color:var(--bad)}
+  .tag{display:inline-block;padding:4px 8px;border:1px solid var(--border);border-radius:999px;color:var(--muted);font-size:12px;margin-right:8px}
+  .step-tag{background:#0e1420;border-color:#2a3a55;color:#a9c7ff}
+  .hr{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent);margin:14px 0}
+  .hidden{display:none!important}
+  .counter{font-variant-numeric:tabular-nums}
+  .legend{font-size:13px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- Diapositiva 1: exposición general siguiendo el planteamiento del usuario -->
+
+  <section class="slide active" id="slide-0" aria-labelledby="s0-title">
+    <div class="panel">
+      <h1 id="s0-title">El plan de Platón en cuatro pasos</h1>
+      <h2 style="font-size:16px; text-decoration:underline;">
+        <a href="https://github.com/Vertice1971/Historia_de_la_Filosofia/blob/main/PAU%202026.md" style="color:inherit; text-decoration:underline;">
+          Clic para acceso a materiales - Tomás Cuesta - IES Juan de la Cierva
+          </a>
+      </h2>
+
+      <p><span class="tag step-tag">1 · Ontología</span> Platón parte de las definiciones universales heredadas de Sócrates: existen modelos perfectos e inmutables —las Ideas— que dan forma y verdad a lo que vemos.</p>
+      <p><span class="tag step-tag">2 · Epistemología</span> Es posible entrar en contacto con esas Ideas; no se encuentran en un lugar físico, sino que se alcanzan mediante razón y conocimiento racional.</p>
+      <p><span class="tag step-tag">3 · Antropología</span> No todo el mundo puede llegar a ese saber: depende de la constitución del alma y del equilibrio entre sus tres fuerzas, que habilitan o impiden el acceso a la verdad universal.</p>
+      <p><span class="tag step-tag">4 · Política</span> Solo quienes han alcanzado el conocimiento de lo universal están preparados para gobernar la polis por encima de las opiniones particulares, poniendo en práctica la verdad conocida.</p>
+      <div class="controls">
+        <button class="primary" id="next-from-0">Continuar</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Diapositiva 2: Paso 1 (Ontología) -->
+
+  <section class="slide" id="slide-1" aria-labelledby="s1-title">
+    <div class="panel">
+      <h2 id="s1-title">Selecciona las 4 frases que expresan el Paso 1 (Ontología)</h2>
+      <p class="legend">Límite: 4 tarjetas. No se muestran respuestas correctas al fallar. Reintenta hasta acertar.</p>
+      <div class="hr"></div>
+      <div id="cards-1" class="grid"></div>
+      <div class="meta">
+        <span class="counter" id="count-1">0/4 seleccionadas</span>
+        <span id="status-1"></span>
+      </div>
+      <div class="controls">
+        <button id="retry-1" class="ghost hidden">Reintentar</button>
+        <button id="confirm-1" class="primary" disabled>Confirmar</button>
+        <button id="next-1" class="ok hidden">Siguiente</button>
+        <button id="back-1" class="ghost">Volver</button>
+      </div>
+      <div id="fb-1" class="feedback hidden" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <!-- Diapositiva 3: Paso 2 (Epistemología) -->
+
+  <section class="slide" id="slide-2" aria-labelledby="s2-title">
+    <div class="panel">
+      <h2 id="s2-title">Selecciona las 4 frases que expresan el Paso 2 (Epistemología)</h2>
+      <p class="legend">Límite: 4 tarjetas. No se muestran respuestas correctas al fallar. Reintenta hasta acertar.</p>
+      <div class="hr"></div>
+      <div id="cards-2" class="grid"></div>
+      <div class="meta">
+        <span class="counter" id="count-2">0/4 seleccionadas</span>
+        <span id="status-2"></span>
+      </div>
+      <div class="controls">
+        <button id="retry-2" class="ghost hidden">Reintentar</button>
+        <button id="confirm-2" class="primary" disabled>Confirmar</button>
+        <button id="next-2" class="ok hidden">Siguiente</button>
+        <button id="back-2" class="ghost">Volver</button>
+      </div>
+      <div id="fb-2" class="feedback hidden" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <!-- Diapositiva 4: Paso 3 (Antropología) -->
+
+  <section class="slide" id="slide-3" aria-labelledby="s3-title">
+    <div class="panel">
+      <h2 id="s3-title">Selecciona las 4 frases que expresan el Paso 3 (Antropología)</h2>
+      <p class="legend">Límite: 4 tarjetas. No se muestran respuestas correctas al fallar. Reintenta hasta acertar.</p>
+      <div class="hr"></div>
+      <div id="cards-3" class="grid"></div>
+      <div class="meta">
+        <span class="counter" id="count-3">0/4 seleccionadas</span>
+        <span id="status-3"></span>
+      </div>
+      <div class="controls">
+        <button id="retry-3" class="ghost hidden">Reintentar</button>
+        <button id="confirm-3" class="primary" disabled>Confirmar</button>
+        <button id="next-3" class="ok hidden">Siguiente</button>
+        <button id="back-3" class="ghost">Volver</button>
+      </div>
+      <div id="fb-3" class="feedback hidden" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <!-- Diapositiva 5: Paso 4 (Política) -->
+
+  <section class="slide" id="slide-4" aria-labelledby="s4-title">
+    <div class="panel">
+      <h2 id="s4-title">Selecciona las 4 frases que expresan el Paso 4 (Política)</h2>
+      <p class="legend">Límite: 4 tarjetas. No se muestran respuestas correctas al fallar. Reintenta hasta acertar.</p>
+      <div class="hr"></div>
+      <div id="cards-4" class="grid"></div>
+      <div class="meta">
+        <span class="counter" id="count-4">0/4 seleccionadas</span>
+        <span id="status-4"></span>
+      </div>
+      <div class="controls">
+        <button id="retry-4" class="ghost hidden">Reintentar</button>
+        <button id="confirm-4" class="primary" disabled>Confirmar</button>
+        <button id="finish" class="ok hidden">Terminar</button>
+        <button id="back-4" class="ghost">Volver</button>
+      </div>
+      <div id="fb-4" class="feedback hidden" aria-live="polite"></div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+/* Textos exactos generados arriba, organizados por paso */
+const frases = {
+  1: [ // Ontología (correctas)
+    "Platón creía que detrás de las cosas visibles existen modelos perfectos e inmutables, las Ideas, que constituyen la verdadera realidad.",
+    "Para Platón, lo verdaderamente real no son las cosas materiales sino las Ideas eternas que sirven de modelo a todas ellas.",
+    "En el plano ontológico, Platón sostiene la existencia de las Ideas como realidades eternas y universales que fundamentan todo lo que existe.",
+    "Platón decía que el mundo que vemos es solo una copia imperfecta de un mundo invisible de modelos perfectos que son las Ideas."
+  ],
+  2: [ // Epistemología (correctas)
+    "Según Platón, el ser humano puede llegar a conocer esas Ideas mediante la razón, porque no están en el mundo físico sino en un plano inteligible.",
+    "El conocimiento auténtico, según Platón, consiste en elevar la mente hacia el mundo de las Ideas mediante la reflexión racional.",
+    "En el plano epistemológico, afirma que el alma humana puede alcanzar las Ideas mediante la razón, superando la percepción sensible.",
+    "También creía que, usando la razón, el alma puede “ascender” hacia ese mundo de las Ideas y contemplar la verdad más allá de los sentidos."
+  ],
+  3: [ // Antropología (correctas)
+    "Platón pensaba que no todas las personas pueden alcanzar ese conocimiento, ya que depende de tener un alma equilibrada en sus tres partes: razón, valor y deseo.",
+    "No todo individuo puede acceder a ese conocimiento, porque solo un alma dominada por la razón puede liberarse de los engaños del cuerpo y los deseos.",
+    "En el plano antropológico, considera que solo el alma bien ordenada —donde la razón domina sobre el impulso y el deseo— puede acceder al conocimiento verdadero.",
+    "Sin embargo, no todos pueden hacerlo: solo quien tiene un alma fuerte y equilibrada, donde manda la parte racional, puede conocer la verdad universal."
+  ],
+  4: [ // Política (correctas)
+    "Platón afirmaba que solo quienes han contemplado las Ideas universales y conocen la justicia en sí están capacitados para gobernar con sabiduría.",
+    "Solo el sabio que conoce lo universal puede dirigir la polis con justicia, sustituyendo la opinión de la mayoría por el saber verdadero.",
+    "En el plano político, concluye que únicamente el filósofo, conocedor del Bien y de las Ideas justas, está preparado para gobernar rectamente la ciudad.",
+    "Por eso, para Platón, los filósofos —los que han visto la verdad de las Ideas— son los únicos que deberían gobernar y construir una ciudad justa."
+  ]
+};
+
+/* Señuelos preseleccionados y deterministas por diapositiva:
+   Para cada paso se añaden 4 frases de otros pasos (1 de cada paso restante + 1 extra variada) */
+const distractores = {
+  1: [
+    // de otros pasos (2,3,4)
+    "Según Platón, el ser humano puede llegar a conocer esas Ideas mediante la razón, porque no están en el mundo físico sino en un plano inteligible.", // 2
+    "No todo individuo puede acceder a ese conocimiento, porque solo un alma dominada por la razón puede liberarse de los engaños del cuerpo y los deseos.", // 3
+    "Solo el sabio que conoce lo universal puede dirigir la polis con justicia, sustituyendo la opinión de la mayoría por el saber verdadero.", // 4
+    "También creía que, usando la razón, el alma puede “ascender” hacia ese mundo de las Ideas y contemplar la verdad más allá de los sentidos." // 2 extra
+  ],
+  2: [
+    "Platón creía que detrás de las cosas visibles existen modelos perfectos e inmutables, las Ideas, que constituyen la verdadera realidad.", // 1
+    "Platón pensaba que no todas las personas pueden alcanzar ese conocimiento, ya que depende de tener un alma equilibrada en sus tres partes: razón, valor y deseo.", // 3
+    "Por eso, para Platón, los filósofos —los que han visto la verdad de las Ideas— son los únicos que deberían gobernar y construir una ciudad justa.", // 4
+    "Para Platón, lo verdaderamente real no son las cosas materiales sino las Ideas eternas que sirven de modelo a todas ellas." // 1 extra
+  ],
+  3: [
+    "En el plano ontológico, Platón sostiene la existencia de las Ideas como realidades eternas y universales que fundamentan todo lo que existe.", // 1
+    "El conocimiento auténtico, según Platón, consiste en elevar la mente hacia el mundo de las Ideas mediante la reflexión racional.", // 2
+    "En el plano político, concluye que únicamente el filósofo, conocedor del Bien y de las Ideas justas, está preparado para gobernar rectamente la ciudad.", // 4
+    "Platón decía que el mundo que vemos es solo una copia imperfecta de un mundo invisible de modelos perfectos que son las Ideas." // 1 extra
+  ],
+  4: [
+    "También creía que, usando la razón, el alma puede “ascender” hacia ese mundo de las Ideas y contemplar la verdad más allá de los sentidos.", // 2
+    "Platón pensaba que no todas las personas pueden alcanzar ese conocimiento, ya que depende de tener un alma equilibrada en sus tres partes: razón, valor y deseo.", // 3
+    "En el plano ontológico, Platón sostiene la existencia de las Ideas como realidades eternas y universales que fundamentan todo lo que existe.", // 1
+    "En el plano epistemológico, afirma que el alma humana puede alcanzar las Ideas mediante la razón, superando la percepción sensible." // 2 extra
+  ]
+};
+
+/* Utilidades */
+const $ = sel => document.querySelector(sel);
+const $$ = sel => Array.from(document.querySelectorAll(sel));
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function mountSlide(step){
+  const container = document.getElementById(`cards-${step}`);
+  container.innerHTML = "";
+  const correct = frases[step].map(text => ({text, correct:true}));
+  const wrong   = distractores[step].map(text => ({text, correct:false}));
+  const pool = shuffle(correct.concat(wrong));
+  pool.forEach((item,idx)=>{
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.setAttribute('role','button');
+    card.setAttribute('tabindex','0');
+    card.dataset.correct = item.correct ? "1":"0";
+    card.dataset.idx = String(idx);
+    card.innerText = item.text;
+    const toggle = ()=>{
+      const selected = container.querySelectorAll('.card.selected').length;
+      if(card.classList.contains('selected')){
+        card.classList.remove('selected');
+      }else{
+        if(selected>=4){ return; }
+        card.classList.add('selected');
+      }
+      updateCounter(step);
+      updateButtons(step);
+    };
+    card.addEventListener('click', toggle, {passive:true});
+    card.addEventListener('keydown', (e)=>{ if(e.key===" "||e.key==="Enter"){ e.preventDefault(); toggle(); }});
+    container.appendChild(card);
+  });
+  // Estado inicial botones y contadores
+  updateCounter(step);
+  updateButtons(step,true);
+  setFeedback(step,"",null,true);
+}
+
+function selectedAreExactlyCorrect(step){
+  const cards = $$( `#cards-${step} .card` );
+  const chosen = cards.filter(c => c.classList.contains('selected'));
+  if(chosen.length!==4) return false;
+  return chosen.every(c => c.dataset.correct==="1");
+}
+
+function updateCounter(step){
+  const cnt = $$( `#cards-${step} .card.selected` ).length;
+  $(`#count-${step}`).textContent = `${cnt}/4 seleccionadas`;
+}
+
+function updateButtons(step, initial=false){
+  const cnt = $$( `#cards-${step} .card.selected` ).length;
+  const confirm = $(`#confirm-${step}`);
+  const retry   = $(`#retry-${step}`);
+  const next    = $(`#next-${step}`) || $('#finish');
+  if(initial){
+    confirm.disabled = true;
+    retry.classList.add('hidden');
+    next.classList.add('hidden');
+    return;
+  }
+  confirm.disabled = (cnt!==4);
+}
+
+function clearSelections(step){
+  $$( `#cards-${step} .card.selected` ).forEach(c => c.classList.remove('selected'));
+  updateCounter(step);
+}
+
+function setFeedback(step, msg, ok=null, hide=false){
+  const fb = $(`#fb-${step}`);
+  if(hide){ fb.classList.add('hidden'); fb.textContent=""; return; }
+  fb.classList.remove('hidden');
+  fb.textContent = msg;
+  fb.classList.remove('ok','bad');
+  if(ok===true) fb.classList.add('ok');
+  if(ok===false) fb.classList.add('bad');
+}
+
+function showSlide(idx){
+  $$('.slide').forEach(s => s.classList.remove('active'));
+  $(`#slide-${idx}`).classList.add('active');
+}
+
+/* Configurar las cuatro diapositivas de selección */
+[1,2,3,4].forEach(step=>{
+  mountSlide(step);
+
+  // Confirmar
+  $(`#confirm-${step}`).addEventListener('click', ()=>{
+    if(!selectedAreExactlyCorrect(step)){
+      setFeedback(step,"Incorrecto. Inténtalo de nuevo.", false);
+      $(`#retry-${step}`).classList.remove('hidden');
+      // Mantener Confirmar para permitir corregir elecciones o usar Reintentar para limpiar
+    }else{
+      setFeedback(step,"Correcto. Puedes avanzar.", true);
+      $(`#retry-${step}`).classList.add('hidden');
+      $(`#confirm-${step}`).disabled = true;
+      // Desactivar tarjetas tras acierto
+      $$( `#cards-${step} .card`).forEach(c=>c.style.pointerEvents="none");
+      // Mostrar avance
+      if(step<4){
+        $(`#next-${step}`).classList.remove('hidden');
+      }else{
+        $('#finish').classList.remove('hidden');
+      }
+    }
+  });
+
+  // Reintentar
+  $(`#retry-${step}`).addEventListener('click', ()=>{
+    clearSelections(step);
+    setFeedback(step,"",null,true);
+    updateButtons(step);
+  });
+
+  // Siguiente
+  if(step<4){
+    $(`#next-${step}`).addEventListener('click', ()=>{
+      showSlide(step+1);
+    });
+  }else{
+    $('#finish').addEventListener('click', ()=>{
+      // Fin: volver a portada deshabilitando botones residuales
+      showSlide(0);
+      // Rehabilitar tarjetas para un nuevo repaso
+      [1,2,3,4].forEach(s=>{
+        $$( `#cards-${s} .card`).forEach(c=>c.style.pointerEvents="auto");
+        clearSelections(s);
+        setFeedback(s,"",null,true);
+        // Reset botones visibles/ocultos
+        $(`#retry-${s}`).classList.add('hidden');
+        $(`#confirm-${s}`).disabled = true;
+        const nextBtn = $(`#next-${s}`) || $('#finish');
+        nextBtn.classList.add('hidden');
+      });
+      window.scrollTo({top:0,behavior:"smooth"});
+    });
+  }
+
+  // Volver
+  $(`#back-${step}`).addEventListener('click', ()=>{
+    showSlide(step-1);
+  });
+});
+
+/* Navegación desde portada */
+$('#next-from-0').addEventListener('click', ()=>showSlide(1));
+</script>
+
+</body>
+</html>
