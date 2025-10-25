@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La República de Platón</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Palatino Linotype','Book Antiqua',Palatino,serif;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);color:#d4af37;min-height:100vh;padding:20px}
+.container{max-width:1200px;margin:0 auto}
+header{text-align:center;margin-bottom:40px;padding:30px;background:rgba(212,175,55,0.1);border:2px solid #d4af37;border-radius:10px;box-shadow:0 0 20px rgba(212,175,55,0.3)}
+h1{font-size:2.5em;margin-bottom:10px;text-shadow:2px 2px 4px rgba(0,0,0,0.5);letter-spacing:2px}
+.subtitle{font-size:1.2em;color:#c9a961;font-style:italic}
+.phase{display:none}.phase.active{display:block}
+.game-board{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:30px;margin-bottom:40px}
+.character-card{background:linear-gradient(145deg,#2a2a3e,#1f1f2e);border:3px solid #d4af37;border-radius:15px;padding:25px;box-shadow:0 8px 20px rgba(0,0,0,0.4);transition:.3s ease;position:relative}
+.character-card:hover{transform:translateY(-5px);box-shadow:0 12px 30px rgba(212,175,55,0.4)}
+.character-card.correct{border-color:#4caf50;background:linear-gradient(145deg,#2a4a2e,#1f3a1f)}
+.character-card.incorrect{border-color:#f44336;background:linear-gradient(145deg,#4a2a2e,#3a1f1f)}
+.character-silhouette{width:100px;height:100px;margin:0 auto 20px;background:rgba(212,175,55,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:3em;border:2px solid #d4af37}
+.character-traits{background:rgba(0,0,0,0.3);padding:15px;border-radius:8px;margin-bottom:20px;min-height:200px}
+.trait{padding:8px;margin:5px 0;background:rgba(212,175,55,0.1);border-left:3px solid #d4af37;font-size:.95em;color:#e8d7a0}
+.class-tiles{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin-bottom:30px}
+.class-tile{padding:15px 30px;background:linear-gradient(145deg,#d4af37,#b8941f);color:#1a1a2e;border:3px solid transparent;border-radius:10px;font-size:1.1em;font-weight:bold;cursor:pointer;transition:.3s ease;box-shadow:0 4px 10px rgba(0,0,0,0.3);text-transform:uppercase;letter-spacing:1px;user-select:none}
+.class-tile:hover{transform:scale(1.05);box-shadow:0 6px 15px rgba(212,175,55,0.5)}
+.class-tile.selected{border-color:#fff;box-shadow:0 0 20px rgba(255,255,255,0.5);transform:scale(1.1)}
+.class-tile.used{opacity:.3;cursor:not-allowed}
+.drop-zone{min-height:60px;border:2px dashed #d4af37;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#c9a961;font-style:italic;transition:.3s ease;cursor:pointer}
+.drop-zone:hover:not(:has(.placed-tile)){background:rgba(212,175,55,0.1);border-color:#fff}
+.drop-zone .placed-tile{background:linear-gradient(145deg,#d4af37,#b8941f);color:#1a1a2e;padding:10px 20px;border-radius:8px;font-weight:bold;text-transform:uppercase;cursor:pointer;transition:.3s ease}
+.drop-zone .placed-tile:hover{transform:scale(1.05);box-shadow:0 4px 10px rgba(0,0,0,0.5)}
+.controls{text-align:center;margin-top:30px}
+.btn{padding:15px 40px;margin:10px;background:linear-gradient(145deg,#d4af37,#b8941f);color:#1a1a2e;border:none;border-radius:10px;font-size:1.1em;font-weight:bold;cursor:pointer;transition:.3s ease;text-transform:uppercase;letter-spacing:1px}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 15px rgba(212,175,55,0.5)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.result-message{text-align:center;font-size:1.5em;margin:20px 0;padding:20px;background:rgba(212,175,55,0.1);border-radius:10px;display:none}
+.result-message.show{display:block}
+.score{text-align:center;font-size:1.3em;margin:20px 0;color:#d4af37}
+.instructions{text-align:center;margin:20px 0;padding:15px;background:rgba(212,175,55,0.05);border-radius:8px;color:#c9a961;font-size:1.1em}
+.phase2-board{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:30px}
+.character-column{background:linear-gradient(145deg,#2a2a3e,#1f1f2e);border:3px solid #d4af37;border-radius:15px;padding:20px;box-shadow:0 8px 20px rgba(0,0,0,0.4)}
+.character-header{text-align:center;margin-bottom:20px}
+.character-avatar{width:80px;height:80px;margin:0 auto 15px;background:rgba(212,175,55,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2.5em;border:2px solid #d4af37}
+.character-name{font-size:1.4em;font-weight:bold;margin-bottom:5px}
+.character-class{font-size:1em;color:#c9a961;font-style:italic}
+.trait-slots{min-height:300px;background:rgba(0,0,0,0.3);border-radius:10px;padding:15px}
+.trait-slot{margin:8px 0;padding:12px;background:rgba(212,175,55,0.05);border:2px dashed #d4af37;border-radius:8px;min-height:50px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.3s ease;color:#c9a961;font-style:italic;font-size:.9em}
+.trait-slot:hover:empty{background:rgba(212,175,55,0.1);border-color:#fff}
+.trait-slot.correct{border-color:#4caf50;background:rgba(76,175,80,0.1)}
+.trait-slot.incorrect{border-color:#f44336;background:rgba(244,67,54,0.1)}
+.trait-tile{padding:10px 15px;background:linear-gradient(145deg,#d4af37,#b8941f);color:#1a1a2e;border:2px solid transparent;border-radius:8px;cursor:pointer;transition:.3s ease;margin:5px;font-size:.9em;text-align:center}
+.trait-tile:hover{transform:scale(1.02);box-shadow:0 4px 8px rgba(0,0,0,0.3)}
+.trait-tile.selected{border-color:#fff;box-shadow:0 0 15px rgba(255,255,255,0.5)}
+.trait-pool{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;padding:20px;background:rgba(0,0,0,0.3);border-radius:10px;margin-bottom:30px}
+@media(max-width:900px){.phase2-board{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="container">
+<header><h1>LA REPÚBLICA DE PLATÓN</h1><p class="subtitle">Descubre a qué clase pertenece cada ciudadano según su naturaleza</p><p class="subtitle">Departamento de Filosofía - IES Juan de la Cierva</p></header>
+
+<div id="phase1" class="phase active">
+<div class="instructions"><strong>Fase 1:</strong> Haz clic en una clase y luego en el personaje para asignarla.</div>
+<div class="class-tiles" id="classTiles">
+<div class="class-tile" data-class="productores">Productores</div>
+<div class="class-tile" data-class="guardianes">Guardianes</div>
+<div class="class-tile" data-class="gobernantes">Gobernantes</div>
+</div>
+<div class="score">Aciertos: <span id="score">0</span> / 3</div>
+<div class="game-board" id="gameBoard"></div>
+<div class="result-message" id="resultMessage"></div>
+<div class="controls">
+<button class="btn" onclick="checkPhase1Answers()">Verificar Respuestas</button>
+<button class="btn" id="continueBtn" onclick="startPhase2()" style="display:none;">Continuar a Fase 2</button>
+</div>
+</div>
+
+<div id="phase2" class="phase">
+<div class="instructions"><strong>Fase 2:</strong> Asigna las 9 características a los personajes correctos.</div>
+<div class="trait-pool" id="traitPool"></div>
+<div class="score">Aciertos: <span id="score2">0</span> / 9</div>
+<div class="phase2-board" id="phase2Board"></div>
+<div class="result-message" id="resultMessage2"></div>
+<div class="controls">
+<button class="btn" onclick="checkPhase2Answers()">Verificar Respuestas</button>
+<button class="btn" onclick="resetGame()">Reiniciar Juego</button>
+</div>
+</div>
+</div>
+
+<script>
+const characterTraits={
+productores:[
+"Se levanta antes del amanecer para amasar pan y abrir su pequeño horno antes que nadie.",
+"Calcula mentalmente cuánto trigo le queda y cuánto debe vender para cubrir el alquiler del taller.",
+"Se siente satisfecho cuando su huerto produce lo justo para toda la familia.",
+"Al final del día disfruta de una jarra de vino y una conversación sencilla, sin preocuparse por la política.",
+"Acepta sin protestar que los precios cambien si eso mantiene la estabilidad del mercado.",
+"Prefiere reparar su carreta con sus propias manos antes que comprar una nueva.",
+"Escucha con respeto a los guardianes cuando le piden orden en la plaza del mercado.",
+"No envidia a los gobernantes, mientras su negocio prospere y haya trabajo.",
+"Cuando un cliente intenta regatear demasiado, responde con calma y busca un punto medio justo."
+],
+guardianes:[
+"Recorre las murallas de la ciudad cada amanecer, sin importar el frío ni el cansancio.",
+"Entrena con sus compañeros lanzando jabalinas hasta que todos alcanzan la misma precisión.",
+"Obedece al estratega incluso cuando no comprende del todo sus órdenes.",
+"Se mantiene firme cuando los comerciantes se quejan de los impuestos, recordando que su deber es proteger.",
+"Se contiene cuando un ciudadano le insulta, recordando que la cólera sin razón destruye el orden.",
+"Acepta comer raciones sencillas para no ablandarse con los lujos.",
+"Durante un incendio, entra en las casas a rescatar a quienes duermen sin esperar recompensa.",
+"Vigila las puertas de la ciudad al atardecer, asegurándose de que nadie armado entre sin permiso.",
+"Cuando escucha a los filósofos discutir, no interrumpe: sabe que su papel es garantizar la paz que permite esas discusiones."
+],
+gobernantes:[
+"Pasa horas en la biblioteca revisando antiguos tratados sobre justicia y educación.",
+"Durante los debates públicos, escucha en silencio hasta encontrar el argumento más claro y equilibrado.",
+"Rechaza regalos de los comerciantes para no comprometer su imparcialidad.",
+"Analiza los presupuestos del Estado preguntándose qué mejora realmente la vida común.",
+"Dedica parte del día a enseñar geometría a los jóvenes guardianes para ejercitar su mente.",
+"En las noches tranquilas, contempla el cielo y piensa en la armonía entre las órbitas y las leyes humanas.",
+"Corrige con serenidad a un orador demagogo, recordándole que el fin del poder no es el aplauso sino el bien.",
+"Vive sin propiedades personales, alojado en los edificios públicos junto a otros filósofos.",
+"Antes de dictar una ley, se pregunta si resistiría una discusión racional y si serviría al conjunto más que a sí mismo."
+]
+};
+
+const characterProfiles={
+productores:{name:"Damón",avatar:"👨‍🌾"},
+guardianes:{name:"Leónidas",avatar:"⚔️"},
+gobernantes:{name:"Diótima",avatar:"👩‍🏫"}
+};
+
+let characters=[],answers={},selectedClass=null,phase2Traits=[],
+phase2Answers={},selectedTrait=null;
+
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+function generateCharacters(){
+const classes=shuffle(['productores','guardianes','gobernantes']);
+characters=classes.map((cls,i)=>{
+const visible=shuffle(characterTraits[cls]).slice(0,3); // 3 al azar de 9
+return{id:i,class:cls,visibleTraits:visible};
+});
+}
+
+function renderCharacters(){
+const b=document.getElementById('gameBoard');
+b.innerHTML='';
+characters.forEach(c=>{
+const card=document.createElement('div');
+card.className='character-card';
+card.id=`char-${c.id}`;
+card.innerHTML=`
+<div class="character-silhouette">❓</div>
+<div class="character-traits">
+${c.visibleTraits.map(t=>`<div class='trait'>• ${t}</div>`).join('')}
+</div>
+<div class='drop-zone' data-character='${c.id}'>Haz clic para asignar clase</div>`;
+b.appendChild(card);
+});
+setupPhase1ClickHandlers();
+}
+
+function setupPhase1ClickHandlers(){
+const tiles=document.querySelectorAll('.class-tile');
+tiles.forEach(tile=>tile.onclick=()=>{
+if(tile.classList.contains('used'))return;
+tiles.forEach(t=>t.classList.remove('selected'));
+selectedClass=selectedClass===tile.dataset.class?null:tile.dataset.class;
+tile.classList.toggle('selected',!!selectedClass);
+});
+document.querySelectorAll('.drop-zone').forEach(z=>z.onclick=()=>{
+const id=z.dataset.character;
+if(z.querySelector('.placed-tile')){
+const cls=answers[id];delete answers[id];
+z.textContent='Haz clic para asignar clase';
+document.querySelector(`.class-tile[data-class="${cls}"]`).classList.remove('used');return;
+}
+if(selectedClass){
+answers[id]=selectedClass;
+z.innerHTML=`<div class='placed-tile'>${selectedClass}</div>`;
+const tile=document.querySelector(`.class-tile[data-class="${selectedClass}"]`);
+tile.classList.add('used');tile.classList.remove('selected');selectedClass=null;
+}});
+}
+
+function checkPhase1Answers(){
+let c=0;
+characters.forEach(ch=>{
+const card=document.getElementById(`char-${ch.id}`);
+const ans=answers[ch.id];
+card.classList.toggle('correct',ans===ch.class);
+card.classList.toggle('incorrect',ans&&ans!==ch.class);
+if(ans===ch.class)c++;
+});
+document.getElementById('score').textContent=c;
+const msg=document.getElementById('resultMessage');
+msg.classList.add('show');
+if(c===3){msg.textContent='Perfecto. Continúa.';msg.style.color='#4caf50';
+document.getElementById('continueBtn').style.display='inline-block';}
+else{msg.textContent='Necesitas acertar las 3 clases para continuar.';msg.style.color='';}
+}
+
+function startPhase2(){
+document.getElementById('phase1').classList.remove('active');
+document.getElementById('phase2').classList.add('active');
+generatePhase2Traits();renderPhase2();
+}
+
+function generatePhase2Traits(){
+phase2Traits=[];
+['productores','guardianes','gobernantes'].forEach(cls=>{
+shuffle(characterTraits[cls]).slice(0,3).forEach(t=>phase2Traits.push({text:t,class:cls}));
+});
+phase2Traits=shuffle(phase2Traits);
+}
+
+function renderPhase2(){
+const pool=document.getElementById('traitPool');
+pool.innerHTML='';
+phase2Traits.forEach((tr,i)=>{
+const tile=document.createElement('div');
+tile.className='trait-tile';
+tile.textContent=tr.text;
+tile.dataset.index=i;
+tile.dataset.class=tr.class;
+tile.onclick=()=>{
+document.querySelectorAll('.trait-tile').forEach(t=>t.classList.remove('selected'));
+selectedTrait=selectedTrait===i?null:i;
+tile.classList.toggle('selected',selectedTrait===i);
+};
+pool.appendChild(tile);
+});
+const board=document.getElementById('phase2Board');
+board.innerHTML='';
+['productores','guardianes','gobernantes'].forEach(cls=>{
+const p=characterProfiles[cls];
+const col=document.createElement('div');
+col.className='character-column';
+col.innerHTML=`
+<div class='character-header'>
+<div class='character-avatar'>${p.avatar}</div>
+<div class='character-name'>${p.name}</div>
+<div class='character-class'>${cls}</div>
+</div>
+<div class='trait-slots' data-class='${cls}'>
+${[0,1,2].map(i=>`<div class='trait-slot' data-class='${cls}' data-slot='${i}'>Vacío</div>`).join('')}
+</div>`;
+board.appendChild(col);
+});
+setupPhase2ClickHandlers();
+}
+
+function setupPhase2ClickHandlers(){
+document.querySelectorAll('.trait-slot').forEach(s=>s.onclick=()=>{
+const key=`${s.dataset.class}-${s.dataset.slot}`;
+if(s.querySelector('.trait-tile')){
+const t=s.querySelector('.trait-tile');
+document.getElementById('traitPool').appendChild(t);
+s.textContent='Vacío';s.classList.remove('correct','incorrect');delete phase2Answers[key];return;
+}
+if(selectedTrait!==null){
+const tile=document.querySelector(`.trait-tile[data-index='${selectedTrait}']`);
+if(tile&&tile.parentElement.id==='traitPool'){
+phase2Answers[key]=selectedTrait;s.textContent='';s.appendChild(tile);
+tile.classList.remove('selected');selectedTrait=null;s.classList.remove('correct','incorrect');
+}}
+});
+}
+
+function checkPhase2Answers(){
+let c=0;
+Object.keys(phase2Answers).forEach(k=>{
+const [cls,slot]=k.split('-');
+const tr=phase2Traits[phase2Answers[k]];
+const s=document.querySelector(`.trait-slot[data-class='${cls}'][data-slot='${slot}']`);
+const ok=tr.class===cls;
+s.classList.toggle('correct',ok);
+s.classList.toggle('incorrect',!ok);
+if(ok)c++;
+});
+document.getElementById('score2').textContent=c;
+const msg=document.getElementById('resultMessage2');
+msg.classList.add('show');
+msg.textContent=c===9?'Excelente.':`Correctas: ${c}/9`;
+}
+
+function resetGame(){
+characters=[];answers={};selectedClass=null;phase2Traits=[];
+phase2Answers={};selectedTrait=null;
+document.getElementById('resultMessage').classList.remove('show');
+document.getElementById('resultMessage2').classList.remove('show');
+document.getElementById('continueBtn').style.display='none';
+document.getElementById('score').textContent=0;
+document.getElementById('score2').textContent=0;
+document.getElementById('phase2').classList.remove('active');
+document.getElementById('phase1').classList.add('active');
+generateCharacters();renderCharacters();
+}
+
+generateCharacters();renderCharacters();
+</script>
+</body>
+</html>
