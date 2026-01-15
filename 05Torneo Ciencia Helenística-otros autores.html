@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Torneo de Ciencia Helenística </title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+        }
+        h1, h2 {
+            margin: 10px;
+        }
+        .phase-container {
+            width: 100%;
+            max-width: 1200px;
+            margin-bottom: 40px;
+        }
+        .matchup-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            justify-items: center;
+            align-items: center;
+            width: 100%;
+        }
+        .pair-container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            background-color: #f0f8ff;
+            width: 100%;
+            max-width: 300px;
+        }
+        .philosopher-cell {
+            padding: 10px 15px;
+            background-color: #e8f0fe;
+            border: 2px solid #0044cc;
+            border-radius: 5px;
+            text-align: center;
+            cursor: pointer;
+            user-select: none;
+            font-weight: bold;
+            width: 120px;
+            height: 50px;
+            margin: 0 5px;
+            transition: background-color 0.3s, border-color 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.1;
+        }
+        .philosopher-cell.active {
+            background-color: #d4edda;
+            border-color: #28a745;
+        }
+        .phase-title {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .quarterfinals .philosopher-cell {
+            background-color: #fff3cd;
+            border-color: #ffc107;
+            cursor: not-allowed;
+        }
+        .quarterfinals .philosopher-cell.active {
+            background-color: #ffeeba;
+            border-color: #fd7e14;
+            cursor: pointer;
+        }
+        .semifinals .philosopher-cell {
+            background-color: #d1ecf1;
+            border-color: #17a2b8;
+            cursor: not-allowed;
+        }
+        .semifinals .philosopher-cell.active {
+            background-color: #bee5eb;
+            border-color: #0c5460;
+            cursor: pointer;
+            animation: blinking 1s infinite;
+            box-shadow: 0 0 10px #0c5460;
+        }
+        @keyframes blinking {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        #resetButton {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+        #resetButton:hover {
+            background-color: #c82333;
+        }
+
+        #finalButton {
+            display: none;
+            width: 120px;
+            height: 120px;
+            background-color: #007bff;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            margin: 20px auto;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        #finalButton:hover {
+            background-color: #0056b3;
+            transform: scale(1.03);
+        }
+
+        #finalSection {
+            display: none;
+            text-align: center;
+            width: 100%;
+            max-width: 1200px;
+        }
+        #finalSection h1 {
+            margin-top: 40px;
+            color: #333;
+        }
+        .final-matchup {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        #champion {
+            margin-top: 30px;
+            font-size: 24px;
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        /* Trofeo más grande y animado */
+        .trophy {
+            font-size: 5rem;
+            display: inline-block;
+            margin-top: 10px;
+            animation: trophyPulse 1.2s ease-in-out infinite;
+            transform-origin: center;
+        }
+        @keyframes trophyPulse {
+            0%, 100% { transform: scale(1) rotate(-2deg); }
+            50% { transform: scale(1.12) rotate(2deg); }
+        }
+    </style>
+</head>
+<body>
+    <h1>Torneo de Ciencia Helenística</h1>
+
+    <!-- Octavos de Final -->
+    <div class="phase-container" id="octavos">
+        <h2 class="phase-title">Octavos de Final</h2>
+        <div class="matchup-container">
+            <!-- Cruces corregidos -->
+            <div class="pair-container" data-octavos="1">
+                <div class="philosopher-cell" data-group="1">Museo de Alejandría</div>
+                <div class="philosopher-cell" data-group="1">Seleuco</div>
+            </div>
+            <div class="pair-container" data-octavos="2">
+                <div class="philosopher-cell" data-group="2">Euclides</div>
+                <div class="philosopher-cell" data-group="2">Filón</div>
+            </div>
+            <div class="pair-container" data-octavos="3">
+                <div class="philosopher-cell" data-group="3">Arquímedes</div>
+                <div class="philosopher-cell" data-group="3">Apolonio</div>
+            </div>
+            <div class="pair-container" data-octavos="4">
+                <div class="philosopher-cell" data-group="4">Galeno</div>
+                <div class="philosopher-cell" data-group="4">Ctesibio</div>
+            </div>
+            <div class="pair-container" data-octavos="5">
+                <div class="philosopher-cell" data-group="5">Ptolomeo</div>
+                <div class="philosopher-cell" data-group="5">Herófilo</div>
+            </div>
+            <div class="pair-container" data-octavos="6">
+                <div class="philosopher-cell" data-group="6">Hiparco</div>
+                <div class="philosopher-cell" data-group="6">Teofrasto</div>
+            </div>
+            <div class="pair-container" data-octavos="7">
+                <div class="philosopher-cell" data-group="7">Aristarco</div>
+                <div class="philosopher-cell" data-group="7">Hipatia</div>
+            </div>
+            <div class="pair-container" data-octavos="8">
+                <div class="philosopher-cell" data-group="8">Eratóstenes</div>
+                <div class="philosopher-cell" data-group="8">Herón</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cuartos de Final -->
+    <div class="phase-container" id="cuartos">
+        <h2 class="phase-title">Cuartos de Final</h2>
+        <div class="matchup-container quarterfinals">
+            <div class="pair-container" data-cuarto="1">
+                <div class="philosopher-cell" data-cuarto="1a">-</div>
+                <div class="philosopher-cell" data-cuarto="1b">-</div>
+            </div>
+            <div class="pair-container" data-cuarto="2">
+                <div class="philosopher-cell" data-cuarto="2a">-</div>
+                <div class="philosopher-cell" data-cuarto="2b">-</div>
+            </div>
+            <div class="pair-container" data-cuarto="3">
+                <div class="philosopher-cell" data-cuarto="3a">-</div>
+                <div class="philosopher-cell" data-cuarto="3b">-</div>
+            </div>
+            <div class="pair-container" data-cuarto="4">
+                <div class="philosopher-cell" data-cuarto="4a">-</div>
+                <div class="philosopher-cell" data-cuarto="4b">-</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Semifinales -->
+    <div class="phase-container" id="semifinales">
+        <h2 class="phase-title">Semifinales</h2>
+        <div class="matchup-container semifinals">
+            <div class="pair-container" data-semifinal="1">
+                <div class="philosopher-cell" data-semifinal="1a">-</div>
+                <div class="philosopher-cell" data-semifinal="1b">-</div>
+            </div>
+            <div class="pair-container" data-semifinal="2">
+                <div class="philosopher-cell" data-semifinal="2a">-</div>
+                <div class="philosopher-cell" data-semifinal="2b">-</div>
+            </div>
+        </div>
+        <button id="finalButton">PASAR A LA FINAL</button>
+    </div>
+
+    <!-- Final -->
+    <div class="phase-container" id="finalSection">
+        <h1>GRAN FINAL</h1>
+        <div class="matchup-container final-matchup">
+            <div class="philosopher-cell" id="finalWinner1" data-final="1">-</div>
+            <div class="philosopher-cell" id="finalWinner2" data-final="2">-</div>
+        </div>
+        <div id="champion"></div>
+    </div>
+
+    <button id="resetButton">Reiniciar Torneo</button>
+
+    <script>
+        const octavosCells = document.querySelectorAll('#octavos .philosopher-cell');
+        const cuartosCells = document.querySelectorAll('#cuartos .philosopher-cell');
+        const semifinalCells = document.querySelectorAll('#semifinales .philosopher-cell');
+
+        const mappingCuartos = {
+            1: { cuarto: 1, slot: 'a' },
+            2: { cuarto: 1, slot: 'b' },
+            3: { cuarto: 2, slot: 'a' },
+            4: { cuarto: 2, slot: 'b' },
+            5: { cuarto: 3, slot: 'a' },
+            6: { cuarto: 3, slot: 'b' },
+            7: { cuarto: 4, slot: 'a' },
+            8: { cuarto: 4, slot: 'b' }
+        };
+
+        const mappingSemifinal = {
+            1: { semifinal: 1, slot: 'a' },
+            2: { semifinal: 1, slot: 'b' },
+            3: { semifinal: 2, slot: 'a' },
+            4: { semifinal: 2, slot: 'b' }
+        };
+
+        function updateCuartos(octavosNumber, winnerName) {
+            if (!winnerName || winnerName === '-') return;
+
+            const { cuarto, slot } = mappingCuartos[octavosNumber];
+            const cuartoCell = document.querySelector(
+                `#cuartos .pair-container[data-cuarto="${cuarto}"] .philosopher-cell[data-cuarto="${cuarto}${slot}"]`
+            );
+            if (cuartoCell) {
+                cuartoCell.textContent = winnerName;
+                cuartoCell.classList.add('active');
+
+                const pairContainer = document.querySelector(`#cuartos .pair-container[data-cuarto="${cuarto}"]`);
+                const cells = pairContainer.querySelectorAll('.philosopher-cell');
+                const hasBoth = Array.from(cells).every(cell => cell.textContent !== '-');
+
+                if (hasBoth) {
+                    cells.forEach(cell => {
+                        cell.style.cursor = 'pointer';
+                        cell.setAttribute('tabindex', '0');
+                        cell.setAttribute('role', 'button');
+                        cell.addEventListener('keydown', handleKeyDown);
+                        cell.addEventListener('click', handleCuartoClick);
+                    });
+                }
+            }
+        }
+
+        function updateSemifinal(cuartoNumber, winnerName) {
+            if (!winnerName || winnerName === '-') return;
+
+            const { semifinal, slot } = mappingSemifinal[cuartoNumber];
+            const semifinalCell = document.querySelector(
+                `#semifinales .pair-container[data-semifinal="${semifinal}"] .philosopher-cell[data-semifinal="${semifinal}${slot}"]`
+            );
+            if (semifinalCell) {
+                semifinalCell.textContent = winnerName;
+                semifinalCell.classList.add('active');
+
+                const pairContainer = document.querySelector(`#semifinales .pair-container[data-semifinal="${semifinal}"]`);
+                const cells = pairContainer.querySelectorAll('.philosopher-cell');
+                const hasBoth = Array.from(cells).every(cell => cell.textContent !== '-');
+
+                if (hasBoth) {
+                    cells.forEach(cell => {
+                        cell.style.cursor = 'pointer';
+                        cell.setAttribute('tabindex', '0');
+                        cell.setAttribute('role', 'button');
+                        cell.addEventListener('keydown', handleKeyDown);
+                        cell.addEventListener('click', handleSemifinalClick);
+                    });
+                }
+                checkSemifinalsComplete();
+            }
+        }
+
+        function handleCuartoClick(event) {
+            const cell = event.currentTarget;
+            const group = cell.getAttribute('data-cuarto');
+            const pairContainer = cell.parentElement;
+            const cuartoNumber = pairContainer.getAttribute('data-cuarto');
+            const groupCells = document.querySelectorAll(`#cuartos .philosopher-cell[data-cuarto="${group}"]`);
+
+            groupCells.forEach(c => c.classList.remove('active'));
+            cell.classList.add('active');
+            updateSemifinal(cuartoNumber, cell.textContent);
+        }
+
+        function handleSemifinalClick(event) {
+            const cell = event.currentTarget;
+            const pairContainer = cell.parentElement;
+            const groupCells = pairContainer.querySelectorAll('.philosopher-cell');
+
+            groupCells.forEach(c => c.classList.remove('active'));
+            cell.classList.add('active');
+            checkSemifinalsComplete();
+        }
+
+        function handleKeyDown(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                e.currentTarget.click();
+            }
+        }
+
+        function checkSemifinalsComplete() {
+            const allSemifinals = document.querySelectorAll('#semifinales .pair-container');
+            let complete = true;
+
+            allSemifinals.forEach(pair => {
+                const cells = pair.querySelectorAll('.philosopher-cell');
+                const activeCells = Array.from(cells).filter(cell => cell.classList.contains('active'));
+                if (activeCells.length !== 1) complete = false;
+            });
+
+            const finalButton = document.getElementById('finalButton');
+            finalButton.style.display = complete ? 'block' : 'none';
+        }
+
+        function selectFinalWinner(event) {
+            const cell = event.currentTarget;
+            const finalCells = document.querySelectorAll('#finalSection .philosopher-cell');
+            const championDisplay = document.getElementById('champion');
+
+            finalCells.forEach(c => c.classList.remove('active'));
+            cell.classList.add('active');
+
+            championDisplay.innerHTML = `
+                ¡La Victoria es para ${cell.textContent}!
+                <br>
+                <span class="trophy">🏆</span>
+            `;
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            // Octavos
+            octavosCells.forEach(cell => {
+                cell.classList.remove('active');
+                cell.setAttribute('role', 'button');
+                cell.setAttribute('tabindex', '0');
+                cell.addEventListener('keydown', handleKeyDown);
+                cell.addEventListener('click', () => {
+                    const group = cell.getAttribute('data-group');
+                    const pairContainer = cell.parentElement;
+                    const octavosNumber = pairContainer.getAttribute('data-octavos');
+                    const groupCells = document.querySelectorAll(`#octavos .philosopher-cell[data-group="${group}"]`);
+
+                    groupCells.forEach(c => c.classList.remove('active'));
+                    cell.classList.add('active');
+                    updateCuartos(octavosNumber, cell.textContent);
+                });
+            });
+
+            // Cuartos
+            cuartosCells.forEach(cell => {
+                cell.textContent = '-';
+                cell.classList.remove('active');
+                cell.style.cursor = 'not-allowed';
+                cell.removeAttribute('tabindex');
+                cell.removeAttribute('role');
+                cell.removeEventListener('click', handleCuartoClick);
+                cell.removeEventListener('keydown', handleKeyDown);
+            });
+
+            // Semifinales
+            semifinalCells.forEach(cell => {
+                cell.textContent = '-';
+                cell.classList.remove('active');
+                cell.style.cursor = 'not-allowed';
+                cell.removeAttribute('tabindex');
+                cell.removeAttribute('role');
+                cell.removeEventListener('click', handleSemifinalClick);
+                cell.removeEventListener('keydown', handleKeyDown);
+            });
+
+            // Final
+            const finalWinner1 = document.getElementById('finalWinner1');
+            const finalWinner2 = document.getElementById('finalWinner2');
+            finalWinner1.textContent = '-';
+            finalWinner2.textContent = '-';
+            finalWinner1.classList.remove('active');
+            finalWinner2.classList.remove('active');
+            finalWinner1.style.cursor = 'not-allowed';
+            finalWinner2.style.cursor = 'not-allowed';
+            finalWinner1.removeAttribute('tabindex');
+            finalWinner2.removeAttribute('tabindex');
+            finalWinner1.removeAttribute('role');
+            finalWinner2.removeAttribute('role');
+            finalWinner1.removeEventListener('click', selectFinalWinner);
+            finalWinner2.removeEventListener('click', selectFinalWinner);
+            finalWinner1.removeEventListener('keydown', handleKeyDown);
+            finalWinner2.removeEventListener('keydown', handleKeyDown);
+
+            document.getElementById('champion').textContent = '';
+            document.getElementById('finalButton').style.display = 'none';
+        });
+
+        const finalButton = document.getElementById('finalButton');
+        const finalSection = document.getElementById('finalSection');
+        const semifinalContainer = document.getElementById('semifinales');
+
+        finalButton.addEventListener('click', () => {
+            const semifinal1 = document.querySelector('#semifinales .pair-container[data-semifinal="1"] .philosopher-cell.active');
+            const semifinal2 = document.querySelector('#semifinales .pair-container[data-semifinal="2"] .philosopher-cell.active');
+
+            if (!semifinal1 || !semifinal2) {
+                alert('Debe seleccionar un ganador en cada semifinal antes de pasar a la final.');
+                return;
+            }
+
+            const finalWinner1 = document.getElementById('finalWinner1');
+            const finalWinner2 = document.getElementById('finalWinner2');
+
+            finalWinner1.textContent = semifinal1.textContent;
+            finalWinner2.textContent = semifinal2.textContent;
+
+            finalWinner1.classList.add('active');
+            finalWinner2.classList.add('active');
+            finalWinner1.style.cursor = 'pointer';
+            finalWinner2.style.cursor = 'pointer';
+            finalWinner1.setAttribute('tabindex', '0');
+            finalWinner2.setAttribute('tabindex', '0');
+            finalWinner1.setAttribute('role', 'button');
+            finalWinner2.setAttribute('role', 'button');
+
+            finalWinner1.addEventListener('click', selectFinalWinner);
+            finalWinner2.addEventListener('click', selectFinalWinner);
+            finalWinner1.addEventListener('keydown', handleKeyDown);
+            finalWinner2.addEventListener('keydown', handleKeyDown);
+
+            document.getElementById('octavos').style.display = 'none';
+            document.getElementById('cuartos').style.display = 'none';
+            semifinalContainer.style.display = 'none';
+
+            finalSection.style.display = 'block';
+            finalSection.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        const resetButton = document.getElementById('resetButton');
+        resetButton.addEventListener('click', () => {
+            if (confirm('¿Estás seguro de que deseas reiniciar el torneo? Todas las selecciones se perderán.')) {
+                location.reload();
+            }
+        });
+    </script>
+</body>
+</html>
