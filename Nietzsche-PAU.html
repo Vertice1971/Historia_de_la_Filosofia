@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Textos de Nietzsche para la PAU. Andalucía 2025</title>
+  <title>Textos de Nietzsche para la PAU. Andalucía 2026</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       margin: 20px;
       text-align: center;
-      background-color: #f5f8ff; /* Fondo azul pastel */
+      background-color: #f5f8ff;
     }
     .question-container {
       display: none;
@@ -55,7 +55,6 @@
     #restart-btn {
       background: #28a745;
     }
-    /* Posiciona el botón "Siguiente" fijo a la derecha, en zona media/alta */
     #next-btn {
       position: fixed;
       right: 20px;
@@ -68,7 +67,6 @@
       border-radius: 5px;
       display: none;
     }
-    /* Estilos para el contador de preguntas */
     #question-counter {
       position: fixed;
       right: 20px;
@@ -81,7 +79,6 @@
       margin-top: 20px;
       font-size: 1.2em;
     }
-    /* Sección de enlaces extra para el alumnado */
     #extra-links {
       display: block;
       margin-top: 20px;
@@ -100,25 +97,23 @@
   </style>
 </head>
 <body>
-  <h1>Comprensión lectora: textos de Nietzsche para la PAU. Andalucía 2025</h1>
+  <h1>Comprensión lectora: textos de Nietzsche para la PAU. Andalucía 2026</h1>
   <h2 style="font-size: 0.6em; color: #555;">Tomás Cuesta. IES Juan de la Cierva</h2>
   <div id="info-container"></div>
   <button id="start-btn">Comenzar</button>
-  
-  <!-- Sección de enlaces extra a Amazon -->
+
   <div id="extra-links">
     <p><strong>Manuales para el alumnado (Amazon)</strong></p>
-    <p><a href="https://www.amazon.es/dp/B0F48N325F/ref=tmm_pap_swatch_0" target="_blank">Itinerario Ético-Político</a></p>
-    <p><a href="https://www.amazon.es/dp/B0F48G3RHR/ref=tmm_pap_swatch_0" target="_blank">Itinerario Ontológico-Epistemológico</a></p>
+    <p><a href="https://www.amazon.es/dp/B0FWZZ7NVH" target="_blank">Itinerario Ético-Político</a></p>
+    <p><a href="https://www.amazon.es/dp/B0FXDPZ7S6" target="_blank">Itinerario Ontológico-Epistemológico</a></p>
   </div>
-  
+
   <div id="quiz-container" class="question-container"></div>
   <button id="next-btn">Siguiente</button>
   <div id="question-counter"></div>
   <button id="restart-btn">Reiniciar</button>
-  
+
   <script>
-    // Función para barajar un array usando el algoritmo de Fisher–Yates
     function shuffle(array) {
       for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -127,204 +122,293 @@
       return array;
     }
 
-    // JSON integrado con todas las preguntas de Nietzsche
     const data = {
       "preguntas": [
         {
-          "texto": "La ciencia no puede ser verdadera, porque niega a Dios. Por consiguiente, no procede de Dios.",
+          "texto": "§ 110 — «el intelecto no producía más que errores; algunos de ellos resultaban útiles y beneficiosos para la conservación de la especie»",
           "opciones": {
-            "a": "La ciencia no puede alcanzar la verdad porque rechaza la existencia de Dios, y solo a través de lo divino se puede acceder al conocimiento absoluto.",
-            "b": "Nietzsche critica la idea de que la ciencia deba proceder de Dios para ser verdadera, cuestionando la presuposición de que Dios es la única fuente de la verdad.",
-            "c": "La verdad es una construcción subjetiva que cambia con el tiempo, por lo que ni la ciencia ni la religión pueden reclamar su posesión absoluta."
+            "a": "Nietzsche sostiene que el intelecto humano ha estado orientado desde el principio hacia verdades útiles para la especie.",
+            "b": "Nietzsche afirma que el intelecto produjo durante mucho tiempo errores, y que algunos fueron ventajosos porque favorecían la supervivencia.",
+            "c": "Nietzsche argumenta que todo error intelectual es perjudicial y que solo la razón pura sirve a la vida."
           },
           "respuesta": "b"
         },
         {
-          "texto": "Hasta el momento han sido los errores los poderes más consoladores: ahora esperamos el mismo efecto de las verdades reconocidas, pero la espera se va haciendo un poco larga.",
+          "texto": "§ 110 — «Tales erróneos artículos de fe, que se transmitían de generación en generación y que finalmente llegaban a ser algo así como parte integrante del acervo humano»",
           "opciones": {
-            "a": "Nietzsche sostiene que los errores del pasado han sido sustituidos por verdades absolutas que ahora proporcionan el mismo consuelo que antes ofrecían las creencias erróneas.",
-            "b": "Nietzsche señala que, a lo largo de la historia, los seres humanos han encontrado consuelo en creencias erróneas, pero ahora, al descubrir verdades, esperan que estas les brinden la misma tranquilidad, algo que no está ocurriendo.",
-            "c": "Nietzsche critica la búsqueda de verdades absolutas, afirmando que tanto los errores como las verdades reconocidas carecen de valor, ya que solo la voluntad de poder es lo que realmente importa."
+            "a": "Nietzsche afirma que esos errores fueron siempre reconocidos como falsos y progresivamente eliminados.",
+            "b": "Nietzsche señala que ciertas creencias falsas se heredaron durante generaciones hasta incorporarse al fondo común de la humanidad.",
+            "c": "Nietzsche sostiene que toda creencia transmitida por tradición acaba siendo verdadera por el mero hecho de perdurar."
           },
           "respuesta": "b"
         },
         {
-          "texto": "Tal vez se pueda deducir de esto la tesis de que la verdad como totalidad armónica no existe más que para almas al mismo tiempo fuertes y desinteresadas, alegres y pacíficas (como era la de Aristóteles), precisamente por ser estas almas las únicas que estarían en condiciones de buscarla, puesto que los demás solo buscan remedios curativos para ellos mismos.",
+          "texto": "§ 110 — «la fuerza de los conocimientos no reside en su grado de verdad, sino en su antigüedad, en su asimilación, en su carácter de condición vital»",
           "opciones": {
-            "a": "Nietzsche sostiene que la verdad absoluta solo puede ser alcanzada por aquellos que poseen una mente lógica y racional, como la de Aristóteles, ya que la razón es el único camino hacia el conocimiento.",
-            "b": "Nietzsche sugiere que solo las personas fuertes y sin necesidad de consuelo pueden buscar la verdad por sí misma, mientras que la mayoría de los individuos solo buscan en el conocimiento algo que los alivie de su sufrimiento.",
-            "c": "Nietzsche argumenta que el conocimiento es una herramienta de dominación y que solo aquellos con suficiente poder pueden imponer su visión de la verdad sobre los demás."
+            "a": "Nietzsche defiende que solo la verdad objetiva funda el conocimiento legítimo.",
+            "b": "Nietzsche plantea que un conocimiento se impone no por ser verdadero, sino por estar arraigado y funcionar como condición de vida.",
+            "c": "Nietzsche argumenta que la antigüedad de una idea demuestra por sí misma su verdad."
           },
           "respuesta": "b"
         },
         {
-          "texto": "La verdad no es de ningún modo un poder, pese a lo que acostumbra a decir el ilustrado melindroso. — Por el contrario, necesita que el poder se ponga de su parte o ponerse ella de parte del poder.",
+          "texto": "§ 110 — «Los pensadores excepcionales tales como los eleáticos [...] inventaban al sabio, como hombre de concepción inmutable, impersonal y universal»",
           "opciones": {
-            "a": "Nietzsche sostiene que la verdad tiene un poder propio que se impone por sí misma, sin necesidad de apoyarse en fuerzas externas.",
-            "b": "Nietzsche afirma que la verdad no es un poder por sí sola, sino que necesita del respaldo del poder político, social o ideológico para prevalecer y ser aceptada.",
-            "c": "Nietzsche argumenta que el conocimiento humano es completamente subjetivo y que la verdad es solo una ilusión sin ninguna relevancia en la lucha por el poder."
+            "a": "Nietzsche elogia a los eleáticos por haber descubierto una verdad absoluta superior a la vida.",
+            "b": "Nietzsche explica que los eleáticos imaginaron al sabio como figura capaz de vivir desde una razón estable, impersonal y universal.",
+            "c": "Nietzsche sostiene que los eleáticos separaron por completo su filosofía de cualquier pretensión de verdad."
           },
           "respuesta": "b"
         },
         {
-          "texto": "En medio del océano del devenir, nosotros aventureros y aves viajeras, nos despertamos en una pequeña isla no mayor que una barquita, y miramos por un momento en torno nuestro con toda la prisa y la curiosidad que nos son posibles.",
+          "texto": "§ 110 — «tenían que atribuirse impersonalidad y duración sin cambio, interpretar mal la esencia del cognoscente, negar la fuerza de los impulsos en el conocimiento»",
           "opciones": {
-            "a": "Nietzsche describe la vida como un viaje estable en el que los individuos encuentran refugio y certezas en su camino, deteniéndose en lugares seguros para descansar y conocer.",
-            "b": "Nietzsche usa la metáfora de los viajeros y las aves para representar la fugacidad del conocimiento y la vida, donde solo tenemos momentos breves para comprender antes de ser arrastrados nuevamente por el flujo del devenir.",
-            "c": "Nietzsche argumenta que el verdadero conocimiento solo puede alcanzarse en momentos de quietud y reflexión prolongada, alejados del constante cambio y la incertidumbre."
+            "a": "Nietzsche elogia a esos filósofos por haber separado el conocimiento de toda dimensión impulsiva.",
+            "b": "Nietzsche señala que esos filósofos se engañaban al fingirse impersonales e inmutables, ocultando el papel de los impulsos en el conocer.",
+            "c": "Nietzsche sostiene que negar los impulsos es el método correcto para alcanzar un conocimiento puro."
           },
           "respuesta": "b"
         },
         {
-          "texto": "¡Pero el conocimiento quedaría en una mala posición si únicamente se relacionara con cada pensador en la medida en que se ajustara a su cuerpo! ¡Y los pensadores también estarían en una mala situación si su vanidad fuese tan grande que solo tuvieran que soportarla ellos!",
+          "texto": "§ 125 — «¡Lo hemos matado, vosotros y yo! ¡Todos nosotros somos sus asesinos!»",
           "opciones": {
-            "a": "Nietzsche sostiene que el conocimiento es una construcción puramente individual y subjetiva, determinada exclusivamente por las experiencias corporales de cada pensador.",
-            "b": "Nietzsche advierte contra la idea de que el conocimiento solo sea válido si encaja con la experiencia personal del pensador, ya que esto limitaría su alcance y lo convertiría en una expresión de vanidad más que en una búsqueda genuina.",
-            "c": "Nietzsche argumenta que el verdadero conocimiento solo puede surgir de la introspección individual y que los pensadores deben aislarse para alcanzar la verdad sin interferencias externas."
+            "a": "Nietzsche afirma que solo los ateos y los filósofos modernos son responsables de la muerte de Dios.",
+            "b": "En boca del hombre loco, Nietzsche atribuye la muerte de Dios a la humanidad entera, no a un grupo particular.",
+            "c": "Nietzsche sostiene que Dios ha muerto por causas naturales, sin intervención humana."
           },
           "respuesta": "b"
         },
         {
-          "texto": "No comprendo por qué hay que desear la omnipotencia y la tiranía de la verdad; me basta saber que la verdad posee un gran poder. Pero es preciso que pueda luchar, que tenga una oposición.",
+          "texto": "§ 125 — «¿Cómo pudimos vaciar el mar? ¿Quién nos dio la esponja para borrar todo el horizonte? ¿Qué hicimos al desatar esta Tierra de su Sol?»",
           "opciones": {
-            "a": "Nietzsche sostiene que la verdad debe imponerse de manera absoluta sobre todas las demás perspectivas, eliminando cualquier tipo de oposición que intente desafiarla.",
-            "b": "Nietzsche sostiene que la verdad no debe ser absoluta ni tiránica, sino que necesita enfrentarse a la oposición y al conflicto para mantener su fuerza y relevancia.",
-            "c": "Nietzsche argumenta que la verdad es siempre una construcción subjetiva y relativa, por lo que no tiene sentido hablar de lucha o conflicto en torno a ella."
+            "a": "Nietzsche celebra aquí una emancipación racional completa y sin coste.",
+            "b": "Con estas imágenes, Nietzsche expresa que la muerte de Dios destruye el horizonte de sentido y deja sin fundamento el mundo heredado.",
+            "c": "Nietzsche sugiere que la muerte de Dios es un hecho menor que solo afecta a algunos creyentes."
           },
           "respuesta": "b"
         },
         {
-          "texto": "¡Qué sed tenéis de estos momentos en que vuestra pasión os confiere un derecho pleno y absoluto ante vosotros mismos!",
+          "texto": "§ 125 — «“Llego demasiado pronto”, dijo luego. “Este acontecimiento tremendo está todavía en camino, — no ha llegado aún hasta los oídos de los hombres.”»",
           "opciones": {
-            "a": "Nietzsche sostiene que la pasión es una emoción negativa que siempre nubla el juicio y aleja a las personas del conocimiento verdadero.",
-            "b": "Nietzsche señala que las personas ansían los momentos en los que su pasión les da la ilusión de estar completamente justificadas ante sí mismas, permitiéndoles evitar cualquier duda o crítica interna.",
-            "c": "Nietzsche defiende que la pasión es la fuente más pura de conocimiento y que solo aquellos que se dejan guiar por ella pueden alcanzar la verdad."
+            "a": "Nietzsche afirma que la muerte de Dios aún no ha ocurrido y que solo se anuncia para el futuro.",
+            "b": "El hombre loco reconoce que la muerte de Dios ya ha sucedido, pero que sus consecuencias todavía no han sido comprendidas.",
+            "c": "Nietzsche sugiere que el mensaje del hombre loco fracasa porque carece de importancia real."
           },
           "respuesta": "b"
         },
         {
-          "texto": "Dios ha muerto: pero, siendo los hombres lo que son, habrá acaso aún por espacio de milenios cuevas donde se muestre su sombra. –¡Y nosotros –tendremos que vencer también a su sombra!",
+          "texto": "§ 125 — «¿Qué entonces son aún estas iglesias sino las tumbas y monumentos fúnebres de Dios?»",
           "opciones": {
-            "a": "Nietzsche celebra la desaparición total de la religión y sostiene que la humanidad ya se ha liberado completamente de la influencia de Dios.",
-            "b": "Nietzsche afirma que, aunque la creencia en Dios ha desaparecido, su influencia sigue presente en la cultura, la moral y las estructuras sociales, por lo que la humanidad aún debe enfrentarse a sus restos simbólicos.",
-            "c": "Nietzsche argumenta que la humanidad necesita crear un nuevo Dios para reemplazar al que ha desaparecido, ya que no puede vivir sin una divinidad que guíe sus valores."
+            "a": "Nietzsche sostiene que las iglesias deben destruirse para superar la religión.",
+            "b": "Nietzsche presenta las iglesias como restos vacíos de una fe ya muerta, monumentos de un Dios que ya no vive.",
+            "c": "Nietzsche argumenta que las iglesias conservan intacta su verdad religiosa y su fuerza espiritual."
           },
           "respuesta": "b"
         },
         {
-          "texto": "Es necesario dar tiempo al relámpago y al trueno, es necesario dar tiempo a la luz de los astros, tiempo a las acciones, cuando ya han sido realizadas, para ser vistas y oídas. Este acto está más lejos de los hombres que el acto más distante; y, sin embargo, ellos lo han realizado.",
+          "texto": "§ 343 — «El más grande de los acontecimientos recientes —que “Dios ha muerto”, que la creencia en el Dios cristiano se ha desacreditado— empieza ya a proyectar sus primeras sombras sobre Europa.»",
           "opciones": {
-            "a": "Nietzsche sostiene que las acciones humanas son inmediatamente comprendidas en toda su magnitud y que su impacto es visible en el mismo instante en que ocurren.",
-            "b": "Nietzsche sugiere que los grandes acontecimientos y cambios en la historia requieren tiempo para ser entendidos, ya que su significado no es evidente de inmediato para quienes los realizan.",
-            "c": "Nietzsche argumenta que todo lo que ocurre está predestinado y que los seres humanos solo pueden observar pasivamente el devenir de la historia."
+            "a": "Nietzsche afirma que Europa ya ha asimilado por completo la muerte de Dios.",
+            "b": "Nietzsche presenta la muerte de Dios como el gran acontecimiento moderno, cuyas consecuencias apenas empiezan a sentirse en Europa.",
+            "c": "Nietzsche sostiene que la pérdida de la fe cristiana es un episodio secundario sin efectos culturales profundos."
           },
           "respuesta": "b"
         },
         {
-          "texto": "Dios ha muerto... Pero se puede decir en general: que el acontecimiento mismo es demasiado grande, demasiado remoto, demasiado apartado de la capacidad de comprensión de los muchos como para que pueda decirse que la noticia de ello ya ha llegado;",
+          "texto": "§ 343 — «el acontecimiento mismo es demasiado grande, demasiado remoto, demasiado apartado de la capacidad de comprensión de los muchos como para que pueda decirse que la noticia de ello ya ha llegado»",
           "opciones": {
-            "a": "Nietzsche sostiene que la idea de la muerte de Dios ha sido completamente aceptada por la humanidad y ya no influye en la moral ni en la cultura.",
-            "b": "Nietzsche afirma que la muerte de Dios es un acontecimiento tan grande que la mayoría de las personas aún no lo ha entendido ni asimilado, y su impacto total aún está por desarrollarse.",
-            "c": "Nietzsche argumenta que la creencia en Dios es inmutable y que, aunque algunos piensen que ha muerto, su influencia continuará sin cambios en la sociedad."
+            "a": "Nietzsche sostiene que las masas europeas ya comprenden plenamente la muerte de Dios.",
+            "b": "Nietzsche advierte que la mayoría aún no ha asimilado un acontecimiento tan enorme como la muerte de Dios.",
+            "c": "Nietzsche argumenta que la fe religiosa seguirá intacta porque la muerte de Dios es incomprensible por esencia."
           },
           "respuesta": "b"
         },
         {
-          "texto": "La 'voluntad de verdad' -pudiera ser una oculta voluntad de muerte-. De esta suerte, el interrogante: ¿por qué ciencia? retorna al problema moral: ¿por qué aún la moral, si la vida, la Naturaleza y la historia son 'inmorales'?",
+          "texto": "§ 343 — «toda nuestra moral europea. Esa larga plenitud y sucesión de demolición, destrucción, hundimiento y cambio que ahora se avecina»",
           "opciones": {
-            "a": "Nietzsche afirma que la ciencia y la moral son valores absolutos que guían a la humanidad hacia un conocimiento objetivo y un comportamiento correcto, en armonía con la Naturaleza.",
-            "b": "Nietzsche sugiere que la voluntad de verdad, que impulsa a la ciencia y a la moral, podría ser en realidad una forma de negación de la vida, ya que impone valores rígidos sobre un mundo que es caótico y amoral por naturaleza.",
-            "c": "Nietzsche sostiene que la moral y la ciencia son ilusiones creadas por la sociedad, y que la única manera de alcanzar la verdad es a través de la fe religiosa."
+            "a": "Nietzsche afirma que la moral europea no depende en nada de la fe cristiana.",
+            "b": "Nietzsche advierte que, al hundirse la fe en Dios, también se desmorona la moral europea construida sobre ella.",
+            "c": "Nietzsche sostiene que la vieja moral será sustituida enseguida por una nueva moral ya disponible."
           },
           "respuesta": "b"
         },
         {
-          "texto": "Cuando parecía surgir un conflicto entre la vida y el conocimiento nunca se luchaba seriamente: se consideraba una locura negar y dudar. Los pensadores excepcionales tales como los eleáticos, que, no obstante, establecían y proclamaban las antítesis de los errores naturales, creían que era posible vivir esta antítesis; inventaban al sabio, como hombre de concepción inmutable, impersonal y universal.",
+          "texto": "§ 343 — «los filósofos y “espíritus libres”, al enterarnos de que “ha muerto el viejo Dios”, nos sentimos como iluminados por una aurora nueva»",
           "opciones": {
-            "a": "Nietzsche sostiene que los filósofos antiguos como los eleáticos encontraron la verdad absoluta y demostraron que la razón siempre debe prevalecer sobre la vida.",
-            "b": "Nietzsche critica a los pensadores que intentaban contradecir los errores naturales con verdades absolutas, ya que creían en la figura del sabio como alguien que podía vivir de manera inmutable y universal, ignorando la fluidez de la vida.",
-            "c": "Nietzsche argumenta que la sabiduría consiste en la completa renuncia al conocimiento y a la búsqueda de la verdad, ya que cualquier intento de comprender la realidad es inútil."
+            "a": "Nietzsche sostiene que todos reaccionan con alegría ante la muerte de Dios.",
+            "b": "Nietzsche expresa que los espíritus libres viven la muerte de Dios como apertura de un nuevo horizonte para la creación de valores.",
+            "c": "Nietzsche afirma que los filósofos son responsables exclusivos de la muerte de Dios."
           },
           "respuesta": "b"
         },
         {
-          "texto": "Cerraban los ojos ante el hecho de que también ellos habían llegado a sus proposiciones contradiciéndolo imperante por el ansia de reposo o de posesión exclusiva o de dominio.",
+          "texto": "§ 355 — «Lo conocido, quiere decir: aquello a que estamos acostumbrados, así que ya no nos sorprendemos de eso, nuestra rutina diaria, alguna regla a la que estamos atados, todo aquello con que nos sentimos familiarizados»",
           "opciones": {
-            "a": "Nietzsche sostiene que los filósofos antiguos llegaron a sus verdades de manera objetiva y desinteresada, sin ninguna motivación personal o psicológica.",
-            "b": "Nietzsche critica a los filósofos que proclamaban verdades absolutas sin reconocer que sus propias conclusiones estaban motivadas por el deseo de control, seguridad o reposo, más que por una búsqueda imparcial de la verdad.",
-            "c": "Nietzsche argumenta que todo pensamiento filosófico es irrelevante, ya que siempre está basado en ilusiones y no tiene ninguna relación con la realidad."
+            "a": "Nietzsche defiende que lo conocido es siempre lo mejor comprendido.",
+            "b": "Nietzsche señala que llamamos conocido a lo habitual y familiar, no necesariamente a lo verdaderamente comprendido.",
+            "c": "Nietzsche argumenta que la costumbre garantiza una comprensión filosófica rigurosa."
           },
           "respuesta": "b"
         },
         {
-          "texto": "¿No será el instinto del miedo lo que nos impulsa al conocimiento?¿No será la exultación del cognoscente la exultación de la sensación de la seguridad recuperada… Tal filósofo creía ‘conocido’ el mundo al haberlo reducido a la ‘idea’: ay, ¿no sería porque la ‘idea’ le era tan conocida, tan familiar?, ¿porque la idea ya no le daba tanto miedo?",
+          "texto": "§ 355 — «Lo conocido es lo acostumbrado; y lo acostumbrado es lo más difícil de “reconocer”, es decir, de verlo como problema, vale decir, como cosa ajena, lejana, “exterior a nosotros”»",
           "opciones": {
-            "a": "Nietzsche sostiene que el conocimiento es un proceso objetivo y racional, totalmente independiente de las emociones o el miedo humano.",
-            "b": "Nietzsche plantea que el impulso hacia el conocimiento podría no ser una búsqueda desinteresada de la verdad, sino un intento de calmar el miedo y recuperar una sensación de seguridad, convirtiendo el mundo en algo predecible y familiar.",
-            "c": "Nietzsche argumenta que el verdadero conocimiento solo se alcanza cuando se superan todas las emociones humanas, especialmente el miedo, y se adopta una perspectiva puramente lógica y matemática."
+            "a": "Nietzsche afirma que lo acostumbrado es lo más fácil de analizar críticamente.",
+            "b": "Nietzsche sostiene que lo familiar es precisamente lo más difícil de convertir en problema, porque la costumbre lo vuelve invisible.",
+            "c": "Nietzsche argumenta que solo lo completamente ajeno puede ser objeto de reflexión filosófica."
           },
           "respuesta": "b"
         },
         {
-          "texto": "Quien sabe que es profundo, se esfuerza en ser claro; quien quiere parecer ante la masa como profundo se esfuerza en ser oscuro. Pues la masa tiene por profundo todo aquello cuyo fondo no alcanza a ver: ¡es tan miedosa y le repugna tanto entrar en el agua!",
+          "texto": "Crepúsculo de los ídolos — «Los filósofos creen otorgar un honor a una cosa cuando la deshistorizan, sub specie aeterni [...] cuando hacen de ella una momia.»",
           "opciones": {
-            "a": "Nietzsche sostiene que el verdadero conocimiento debe ser siempre oscuro y difícil de entender, ya que solo así demuestra su profundidad y valor.",
-            "b": "Nietzsche distingue entre quienes realmente poseen un pensamiento profundo y buscan expresarlo con claridad, y quienes buscan parecer profundos ante la masa mediante la oscuridad y la ambigüedad.",
-            "c": "Nietzsche defiende que la verdad solo puede ser comprendida por unos pocos elegidos, ya que la mayoría de las personas son incapaces de enfrentar el conocimiento."
+            "a": "Nietzsche sostiene que el conocimiento verdadero exige elevar las cosas por encima del tiempo y del devenir.",
+            "b": "Nietzsche critica que los filósofos, al negar el devenir, convierten lo real en conceptos muertos, momificados.",
+            "c": "Nietzsche afirma que la deshistorización permite comprender mejor la realidad cambiante."
           },
           "respuesta": "b"
         },
         {
-          "texto": "Solo se oyen las preguntas a las que se es capaz de contestar.",
+          "texto": "Crepúsculo de los ídolos — «Todo lo que los filósofos han venido manejando desde hace milenios fueron momias conceptuales»",
           "opciones": {
-            "a": "Nietzsche sostiene que todas las preguntas pueden ser comprendidas por cualquier persona, independientemente de su capacidad de responderlas.",
-            "b": "Nietzsche plantea que solo percibimos y consideramos las preguntas que estamos preparados para responder, ya que nuestras limitaciones cognitivas nos impiden escuchar o entender aquellas que nos superan.",
-            "c": "Nietzsche argumenta que la única manera de encontrar respuestas verdaderas es mediante la introspección profunda, ya que la verdad está en nuestro interior y no en las preguntas externas."
+            "a": "Nietzsche elogia la tradición filosófica por haber conservado conceptos estables y eternos.",
+            "b": "Nietzsche denuncia que la filosofía ha trabajado con conceptos vacíos, desligados de la vida y del devenir.",
+            "c": "Nietzsche sostiene que los conceptos filosóficos son los únicos que captan la realidad auténtica."
           },
           "respuesta": "b"
         },
         {
-          "texto": "Tal vez ese error fuera para ti en ese entonces, en que aún fuiste otro -siempre eres otro- tan necesario como todas tus «verdades» de ahora.",
+          "texto": "Crepúsculo de los ídolos — «La muerte, el cambio, la vejez [...] son para ellos objeciones»",
           "opciones": {
-            "a": "Nietzsche sostiene que los errores deben evitarse a toda costa, ya que la verdad es inmutable y cualquier equivocación es un obstáculo para el conocimiento.",
-            "b": "Nietzsche sugiere que lo que en el pasado considerábamos errores fueron, en su momento, tan necesarios como las verdades que aceptamos ahora, ya que el individuo está en constante cambio.",
-            "c": "Nietzsche argumenta que la identidad del individuo es fija y que una vez que se alcanza la verdad, ya no es necesario reconsiderar los errores del pasado."
+            "a": "Nietzsche afirma que el cambio confirma la verdad del ser estable.",
+            "b": "Nietzsche señala que los filósofos rechazan el devenir porque contradice su ideal de ser fijo.",
+            "c": "Nietzsche sostiene que la filosofía acepta plenamente el cambio como fundamento del conocimiento."
           },
           "respuesta": "b"
         },
         {
-          "texto": "¡Negamos y tenemos que negar, porque algo en nosotros quiere vivir y afirmarse, algo que acaso no conocemos aún, no vemos aún!",
+          "texto": "Crepúsculo de los ídolos — «Lo que es no deviene; lo que deviene no es…»",
           "opciones": {
-            "a": "Nietzsche sostiene que la negación es un error, ya que lo correcto es aceptar todas las verdades establecidas para mantener el equilibrio de la sociedad.",
-            "b": "Nietzsche plantea que la negación no es solo un rechazo, sino un impulso vital necesario para la afirmación de la vida y la transformación de uno mismo, incluso cuando aún no entendemos completamente aquello que queremos afirmar.",
-            "c": "Nietzsche argumenta que la negación es una simple reacción emocional sin fundamento racional, y que solo aquellos que comprenden plenamente su existencia pueden afirmar algo de manera auténtica."
+            "a": "Nietzsche defiende esta tesis como expresión correcta del ser.",
+            "b": "Nietzsche expone críticamente la oposición metafísica entre ser y devenir propia de la tradición.",
+            "c": "Nietzsche sostiene que el devenir es una ilusión sin relación con el ser."
           },
           "respuesta": "b"
         },
         {
-          "texto": "Yo aspiro a más; no soy un buscador. Quiero crearme un sol propio.",
+          "texto": "Crepúsculo de los ídolos — «Moraleja: deshacerse del engaño de los sentidos, del devenir, de la historia»",
           "opciones": {
-            "a": "Nietzsche afirma que su único objetivo es descubrir la verdad absoluta que ya existe, sin necesidad de inventar nuevos valores o significados.",
-            "b": "Nietzsche expresa su deseo de ir más allá de la simple búsqueda del conocimiento, aspirando a crear su propia luz, su propio sistema de valores, en lugar de seguir los establecidos.",
-            "c": "Nietzsche sostiene que cada individuo debe seguir un único camino trazado por la tradición, ya que la búsqueda de verdades individuales solo genera caos y desorientación."
+            "a": "Nietzsche propone eliminar los sentidos para acceder al mundo verdadero.",
+            "b": "Nietzsche ironiza sobre la metafísica que niega los sentidos y el devenir en nombre de la verdad.",
+            "c": "Nietzsche afirma que la historia es irrelevante para el conocimiento."
           },
           "respuesta": "b"
         },
         {
-          "texto": "Y «donde hay risa y alegría, el pensamiento no vale nada» ─ así reza el prejuicio de esta bestia seria contra toda «gaya ciencia».",
+          "texto": "Crepúsculo de los ídolos — «Ser filósofo, ser momia»",
           "opciones": {
-            "a": "Nietzsche sostiene que el pensamiento serio y profundo solo puede surgir en un ambiente solemne y libre de alegría, ya que la risa distrae de la verdadera reflexión.",
-            "b": "Nietzsche critica la idea de que el pensamiento solo puede ser válido si es solemne y serio, defendiendo que la alegría y la risa también pueden formar parte de una filosofía profunda, como propone en su concepto de «gaya ciencia».",
-            "c": "Nietzsche argumenta que la única forma de alcanzar el conocimiento es a través de la burla y la ridiculización de todas las formas de pensamiento tradicional."
+            "a": "Nietzsche identifica la filosofía con la búsqueda de la vida auténtica.",
+            "b": "Nietzsche critica al filósofo tradicional por negar la vida y fijar la realidad en conceptos muertos.",
+            "c": "Nietzsche afirma que el filósofo debe renunciar a todo conocimiento."
           },
           "respuesta": "b"
         },
         {
-          "texto": "Capté esta verdad en el camino y eché mano rápidamente de las primeras, pobres, palabras para atarla, para que no se me volviera a escapar. Y ahora se me ha muerto con estas áridas palabras y cuelga de ellas.",
+          "texto": "Crepúsculo de los ídolos — «Lo que nosotros hacemos de su testimonio, eso es lo que introduce la mentira»",
           "opciones": {
-            "a": "Nietzsche sostiene que la verdad es algo fijo e inmutable que puede ser plenamente capturado con las palabras adecuadas, sin riesgo de perder su esencia.",
-            "b": "Nietzsche advierte que la verdad es dinámica y escurridiza, y que al intentar fijarla en palabras, corre el riesgo de volverse rígida, muerta y vacía de su significado original.",
-            "c": "Nietzsche argumenta que solo a través del lenguaje se puede alcanzar una verdad definitiva y universal, ya que las palabras son la mejor herramienta para capturar la realidad."
+            "a": "Nietzsche sostiene que los sentidos engañan siempre.",
+            "b": "Nietzsche afirma que la falsificación proviene de la interpretación racional, no de los sentidos.",
+            "c": "Nietzsche defiende que la razón corrige perfectamente a los sentidos."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Crepúsculo de los ídolos — «La “razón” es la causa de que nosotros falseemos el testimonio de los sentidos.»",
+          "opciones": {
+            "a": "Nietzsche afirma que la razón garantiza el acceso al ser verdadero.",
+            "b": "Nietzsche critica la razón como instancia que impone ficciones como unidad o sustancia.",
+            "c": "Nietzsche sostiene que los sentidos son completamente inútiles para el conocimiento."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Crepúsculo de los ídolos — «El mundo “aparente” es el único: el “mundo verdadero” no es más que un añadido mentiroso…»",
+          "opciones": {
+            "a": "Nietzsche distingue entre un mundo verdadero y otro aparente jerárquicamente.",
+            "b": "Nietzsche niega el dualismo metafísico y afirma que solo existe el mundo sensible, interpretado.",
+            "c": "Nietzsche sostiene que ambos mundos existen pero no pueden conocerse."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Crepúsculo de los ídolos — «Hoy nosotros poseemos ciencia exactamente en la medida en que nos hemos decidido a aceptar el testimonio de los sentidos»",
+          "opciones": {
+            "a": "Nietzsche afirma que la ciencia rechaza los sentidos en favor de la razón pura.",
+            "b": "Nietzsche sostiene que la ciencia avanza al confiar en los sentidos y perfeccionarlos.",
+            "c": "Nietzsche defiende que la ciencia debe sustituir los sentidos por conceptos abstractos."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Crepúsculo de los ídolos — «El resto es un engendro y todavía-no-ciencia: quiero decir, metafísica, teología, psicología»",
+          "opciones": {
+            "a": "Nietzsche incluye estas disciplinas dentro de la ciencia rigurosa.",
+            "b": "Nietzsche critica estas disciplinas como construcciones no científicas desligadas de la realidad sensible.",
+            "c": "Nietzsche afirma que estas disciplinas son superiores a la ciencia empírica."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Crepúsculo de los ídolos — «Ponen al comienzo [...] los “conceptos supremos”, es decir, los conceptos más generales, los más vacíos»",
+          "opciones": {
+            "a": "Nietzsche sostiene que los conceptos supremos son el fundamento legítimo del conocimiento.",
+            "b": "Nietzsche critica que la filosofía tome como origen conceptos abstractos y vacíos en lugar de lo concreto.",
+            "c": "Nietzsche afirma que los conceptos generales captan mejor la realidad que la experiencia."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Crepúsculo de los ídolos — «todo lo que es de primer rango tiene que ser causa sui»",
+          "opciones": {
+            "a": "Nietzsche defiende que lo supremo debe explicarse por sí mismo como fundamento del ser.",
+            "b": "Nietzsche expone críticamente la tendencia metafísica a pensar lo supremo como causa de sí, negando el devenir.",
+            "c": "Nietzsche sostiene que todo lo real depende necesariamente de una causa externa."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Crepúsculo de los ídolos — «ese fetichismo ve en todas partes agentes y acciones»",
+          "opciones": {
+            "a": "Nietzsche afirma que toda acción implica necesariamente un sujeto real.",
+            "b": "Nietzsche critica la tendencia a proyectar el esquema sujeto-acción como ficción del lenguaje.",
+            "c": "Nietzsche sostiene que el lenguaje describe fielmente la estructura del mundo."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Crepúsculo de los ídolos — «Temo que no vamos a desembarazarnos de Dios porque continuamos creyendo en la gramática…»",
+          "opciones": {
+            "a": "Nietzsche sostiene que la fe en Dios depende únicamente de la religión.",
+            "b": "Nietzsche afirma que la estructura del lenguaje mantiene ficciones metafísicas como el “yo” o el “ser”.",
+            "c": "Nietzsche defiende que la gramática es un instrumento neutral sin implicaciones filosóficas."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Crepúsculo de los ídolos — «Dividir el mundo en un mundo “verdadero” y en un mundo “aparente”, ya sea al modo del cristianismo, ya sea al modo de Kant (en última instancia, un cristiano alevoso), es únicamente una sugestión de la décadence»",
+          "opciones": {
+            "a": "Nietzsche sostiene que tanto el cristianismo como Kant han demostrado correctamente la existencia de un mundo verdadero superior al mundo sensible.",
+            "b": "Nietzsche critica el dualismo metafísico que separa un mundo verdadero y otro aparente, interpretándolo como síntoma de décadence, es decir, como expresión de una vida debilitada que niega el devenir y la realidad sensible.",
+            "c": "Nietzsche afirma que la distinción entre mundo verdadero y aparente es necesaria para el conocimiento científico y no tiene implicaciones vitales."
+          },
+          "respuesta": "b"
+        },
+        {
+          "texto": "Crepúsculo de los ídolos — «“la apariencia” significa aquí la realidad una vez más, sólo que seleccionada, reforzada, corregida… El artista trágico no es un pesimista, -dice precisamente sí incluso a todo lo problemático y terrible, es dionisíaco…»",
+          "opciones": {
+            "a": "Nietzsche sostiene que el arte trágico es una forma de evasión que oculta la realidad bajo apariencias ilusorias para evitar el sufrimiento.",
+            "b": "Nietzsche redefine la “apariencia” no como ilusión opuesta a la verdad, sino como interpretación intensificada de la realidad; el artista trágico afirma la vida en su totalidad —incluido el dolor— de manera dionisíaca.",
+            "c": "Nietzsche afirma que el artista trágico es pesimista porque muestra el carácter terrible de la existencia y niega el valor de la vida."
           },
           "respuesta": "b"
         }
@@ -352,12 +436,11 @@
         alert('Número no válido. Se jugarán todas las preguntas.');
         numPreguntas = preguntas.length;
       }
-      // Seleccionar preguntas aleatorias
+
       preguntasElegidas = shuffle([...preguntas]).slice(0, numPreguntas);
       preguntaActual = 0;
       correctas = 0;
       startButton.style.display = 'none';
-      // Ocultar los enlaces extra al comenzar el test
       document.getElementById('extra-links').style.display = 'none';
       infoContainer.innerHTML = '';
       mostrarPregunta();
@@ -366,7 +449,6 @@
     function mostrarPregunta() {
       if (preguntaActual < preguntasElegidas.length) {
         quizContainer.innerHTML = '';
-        // Actualizar el contador de preguntas
         document.getElementById('question-counter').textContent = `Pregunta ${preguntaActual + 1} de ${preguntasElegidas.length}`;
         quizContainer.style.display = 'block';
         nextButton.style.display = 'none';
@@ -376,7 +458,6 @@
         preguntaTitulo.textContent = pregunta.texto;
         quizContainer.appendChild(preguntaTitulo);
 
-        // Convertir el objeto de opciones en un array de objetos y mezclarlo con Fisher–Yates
         let opcionesArray = Object.entries(pregunta.opciones)
           .map(([key, texto]) => ({ key, texto }));
         opcionesArray = shuffle(opcionesArray);
@@ -424,10 +505,8 @@
       preguntaActual = 0;
       correctas = 0;
       infoContainer.innerHTML = `<p>El test contiene <strong>${preguntas.length}</strong> preguntas.</p>`;
-      // Limpiar el contador al reiniciar
       document.getElementById('question-counter').textContent = '';
       startButton.style.display = 'block';
-      // Volver a mostrar los enlaces extra al reiniciar
       document.getElementById('extra-links').style.display = 'block';
       quizContainer.innerHTML = '';
       quizContainer.style.display = 'none';
