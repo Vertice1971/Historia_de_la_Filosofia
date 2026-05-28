@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mis estadísticas PAU</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..800;1,9..40,300..800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0c1220;
+      --panel: #111827;
+      --panel-soft: #1a2332;
+      --text: #e2e8f0;
+      --muted: #8b9bb4;
+      --line: #1e2d42;
+      --accent: #38bdf8;
+      --accent-2: #a78bfa;
+      --danger: #f87171;
+      --ok: #34d399;
+      --warn: #fbbf24;
+      --input: #070d18;
+      --rose: #f472b6;
+      --card-bg: rgba(17, 24, 39, 0.65);
+      --card-border: rgba(56, 189, 248, 0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; }
+
+    body {
+      font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      background-image:
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(56,189,248,0.08) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 40% at 80% 100%, rgba(167,139,250,0.05) 0%, transparent 60%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 14px 32px 12px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(12, 18, 32, 0.85);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(16px) saturate(1.4);
+    }
+
+    .header-top {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    h1 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, #e2e8f0 30%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .header-meta {
+      font-size: 0.85rem;
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    h2 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 0.84rem;
+      max-width: 900px;
+      line-height: 1.45;
+      margin: 4px 0 10px;
+    }
+
+    .header-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-left: auto;
+    }
+
+    .header-actions button, .toolbar-btn {
+      border: 1px solid var(--line);
+      background: var(--panel-soft);
+      color: var(--muted);
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .header-actions button:hover, .toolbar-btn:hover {
+      border-color: var(--accent);
+      color: var(--text);
+      background: rgba(56,189,248,0.08);
+    }
+
+    .nav {
+      display: flex;
+      gap: 3px;
+      background: rgba(7, 13, 24, 0.6);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 3px;
+    }
+
+    button, select, input { font: inherit; }
+
+    button {
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--muted);
+      border-radius: 7px;
+      padding: 6px 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-weight: 500;
+      font-size: 0.86rem;
+    }
+
+    button:hover { color: var(--text); background: rgba(56,189,248,0.06); }
+
+    button.active {
+      background: rgba(56,189,248,0.12);
+      color: var(--text);
+      border-color: rgba(56,189,248,0.2);
+      font-weight: 600;
+    }
+
+    main {
+      padding: 12px 32px 40px;
+      max-width: 1500px;
+      margin: 0 auto;
+    }
+
+    .page { display: none; }
+    .page.active { display: block; }
+
+    .controls {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+      background: var(--card-bg);
+      border: 1px solid var(--line);
+      padding: 10px 16px;
+      border-radius: 12px;
+    }
+
+    .toolbar-left, .toolbar-right {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .hint, .status, .summary-line {
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: calc(100vh - 180px);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--card-bg);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 900px;
+    }
+
+    th, td {
+      border-bottom: 1px solid var(--line);
+      border-right: 1px solid rgba(30,45,66,0.5);
+      padding: 6px;
+      text-align: center;
+    }
+
+    th {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      background: #131c2e;
+      color: #cbd5e1;
+      font-size: 0.84rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 10px 6px;
+    }
+
+    td.index {
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      width: 56px;
+    }
+
+    input[type="number"], input[type="text"], select {
+      padding: 7px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: var(--input);
+      color: var(--text);
+      font-size: 0.92rem;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    td input[type="number"] {
+      width: 82px;
+      text-align: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.88rem;
+    }
+
+    td input[type="text"] {
+      width: 130px;
+      text-align: left;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56,189,248,0.12);
+    }
+
+    td.final-score {
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.92rem;
+      color: var(--accent);
+      background: rgba(56,189,248,0.04);
+    }
+
+    .bad {
+      outline: 2px solid rgba(248,113,113,0.45) !important;
+      border-color: var(--danger) !important;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+      gap: 12px;
+      margin: 16px 0 22px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px 18px;
+      transition: border-color 0.2s;
+    }
+
+    .card:hover { border-color: rgba(56,189,248,0.2); }
+
+    .card .label {
+      color: var(--muted);
+      font-size: 0.8rem;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      font-weight: 500;
+    }
+
+    .card .value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.35rem;
+      font-weight: 700;
+    }
+
+    .histogram {
+      background: var(--card-bg);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 22px;
+      overflow-x: auto;
+    }
+
+    .histogram-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 16px;
+      border-radius: 9px;
+      font-size: 0.86rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid var(--line);
+      background: transparent;
+      color: var(--muted);
+      user-select: none;
+    }
+
+    .toggle-btn:hover { border-color: var(--rose); color: var(--text); }
+
+    .toggle-btn.on {
+      background: rgba(244, 114, 182, 0.1);
+      border-color: rgba(244, 114, 182, 0.35);
+      color: var(--rose);
+    }
+
+    .toggle-btn .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--muted);
+      transition: background 0.2s;
+    }
+
+    .toggle-btn.on .dot { background: var(--rose); box-shadow: 0 0 6px rgba(244,114,182,0.5); }
+
+    .histogram-chart {
+      display: grid;
+      grid-template-columns: repeat(11, minmax(42px, 1fr));
+      gap: 8px;
+      align-items: end;
+      min-width: 700px;
+      height: 300px;
+      padding: 16px 8px 0;
+      border-left: 1px solid rgba(30,45,66,0.6);
+      border-bottom: 1px solid rgba(30,45,66,0.6);
+      background: rgba(7, 13, 24, 0.4);
+      border-radius: 10px 10px 0 0;
+    }
+
+    .histogram-column {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .vertical-bar {
+      width: 65%;
+      min-height: 0;
+      background: linear-gradient(180deg, var(--accent) 0%, var(--accent-2) 100%);
+      border-radius: 6px 6px 0 0;
+      transition: height 0.25s ease;
+      opacity: 0.85;
+    }
+
+    .vertical-bar:hover { opacity: 1; }
+
+    .bar-value {
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      min-height: 32px;
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    .histogram-axis {
+      display: grid;
+      grid-template-columns: repeat(11, minmax(42px, 1fr));
+      gap: 8px;
+      min-width: 700px;
+      padding: 8px 8px 0;
+    }
+
+    .axis-label {
+      text-align: center;
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+
+    .freq-table {
+      margin-top: 22px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      background: rgba(7, 13, 24, 0.45);
+    }
+
+    .freq-table table { min-width: 500px; }
+    .freq-table td, .freq-table th { padding: 9px; }
+    .freq-table td {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.88rem;
+    }
+
+    .legend-line {
+      display: inline-block;
+      width: 22px;
+      height: 3px;
+      border-radius: 2px;
+      vertical-align: middle;
+      margin-right: 5px;
+    }
+
+    @media (max-width: 720px) {
+      header, main { padding-left: 16px; padding-right: 16px; }
+      td input[type="number"] { width: 68px; }
+      td input[type="text"] { width: 100px; }
+      .cards { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-top">
+      <h1>Mis estadísticas PAU</h1>
+      <span class="header-meta">Tomás Cuesta · IES Juan de la Cierva</span>
+    </div>
+    <div class="subtitle">
+      Cada fila es un examen. La nota final se calcula automáticamente. Si quieres usar solo la nota final, puedes ponerla en la Pregunta 1 por ejemplo. 
+    </div>
+    <div class="header-bar">
+      <nav class="nav">
+        <button id="btnData" class="active" type="button">Tabla de datos</button>
+        <button id="btnStats" type="button">Estadísticas e histograma</button>
+      </nav>
+      <div class="header-actions">
+        <button type="button" id="clearBtn">Vaciar tabla</button>
+        <button type="button" id="sampleBtn">Cargar ejemplo</button>
+        <button type="button" id="exportJsonBtn">Guardar archivo</button>
+        <button type="button" id="importJsonBtn">Abrir archivo</button>
+        <input type="file" id="jsonFileInput" accept="application/json,.json" style="display:none" />
+        <span class="status" id="dataStatus">0 filas · 0 con nota válida</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="dataPage" class="page active">
+      <div class="table-wrap">
+        <table id="gradeTable">
+          <thead>
+            <tr>
+              <th>Nº</th>
+              <th>Código</th>
+              <th>Pregunta 1</th>
+              <th>Pregunta 2</th>
+              <th>Pregunta 3</th>
+              <th>Pregunta 4</th>
+              <th>Nota final</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+      <div style="margin-top:8px;display:flex;align-items:center;gap:14px;">
+        <button type="button" id="addRowBtn" class="toolbar-btn">+ Añadir fila</button>
+        <span class="hint">Las preguntas aceptan decimales. En el histograma cada nota se agrupa por redondeo al entero más próximo.</span>
+      </div>
+    </section>
+
+    <section id="statsPage" class="page">
+      <div class="controls">
+        <div>
+          <label for="variableSelect" style="font-size:0.9rem;color:var(--muted);margin-right:6px;">Variable analizada:</label>
+          <select id="variableSelect">
+            <option value="final">Nota final</option>
+            <option value="q1">Pregunta 1</option>
+            <option value="q2">Pregunta 2</option>
+            <option value="q3">Pregunta 3</option>
+            <option value="q4">Pregunta 4</option>
+          </select>
+        </div>
+        <span class="hint" id="statsHint">Los cálculos se actualizan al modificar la tabla.</span>
+      </div>
+
+      <div class="cards">
+        <div class="card"><div class="label">Datos válidos</div><div class="value" id="countVal">0</div></div>
+        <div class="card"><div class="label">Media</div><div class="value" id="meanVal">—</div></div>
+        <div class="card"><div class="label">Desv. típica</div><div class="value" id="sdVal">—</div></div>
+        <div class="card"><div class="label">Q1</div><div class="value" id="q1Val">—</div></div>
+        <div class="card"><div class="label">Q2 (mediana)</div><div class="value" id="q2Val">—</div></div>
+        <div class="card"><div class="label">Q3</div><div class="value" id="q3Val">—</div></div>
+        <div class="card"><div class="label">Mínimo</div><div class="value" id="minVal">—</div></div>
+        <div class="card"><div class="label">Máximo</div><div class="value" id="maxVal">—</div></div>
+        <div class="card"><div class="label">Aprobados ≥ 5</div><div class="value" id="passVal">—</div></div>
+        <div class="card"><div class="label">Dentro de ±1σ</div><div class="value" id="sigmaVal">—</div></div>
+      </div>
+
+      <div class="histogram">
+        <div class="histogram-header">
+          <div>
+            <h2>Histograma de frecuencias</h2>
+            <p class="summary-line" id="sigmaInfo" style="margin-top:6px;">En una normal teórica, aprox. el 68,27 % de los valores cae entre μ − σ y μ + σ.</p>
+          </div>
+          <button type="button" id="toggleNormal" class="toggle-btn on">
+            <span class="dot"></span>
+            Curva normal
+          </button>
+        </div>
+        <div style="position:relative;">
+          <div id="bars" class="histogram-chart"></div>
+          <canvas id="normalCanvas" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;"></canvas>
+        </div>
+        <div id="histogramAxis" class="histogram-axis"></div>
+        <div class="freq-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Nota</th>
+                <th>Frec. absoluta</th>
+                <th>Frec. relativa</th>
+                <th>Porcentaje</th>
+              </tr>
+            </thead>
+            <tbody id="freqBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const INITIAL_ROWS = 50;
+    const QUESTIONS = 4;
+    const STORAGE_KEY = "registro_notas_examenes_dinamico_v2";
+    let rowCount = INITIAL_ROWS;
+    let showNormal = true;
+
+    const tableBody = document.getElementById("tableBody");
+    const dataStatus = document.getElementById("dataStatus");
+    const variableSelect = document.getElementById("variableSelect");
+    const toggleNormalBtn = document.getElementById("toggleNormal");
+
+    const format = (n, decimals = 2) => Number.isFinite(n) ? n.toFixed(decimals).replace(".00", "") : "—";
+
+    function normaliseDecimal(value) {
+      if (typeof value !== "string") return value;
+      return value.replace(",", ".");
+    }
+
+    function createRow(i) {
+      const tr = document.createElement("tr");
+      tr.dataset.rowElement = i;
+
+      const index = document.createElement("td");
+      index.className = "index";
+      index.textContent = i + 1;
+      tr.appendChild(index);
+
+      const codeTd = document.createElement("td");
+      const codeInput = document.createElement("input");
+      codeInput.type = "text";
+      codeInput.dataset.row = i;
+      codeInput.dataset.code = "true";
+      codeInput.placeholder = "opcional";
+      codeInput.addEventListener("input", saveData);
+      codeTd.appendChild(codeInput);
+      tr.appendChild(codeTd);
+
+      for (let q = 1; q <= QUESTIONS; q++) {
+        const td = document.createElement("td");
+        const input = document.createElement("input");
+        input.type = "number";
+        input.min = "0";
+        input.step = "0.01";
+        input.dataset.row = i;
+        input.dataset.q = q;
+        input.inputMode = "decimal";
+        input.addEventListener("input", handleInput);
+        td.appendChild(input);
+        tr.appendChild(td);
+      }
+
+      const finalTd = document.createElement("td");
+      finalTd.className = "final-score";
+      finalTd.dataset.final = i;
+      finalTd.textContent = "—";
+      tr.appendChild(finalTd);
+      return tr;
+    }
+
+    function buildTable(count = INITIAL_ROWS) {
+      tableBody.innerHTML = "";
+      rowCount = Math.max(INITIAL_ROWS, count);
+      const fragment = document.createDocumentFragment();
+      for (let i = 0; i < rowCount; i++) fragment.appendChild(createRow(i));
+      tableBody.appendChild(fragment);
+    }
+
+    function addRow() {
+      tableBody.appendChild(createRow(rowCount));
+      rowCount++;
+      updateFinalScores();
+    }
+
+    function readCell(row, q) {
+      const input = document.querySelector(`input[data-row="${row}"][data-q="${q}"]`);
+      if (!input || input.value.trim() === "") return null;
+      const value = Number(normaliseDecimal(input.value));
+      return Number.isFinite(value) ? value : null;
+    }
+
+    function getRowsData() {
+      const rows = [];
+      for (let i = 0; i < rowCount; i++) {
+        const qs = [];
+        for (let q = 1; q <= QUESTIONS; q++) qs.push(readCell(i, q));
+        const hasAny = qs.some(v => v !== null);
+        const complete = qs.every(v => v !== null);
+        const final = hasAny ? qs.reduce((a, b) => a + (b ?? 0), 0) : null;
+        rows.push({ qs, hasAny, complete, final });
+      }
+      return rows;
+    }
+
+    function updateFinalScores() {
+      const rows = getRowsData();
+      let validFinals = 0;
+
+      rows.forEach((row, i) => {
+        const finalTd = document.querySelector(`td[data-final="${i}"]`);
+        if (!finalTd) return;
+
+        const inputs = [...document.querySelectorAll(`input[data-row="${i}"][data-q]`)];
+        inputs.forEach(input => input.classList.remove("bad"));
+
+        row.qs.forEach((v, idx) => {
+          const input = document.querySelector(`input[data-row="${i}"][data-q="${idx + 1}"]`);
+          if (input && v !== null && (v < 0 || v > 10)) input.classList.add("bad");
+        });
+
+        if (row.hasAny) {
+          finalTd.textContent = format(row.final, 2);
+          validFinals++;
+          finalTd.style.color = row.final < 0 || row.final > 10 ? "var(--warn)" : "";
+        } else {
+          finalTd.textContent = "—";
+          finalTd.style.color = "";
+        }
+      });
+
+      dataStatus.textContent = `${rowCount} filas · ${validFinals} con nota válida`;
+      updateStats();
+      saveData();
+    }
+
+    function handleInput() {
+      updateFinalScores();
+    }
+
+    function selectedValues() {
+      const rows = getRowsData();
+      const variable = variableSelect.value;
+      let values;
+
+      if (variable === "final") values = rows.map(r => r.final);
+      else {
+        const qIndex = Number(variable.slice(1)) - 1;
+        values = rows.map(r => r.qs[qIndex]);
+      }
+
+      return values.filter(v => Number.isFinite(v) && v >= 0 && v <= 10);
+    }
+
+    function median(values) {
+      if (!values.length) return NaN;
+      const sorted = [...values].sort((a, b) => a - b);
+      const mid = Math.floor(sorted.length / 2);
+      return sorted.length % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+    }
+
+    function quartiles(values) {
+      if (!values.length) return { q1: NaN, q2: NaN, q3: NaN };
+
+      const sorted = [...values].sort((a, b) => a - b);
+
+      const percentile = (p) => {
+        const index = (sorted.length - 1) * p;
+        const lower = Math.floor(index);
+        const upper = Math.ceil(index);
+        if (lower === upper) return sorted[lower];
+        return sorted[lower] + (sorted[upper] - sorted[lower]) * (index - lower);
+      };
+
+      return {
+        q1: percentile(0.25),
+        q2: percentile(0.50),
+        q3: percentile(0.75)
+      };
+    }
+
+    function stats(values) {
+      const n = values.length;
+      if (!n) return { n: 0, mean: NaN, q1: NaN, q2: NaN, q3: NaN, sd: NaN, min: NaN, max: NaN, pass: NaN };
+      const mean = values.reduce((a, b) => a + b, 0) / n;
+      const varianceForSd = values.reduce((a, b) => a + (b - mean) ** 2, 0) / n;
+      const sd = Math.sqrt(varianceForSd);
+      const qs = quartiles(values);
+      const min = Math.min(...values);
+      const max = Math.max(...values);
+      const pass = values.filter(v => v >= 5).length;
+      return { n, mean, q1: qs.q1, q2: qs.q2, q3: qs.q3, sd, min, max, pass };
+    }
+
+    function histogram(values) {
+      const freq = Array.from({ length: 11 }, () => 0);
+      values.forEach(v => {
+        const rounded = Math.max(0, Math.min(10, Math.round(v)));
+        freq[rounded]++;
+      });
+      return freq;
+    }
+
+    function updateStats() {
+      const values = selectedValues();
+      const s = stats(values);
+
+      document.getElementById("countVal").textContent = s.n;
+      document.getElementById("meanVal").textContent = format(s.mean, 2);
+      document.getElementById("sdVal").textContent = format(s.sd, 2);
+      document.getElementById("q1Val").textContent = format(s.q1, 2);
+      document.getElementById("q2Val").textContent = format(s.q2, 2);
+      document.getElementById("q3Val").textContent = format(s.q3, 2);
+      document.getElementById("minVal").textContent = format(s.min, 2);
+      document.getElementById("maxVal").textContent = format(s.max, 2);
+      document.getElementById("passVal").textContent = s.n ? `${s.pass} (${format((s.pass / s.n) * 100, 1)}%)` : "—";
+
+      const sigmaLow = s.mean - s.sd;
+      const sigmaHigh = s.mean + s.sd;
+      const withinSigma = s.n ? values.filter(v => v >= sigmaLow && v <= sigmaHigh).length : 0;
+      const withinSigmaPct = s.n ? (withinSigma / s.n) * 100 : NaN;
+      document.getElementById("sigmaVal").textContent = s.n ? `${format(withinSigmaPct, 1)}%` : "—";
+      document.getElementById("sigmaInfo").textContent = s.n
+        ? `${withinSigma} de ${s.n} valores (${format(withinSigmaPct, 1)}%) entre ${format(sigmaLow, 2)} y ${format(sigmaHigh, 2)} (μ ± 1σ). Normal teórica: 68,27%.`
+        : "En una normal teórica, aprox. el 68,27 % de los valores cae entre μ − σ y μ + σ.";
+
+      renderHistogram(values);
+    }
+
+    function renderHistogram(values) {
+      const bars = document.getElementById("bars");
+      const axis = document.getElementById("histogramAxis");
+      const freqBody = document.getElementById("freqBody");
+      bars.innerHTML = "";
+      axis.innerHTML = "";
+      freqBody.innerHTML = "";
+
+      const freq = histogram(values);
+      const total = values.length;
+      const maxFreq = Math.max(1, ...freq);
+
+      for (let grade = 0; grade <= 10; grade++) {
+        const abs = freq[grade];
+        const rel = total ? abs / total : 0;
+        const height = (abs / maxFreq) * 100;
+
+        const column = document.createElement("div");
+        column.className = "histogram-column";
+        column.innerHTML = `
+          <div class="bar-value">${abs}<br>${format(rel * 100, 1)}%</div>
+          <div class="vertical-bar" style="height:${height}%"></div>
+        `;
+        bars.appendChild(column);
+
+        const label = document.createElement("div");
+        label.className = "axis-label";
+        label.textContent = grade;
+        axis.appendChild(label);
+
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${grade}</td>
+          <td>${abs}</td>
+          <td>${format(rel, 3)}</td>
+          <td>${format(rel * 100, 1)}%</td>
+        `;
+        freqBody.appendChild(tr);
+      }
+
+      drawNormalCurve(values, freq, maxFreq);
+    }
+
+    function gaussianPDF(x, mean, sd) {
+      return (1 / (sd * Math.sqrt(2 * Math.PI))) * Math.exp(-0.5 * ((x - mean) / sd) ** 2);
+    }
+
+    function drawNormalCurve(values, freq, maxFreq) {
+      const canvas = document.getElementById("normalCanvas");
+      const barsDiv = document.getElementById("bars");
+
+      if (!canvas || !barsDiv) return;
+
+      const rect = barsDiv.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      canvas.style.width = rect.width + "px";
+      canvas.style.height = rect.height + "px";
+
+      const ctx = canvas.getContext("2d");
+      ctx.scale(dpr, dpr);
+      ctx.clearRect(0, 0, rect.width, rect.height);
+
+      if (!showNormal || values.length < 3) return;
+
+      const n = values.length;
+      const mean = values.reduce((a, b) => a + b, 0) / n;
+      const sd = Math.sqrt(values.reduce((a, b) => a + (b - mean) ** 2, 0) / n);
+
+      if (sd === 0) return;
+
+      const padTop = 16;
+      const padLeft = 8;
+      const padRight = 8;
+      const chartW = rect.width - padLeft - padRight;
+      const chartH = rect.height - padTop;
+
+      ctx.beginPath();
+      ctx.strokeStyle = "#f472b6";
+      ctx.lineWidth = 2.5;
+
+      const steps = 200;
+      const xMin = -0.5;
+      const xMax = 10.5;
+
+      for (let i = 0; i <= steps; i++) {
+        const grade = xMin + (xMax - xMin) * (i / steps);
+        const expectedFreq = n * gaussianPDF(grade, mean, sd);
+        const heightPct = expectedFreq / maxFreq;
+
+        const xPx = padLeft + ((grade - xMin) / (xMax - xMin)) * chartW;
+        const yPx = padTop + chartH - chartH * Math.min(heightPct, 1.15);
+
+        if (i === 0) ctx.moveTo(xPx, yPx);
+        else ctx.lineTo(xPx, yPx);
+      }
+
+      ctx.stroke();
+
+      const yBottom = padTop + chartH;
+      ctx.lineTo(padLeft + chartW, yBottom);
+      ctx.lineTo(padLeft, yBottom);
+      ctx.closePath();
+      ctx.fillStyle = "rgba(244, 114, 182, 0.06)";
+      ctx.fill();
+    }
+
+    function currentDataArray() {
+      const data = [];
+      for (let i = 0; i < rowCount; i++) {
+        const codeInput = document.querySelector(`input[data-row="${i}"][data-code="true"]`);
+        const row = {
+          codigo: codeInput ? codeInput.value : "",
+          notas: []
+        };
+        for (let q = 1; q <= QUESTIONS; q++) {
+          const input = document.querySelector(`input[data-row="${i}"][data-q="${q}"]`);
+          row.notas.push(input ? input.value : "");
+        }
+        data.push(row);
+      }
+      return data;
+    }
+
+    function saveData() {
+      const payload = {
+        tipo: "registro_notas_examenes",
+        version: 2,
+        fechaGuardadoLocal: new Date().toISOString(),
+        filas: rowCount,
+        preguntas: QUESTIONS,
+        datos: currentDataArray()
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+    }
+
+    function loadData() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) {
+        buildTable(INITIAL_ROWS);
+        return;
+      }
+
+      try {
+        const parsed = JSON.parse(raw);
+        const data = Array.isArray(parsed) ? parsed : parsed.datos;
+        applyDataArray(data, false);
+      } catch (e) {
+        console.warn("No se pudieron cargar los datos guardados.", e);
+        buildTable(INITIAL_ROWS);
+      }
+    }
+
+    function clearTable() {
+      buildTable(INITIAL_ROWS);
+      updateFinalScores();
+    }
+
+    function applyDataArray(data, shouldAlert = true) {
+      if (!Array.isArray(data)) throw new Error("El archivo JSON no contiene una tabla válida.");
+      const count = Math.max(INITIAL_ROWS, data.length);
+      buildTable(count);
+
+      data.forEach((row, i) => {
+        const codeInput = document.querySelector(`input[data-row="${i}"][data-code="true"]`);
+        if (Array.isArray(row)) {
+          row.slice(0, QUESTIONS).forEach((value, qIndex) => {
+            const input = document.querySelector(`input[data-row="${i}"][data-q="${qIndex + 1}"]`);
+            if (input) input.value = value;
+          });
+        } else if (row && typeof row === "object") {
+          if (codeInput) codeInput.value = row.codigo || "";
+          const notas = Array.isArray(row.notas) ? row.notas : [];
+          notas.slice(0, QUESTIONS).forEach((value, qIndex) => {
+            const input = document.querySelector(`input[data-row="${i}"][data-q="${qIndex + 1}"]`);
+            if (input) input.value = value;
+          });
+        }
+      });
+      updateFinalScores();
+      if (shouldAlert) alert("JSON cargado correctamente.");
+    }
+
+    function exportJson() {
+      const payload = {
+        tipo: "registro_notas_examenes",
+        version: 2,
+        fecha: new Date().toISOString(),
+        filas: rowCount,
+        preguntas: QUESTIONS,
+        datos: currentDataArray()
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `notas_examenes_${new Date().toISOString().slice(0,10)}.json`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function importJsonFile(file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const parsed = JSON.parse(reader.result);
+          const data = Array.isArray(parsed) ? parsed : parsed.datos;
+          applyDataArray(data);
+        } catch (e) {
+          alert("No se ha podido abrir el JSON. Comprueba que sea un archivo válido de este programa.");
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function loadSample() {
+      clearTable();
+      for (let i = 0; i < Math.min(38, rowCount); i++) {
+        const codeInput = document.querySelector(`input[data-row="${i}"][data-code="true"]`);
+        if (codeInput) codeInput.value = `EX-${String(i + 1).padStart(3, "0")}`;
+
+        let remaining = Math.max(1.5, Math.min(9.8, 4 + Math.random() * 4 + (Math.random() - 0.5) * 3));
+        const parts = [];
+        for (let q = 0; q < 3; q++) {
+          const part = Math.max(0, Math.min(2.5, remaining / (4 - q) + (Math.random() - 0.5) * 0.9));
+          parts.push(part);
+          remaining -= part;
+        }
+        parts.push(Math.max(0, Math.min(2.5, remaining)));
+        parts.forEach((v, qIndex) => {
+          const input = document.querySelector(`input[data-row="${i}"][data-q="${qIndex + 1}"]`);
+          input.value = v.toFixed(2);
+        });
+      }
+      updateFinalScores();
+    }
+
+    function showPage(which) {
+      const dataPage = document.getElementById("dataPage");
+      const statsPage = document.getElementById("statsPage");
+      const btnData = document.getElementById("btnData");
+      const btnStats = document.getElementById("btnStats");
+
+      const showingData = which === "data";
+      dataPage.classList.toggle("active", showingData);
+      statsPage.classList.toggle("active", !showingData);
+      btnData.classList.toggle("active", showingData);
+      btnStats.classList.toggle("active", !showingData);
+      if (!showingData) updateStats();
+    }
+
+    document.getElementById("btnData").addEventListener("click", () => showPage("data"));
+    document.getElementById("btnStats").addEventListener("click", () => showPage("stats"));
+    document.getElementById("clearBtn").addEventListener("click", clearTable);
+    document.getElementById("sampleBtn").addEventListener("click", loadSample);
+    document.getElementById("addRowBtn").addEventListener("click", addRow);
+    document.getElementById("exportJsonBtn").addEventListener("click", exportJson);
+    document.getElementById("importJsonBtn").addEventListener("click", () => document.getElementById("jsonFileInput").click());
+    document.getElementById("jsonFileInput").addEventListener("change", event => {
+      const file = event.target.files[0];
+      if (file) importJsonFile(file);
+      event.target.value = "";
+    });
+    variableSelect.addEventListener("change", updateStats);
+
+    toggleNormalBtn.addEventListener("click", () => {
+      showNormal = !showNormal;
+      toggleNormalBtn.classList.toggle("on", showNormal);
+      updateStats();
+    });
+
+    window.addEventListener("resize", () => {
+      const values = selectedValues();
+      const freq = histogram(values);
+      const maxFreq = Math.max(1, ...freq);
+      drawNormalCurve(values, freq, maxFreq);
+    });
+
+    loadData();
+    updateFinalScores();
+  </script>
+</body>
+</html>
