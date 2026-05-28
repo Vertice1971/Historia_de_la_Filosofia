@@ -702,7 +702,7 @@
 
         row.qs.forEach((v, idx) => {
           const input = document.querySelector(`input[data-row="${i}"][data-q="${idx + 1}"]`);
-          if (input && v !== null && (v < 0 || v > 10)) input.classList.add("bad");
+          if (input && v !== null && (v < 0 || v > 2.5)) input.classList.add("bad");
         });
 
         if (row.hasAny) {
@@ -741,7 +741,8 @@
         values = rows.map(r => r.qs[qIndex]);
       }
 
-      return values.filter(v => Number.isFinite(v) && v >= 0 && v <= 10);
+      const maxValid = variable === "final" ? 10 : 2.5;
+      return values.filter(v => Number.isFinite(v) && v >= 0 && v <= maxValid);
     }
 
     function median(values) {
@@ -771,7 +772,7 @@
       };
     }
 
-    function stats(values) {
+    function stats(values, passThreshold = 5) {
       const n = values.length;
       if (!n) return { n: 0, mean: NaN, q1: NaN, q2: NaN, q3: NaN, sd: NaN, min: NaN, max: NaN, pass: NaN };
       const mean = values.reduce((a, b) => a + b, 0) / n;
@@ -780,22 +781,35 @@
       const qs = quartiles(values);
       const min = Math.min(...values);
       const max = Math.max(...values);
-      const pass = values.filter(v => v >= 5).length;
+      const pass = values.filter(v => v >= passThreshold).length;
       return { n, mean, q1: qs.q1, q2: qs.q2, q3: qs.q3, sd, min, max, pass };
     }
 
-    function histogram(values) {
-      const freq = Array.from({ length: 11 }, () => 0);
-      values.forEach(v => {
-        const rounded = Math.max(0, Math.min(10, Math.round(v)));
-        freq[rounded]++;
-      });
-      return freq;
+    function histogram(values, isQuestion) {
+      if (isQuestion) {
+        // 0, 0.25, 0.50, ..., 2.50 → 11 bins
+        const freq = Array.from({ length: 11 }, () => 0);
+        values.forEach(v => {
+          const idx = Math.max(0, Math.min(10, Math.round(v / 0.25)));
+          freq[idx]++;
+        });
+        return freq;
+      } else {
+        const freq = Array.from({ length: 11 }, () => 0);
+        values.forEach(v => {
+          const rounded = Math.max(0, Math.min(10, Math.round(v)));
+          freq[rounded]++;
+        });
+        return freq;
+      }
     }
 
     function updateStats() {
       const values = selectedValues();
-      const s = stats(values);
+      const variable = variableSelect.value;
+      const isQuestion = variable !== "final";
+      const passThreshold = isQuestion ? 1.25 : 5;
+      const s = stats(values, passThreshold);
 
       document.getElementById("countVal").textContent = s.n;
       document.getElementById("meanVal").textContent = format(s.mean, 2);
@@ -805,6 +819,9 @@
       document.getElementById("q3Val").textContent = format(s.q3, 2);
       document.getElementById("minVal").textContent = format(s.min, 2);
       document.getElementById("maxVal").textContent = format(s.max, 2);
+
+      const passLabel = document.querySelector("#passVal").closest(".card").querySelector(".label");
+      passLabel.textContent = isQuestion ? "Aprobados ≥ 1,25" : "Aprobados ≥ 5";
       document.getElementById("passVal").textContent = s.n ? `${s.pass} (${format((s.pass / s.n) * 100, 1)}%)` : "—";
 
       const sigmaLow = s.mean - s.sd;
@@ -816,10 +833,10 @@
         ? `${withinSigma} de ${s.n} valores (${format(withinSigmaPct, 1)}%) entre ${format(sigmaLow, 2)} y ${format(sigmaHigh, 2)} (μ ± 1σ). Normal teórica: 68,27%.`
         : "En una normal teórica, aprox. el 68,27 % de los valores cae entre μ − σ y μ + σ.";
 
-      renderHistogram(values);
+      renderHistogram(values, isQuestion);
     }
 
-    function renderHistogram(values) {
+    function renderHistogram(values, isQuestion) {
       const bars = document.getElementById("bars");
       const axis = document.getElementById("histogramAxis");
       const freqBody = document.getElementById("freqBody");
@@ -827,12 +844,14 @@
       axis.innerHTML = "";
       freqBody.innerHTML = "";
 
-      const freq = histogram(values);
+      const freq = histogram(values, isQuestion);
       const total = values.length;
       const maxFreq = Math.max(1, ...freq);
+      const binCount = freq.length;
 
-      for (let grade = 0; grade <= 10; grade++) {
-        const abs = freq[grade];
+      for (let i = 0; i < binCount; i++) {
+        const gradeLabel = isQuestion ? format(i * 0.25, 2) : String(i);
+        const abs = freq[i];
         const rel = total ? abs / total : 0;
         const height = (abs / maxFreq) * 100;
 
@@ -846,12 +865,12 @@
 
         const label = document.createElement("div");
         label.className = "axis-label";
-        label.textContent = grade;
+        label.textContent = gradeLabel;
         axis.appendChild(label);
 
         const tr = document.createElement("tr");
         tr.innerHTML = `
-          <td>${grade}</td>
+          <td>${gradeLabel}</td>
           <td>${abs}</td>
           <td>${format(rel, 3)}</td>
           <td>${format(rel * 100, 1)}%</td>
@@ -859,14 +878,14 @@
         freqBody.appendChild(tr);
       }
 
-      drawNormalCurve(values, freq, maxFreq);
+      drawNormalCurve(values, freq, maxFreq, isQuestion);
     }
 
     function gaussianPDF(x, mean, sd) {
       return (1 / (sd * Math.sqrt(2 * Math.PI))) * Math.exp(-0.5 * ((x - mean) / sd) ** 2);
     }
 
-    function drawNormalCurve(values, freq, maxFreq) {
+    function drawNormalCurve(values, freq, maxFreq, isQuestion) {
       const canvas = document.getElementById("normalCanvas");
       const barsDiv = document.getElementById("bars");
 
@@ -902,12 +921,13 @@
       ctx.lineWidth = 2.5;
 
       const steps = 200;
-      const xMin = -0.5;
-      const xMax = 10.5;
+      const binWidth = isQuestion ? 0.25 : 1;
+      const xMin = isQuestion ? -0.125 : -0.5;
+      const xMax = isQuestion ? 2.625 : 10.5;
 
       for (let i = 0; i <= steps; i++) {
         const grade = xMin + (xMax - xMin) * (i / steps);
-        const expectedFreq = n * gaussianPDF(grade, mean, sd);
+        const expectedFreq = n * binWidth * gaussianPDF(grade, mean, sd);
         const heightPct = expectedFreq / maxFreq;
 
         const xPx = padLeft + ((grade - xMin) / (xMax - xMin)) * chartW;
@@ -1105,10 +1125,12 @@
     });
 
     window.addEventListener("resize", () => {
+      const variable = variableSelect.value;
+      const isQuestion = variable !== "final";
       const values = selectedValues();
-      const freq = histogram(values);
+      const freq = histogram(values, isQuestion);
       const maxFreq = Math.max(1, ...freq);
-      drawNormalCurve(values, freq, maxFreq);
+      drawNormalCurve(values, freq, maxFreq, isQuestion);
     });
 
     loadData();
