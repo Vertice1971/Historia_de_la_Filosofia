@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Vocales PAU 2026 · UMA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy:    #002147;
+      --navy2:   #003366;
+      --teal:    #0096a9;
+      --teal2:   #00b4cc;
+      --gold:    #c9a84c;
+      --light:   #f0f4f8;
+      --white:   #ffffff;
+      --correct: #1a7a4a;
+      --wrong:   #b91c1c;
+      --text:    #1e2d3d;
+      --muted:   #6b7d8f;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Source Sans 3', sans-serif;
+      background: var(--navy);
+      background-image:
+        radial-gradient(ellipse at 20% 0%, rgba(0,150,169,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 100%, rgba(0,51,102,0.6) 0%, transparent 60%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem 4rem;
+      color: var(--text);
+    }
+
+    /* ── HEADER ───────────────────────────────────────────── */
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+      animation: fadeDown .7s ease both;
+    }
+
+    .logo-line {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .6rem;
+      margin-bottom: .6rem;
+    }
+
+    .logo-line .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--teal2);
+    }
+
+    .logo-line span {
+      font-size: .7rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--teal2);
+      font-weight: 600;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 4vw, 2.6rem);
+      color: var(--white);
+      line-height: 1.2;
+      margin-bottom: .4rem;
+    }
+
+    h1 em {
+      font-style: normal;
+      color: var(--teal2);
+    }
+
+    .subtitle {
+      font-size: .78rem;
+      color: rgba(255,255,255,.52);
+      font-weight: 300;
+      letter-spacing: .03em;
+      margin-bottom: .3rem;
+    }
+
+    .meta-chips {
+      display: flex;
+      justify-content: center;
+      gap: .5rem;
+      flex-wrap: wrap;
+      margin-top: .5rem;
+    }
+
+    .chip {
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 20px;
+      padding: .22rem .75rem;
+      font-size: .72rem;
+      color: rgba(255,255,255,.7);
+      display: flex;
+      align-items: center;
+      gap: .35rem;
+    }
+
+    .chip .ic {
+      font-size: .82rem;
+      opacity: .85;
+    }
+
+    .chip strong {
+      color: var(--teal2);
+      font-weight: 600;
+    }
+
+    /* ── START CARD ───────────────────────────────────────── */
+    #start-card {
+      background: var(--white);
+      border-radius: 18px;
+      padding: 2.4rem 2.8rem;
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 24px 60px rgba(0,0,0,.35);
+      animation: fadeUp .6s .2s ease both;
+    }
+
+    #start-card h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      color: var(--navy);
+      margin-bottom: .6rem;
+    }
+
+    #start-card p {
+      font-size: .88rem;
+      color: var(--muted);
+      margin-bottom: 1.4rem;
+      line-height: 1.55;
+    }
+
+    .input-row {
+      display: flex;
+      align-items: center;
+      gap: .8rem;
+      justify-content: center;
+      margin-bottom: 1.4rem;
+    }
+
+    .input-row label {
+      font-size: .85rem;
+      color: var(--navy2);
+      font-weight: 600;
+    }
+
+    #num-input {
+      width: 80px;
+      padding: .5rem .7rem;
+      border: 2px solid #d0dae6;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-family: inherit;
+      color: var(--navy);
+      text-align: center;
+      transition: border-color .2s;
+      outline: none;
+    }
+
+    #num-input:focus { border-color: var(--teal); }
+
+    #start-btn {
+      background: linear-gradient(135deg, var(--teal), var(--navy2));
+      color: var(--white);
+      border: none;
+      border-radius: 10px;
+      padding: .85rem 2.4rem;
+      font-size: 1rem;
+      font-family: inherit;
+      font-weight: 600;
+      letter-spacing: .04em;
+      cursor: pointer;
+      transition: transform .15s, box-shadow .15s;
+      box-shadow: 0 6px 20px rgba(0,150,169,.35);
+    }
+
+    #start-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(0,150,169,.45);
+    }
+
+    /* ── QUIZ CARD ────────────────────────────────────────── */
+    #quiz-card {
+      display: none;
+      background: var(--white);
+      border-radius: 18px;
+      padding: 2rem 2.4rem;
+      max-width: 640px;
+      width: 100%;
+      box-shadow: 0 24px 60px rgba(0,0,0,.35);
+      animation: fadeUp .4s ease both;
+    }
+
+    .progress-bar-wrap {
+      height: 4px;
+      background: #e2eaf2;
+      border-radius: 4px;
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+    }
+
+    #progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--teal), var(--teal2));
+      border-radius: 4px;
+      transition: width .4s ease;
+      width: 0%;
+    }
+
+    .q-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .q-counter {
+      font-size: .75rem;
+      font-weight: 600;
+      color: var(--teal);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .q-score-badge {
+      background: var(--light);
+      border-radius: 20px;
+      padding: .2rem .7rem;
+      font-size: .75rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .q-score-badge span { color: var(--correct); }
+
+    #question-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.13rem;
+      color: var(--navy);
+      line-height: 1.5;
+      margin-bottom: 1.4rem;
+    }
+
+    .option {
+      display: flex;
+      align-items: flex-start;
+      gap: .8rem;
+      padding: .85rem 1rem;
+      margin-bottom: .55rem;
+      border: 2px solid #d8e4ef;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background .18s, border-color .18s, transform .12s;
+      font-size: .9rem;
+      color: var(--text);
+      line-height: 1.45;
+    }
+
+    .option:hover:not(.disabled) {
+      background: #eef5fb;
+      border-color: var(--teal);
+      transform: translateX(3px);
+    }
+
+    .option-letter {
+      min-width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--light);
+      border: 2px solid #c8d8e8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .72rem;
+      font-weight: 700;
+      color: var(--navy2);
+      flex-shrink: 0;
+      transition: background .18s, border-color .18s;
+    }
+
+    .option.correct {
+      background: #e8f7ee;
+      border-color: var(--correct);
+    }
+
+    .option.correct .option-letter {
+      background: var(--correct);
+      border-color: var(--correct);
+      color: white;
+    }
+
+    .option.incorrect {
+      background: #fef2f2;
+      border-color: var(--wrong);
+    }
+
+    .option.incorrect .option-letter {
+      background: var(--wrong);
+      border-color: var(--wrong);
+      color: white;
+    }
+
+    .option.disabled { cursor: default; pointer-events: none; }
+
+    /* feedback icon */
+    .option::after {
+      margin-left: auto;
+      flex-shrink: 0;
+      font-size: 1rem;
+    }
+
+    .option.correct::after  { content: '✓'; color: var(--correct); font-weight: 700; }
+    .option.incorrect::after { content: '✗'; color: var(--wrong); font-weight: 700; }
+
+    /* ── NEXT BUTTON ──────────────────────────────────────── */
+    #next-btn {
+      display: none;
+      margin-top: 1.2rem;
+      width: 100%;
+      background: linear-gradient(135deg, var(--teal), var(--navy2));
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: .8rem;
+      font-size: .95rem;
+      font-family: inherit;
+      font-weight: 600;
+      letter-spacing: .04em;
+      cursor: pointer;
+      transition: transform .15s, box-shadow .15s;
+      box-shadow: 0 4px 16px rgba(0,150,169,.3);
+    }
+
+    #next-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(0,150,169,.4);
+    }
+
+    /* ── RESULTS CARD ─────────────────────────────────────── */
+    #result-card {
+      display: none;
+      background: var(--white);
+      border-radius: 18px;
+      padding: 2.4rem 2.8rem;
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 24px 60px rgba(0,0,0,.35);
+      animation: fadeUp .5s ease both;
+    }
+
+    .result-ring {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: conic-gradient(var(--teal) var(--pct), #e2eaf2 0);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.3rem;
+      position: relative;
+    }
+
+    .result-ring::before {
+      content: '';
+      position: absolute;
+      width: 84px;
+      height: 84px;
+      background: white;
+      border-radius: 50%;
+    }
+
+    .result-pct {
+      position: relative;
+      z-index: 1;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--navy);
+    }
+
+    #result-card h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      color: var(--navy);
+      margin-bottom: .5rem;
+    }
+
+    #result-card p {
+      font-size: .9rem;
+      color: var(--muted);
+      margin-bottom: 1.6rem;
+      line-height: 1.55;
+    }
+
+    #result-card strong { color: var(--navy); }
+
+    #restart-btn {
+      background: linear-gradient(135deg, var(--teal), var(--navy2));
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: .85rem 2.2rem;
+      font-size: .95rem;
+      font-family: inherit;
+      font-weight: 600;
+      letter-spacing: .04em;
+      cursor: pointer;
+      transition: transform .15s, box-shadow .15s;
+      box-shadow: 0 6px 20px rgba(0,150,169,.35);
+    }
+
+    #restart-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(0,150,169,.45);
+    }
+
+    /* ── FOOTER ───────────────────────────────────────────── */
+    footer {
+      margin-top: 2.5rem;
+      font-size: .7rem;
+      color: rgba(255,255,255,.28);
+      text-align: center;
+      letter-spacing: .04em;
+    }
+
+    /* ── ANIMATIONS ───────────────────────────────────────── */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo-line">
+      <div class="dot"></div>
+      <span>Tomás Cuesta · IES Juan de la Cierva</span>
+      <div class="dot"></div>
+    </div>
+    <h1>Test <em>Vocales</em> PAU 2026</h1>
+    <p class="subtitle">Protocolo de actuación en las sedes · Convocatoria junio y julio de 2026</p>
+    <div class="meta-chips">
+      <div class="chip"><span class="ic">📋</span><strong>60</strong> preguntas disponibles</div>
+      <div class="chip"><span class="ic">🎯</span>Elige cuántas quieres responder</div>
+      <div class="chip"><span class="ic">🔀</span>Orden aleatorio cada vez</div>
+    </div>
+  </header>
+
+  <!-- START -->
+  <div id="start-card">
+    <h2>¿Cuántas preguntas quieres?</h2>
+    <p>El banco contiene <strong>60 preguntas</strong> sobre el protocolo completo: constitución del tribunal, gestión del aula, etiquetas, anexos, incidencias, copia y recogida de exámenes.<br><br>Introduce un número entre 1 y 60 (o déjalo en 60 para el test completo).</p>
+    <div class="input-row">
+      <label for="num-input">Nº de preguntas:</label>
+      <input type="number" id="num-input" min="1" max="60" value="60">
+    </div>
+    <button id="start-btn">Comenzar test →</button>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="quiz-card">
+    <div class="progress-bar-wrap"><div id="progress-bar"></div></div>
+    <div class="q-header">
+      <span class="q-counter" id="q-counter">Pregunta 1 de 60</span>
+      <span class="q-score-badge">Aciertos: <span id="score-live">0</span></span>
+    </div>
+    <div id="question-text"></div>
+    <div id="options-container"></div>
+    <button id="next-btn">Siguiente pregunta →</button>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="result-card">
+    <div class="result-ring" id="result-ring">
+      <div class="result-pct" id="result-pct">—</div>
+    </div>
+    <h2 id="result-title">Test finalizado</h2>
+    <p id="result-body"></p>
+    <button id="restart-btn">Volver a empezar</button>
+  </div>
+
+  <footer>ATENCIÓN. El cuestionario es producto de un aficionado y puede contener errores. No tiene valor real. Leed el PDF oficial</footer>
+
+<script>
+  /* ── DATA ─────────────────────────────────────────────────────── */
+  const PREGUNTAS = [
+    {t:"¿Dónde se constituye el tribunal de la PAU 2026?",o:["En la Secretaría de la Sede","En el aula asignada a cada vocal","En el Salón de Actos del centro"],r:0},
+    {t:"¿A qué hora deben presentarse los vocales el primer día de examen?",o:["A las 7:00 h (llamamiento a las 7:30 h)","A las 7:30 h (llamamiento a las 8:00 h)","A las 8:00 h (llamamiento a las 8:30 h)"],r:0},
+    {t:"¿A qué hora deben presentarse los vocales el segundo y tercer día?",o:["A las 7:30 h (llamamiento a las 8:00 h)","A las 7:00 h (llamamiento a las 7:30 h)","A las 8:30 h (llamamiento a las 9:00 h)"],r:0},
+    {t:"¿Cuántas funciones tiene asignadas el vocal responsable de aula según el protocolo?",o:["6","4","5"],r:0},
+    {t:"¿Cuál es la primera función del vocal responsable de aula?",o:["Verificación de identidad","Lectura de instrucciones","Anotación de asistencia en el Anexo II"],r:0},
+    {t:"¿Hasta cuántos minutos tarde se puede admitir a un estudiante en el aula?",o:["20 minutos","30 minutos","10 minutos"],r:0},
+    {t:"¿Qué ocurre si un estudiante llega al aula después de transcurrida la primera media hora?",o:["Se le envía a la secretaría de la sede","Se le admite con una advertencia","Queda excluido definitivamente de esa materia"],r:0},
+    {t:"¿Cuántos minutos desde el inicio no puede abandonar el aula ningún estudiante bajo ninguna circunstancia?",o:["30 minutos","20 minutos","15 minutos"],r:0},
+    {t:"¿Está permitido distribuir copias del examen fuera del aula durante la prueba?",o:["No, bajo ninguna circunstancia","Sí, si lo autoriza el responsable de sede","Sí, pasados los primeros 30 minutos"],r:0},
+    {t:"¿Cuándo debe finalizar la comprobación de identidad y la entrega de etiquetas el primer día?",o:["Antes de las 8:30 h","Antes de las 8:00 h","Antes de las 9:00 h"],r:0},
+    {t:"¿Quién comprueba el DNI durante la fase de comprobación de identidad?",o:["El vocal responsable de aula","El vocal corrector","El responsable de sede"],r:0},
+    {t:"¿Qué documentos son válidos para la identificación del estudiante?",o:["DNI, NIE o Carnet de Conducir","Solo el DNI o pasaporte","DNI, NIE o tarjeta universitaria"],r:0},
+    {t:"¿Quién entrega las etiquetas al estudiante durante la comprobación de identidad?",o:["El vocal corrector","El vocal responsable de aula","El responsable de sede"],r:0},
+    {t:"¿Qué columna del Anexo II marca el vocal responsable al verificar la asistencia?",o:["La columna ASISTE","La columna ENTREGA","La columna INCIDENCIA"],r:0},
+    {t:"¿Dónde debe estar el DNI/NIE del estudiante durante la realización del examen?",o:["Encima de la mesa, junto a las etiquetas","Guardado en la mochila del estudiante","Entregado al vocal al inicio de la prueba"],r:0},
+    {t:"¿Quién realiza la lectura de instrucciones antes del primer examen?",o:["Un vocal corrector","El vocal responsable de aula","El responsable de sede"],r:0},
+    {t:"¿A qué hora comienza la lectura de instrucciones el primer día?",o:["A las 8:00 h","A las 7:30 h","A las 8:30 h"],r:0},
+    {t:"¿Qué se incluye en la lectura de instrucciones previa al examen?",o:["Hoja explicativa sobre copia y uso indebido de calculadoras","Listado de materias del día","Normas de calificación de los ejercicios"],r:0},
+    {t:"¿Qué debe hacer el vocal si un estudiante llega al aula sin ninguna identificación?",o:["Permitirle hacer el examen y pedirle que traiga la identificación posteriormente","Impedir el acceso hasta que presente identificación","Comunicar la incidencia y anular su examen"],r:0},
+    {t:"¿Qué fotografía se realiza si un estudiante no trae identificación?",o:["Una foto del estudiante con el móvil del vocal","Una foto del cuadernillo vacío","No se hace fotografía en ese caso"],r:0},
+    {t:"Un estudiante no está en el listado pero sí tiene etiquetas. ¿Qué procedimiento se sigue?",o:["Avisar a la sede, apuntar sus datos en el Anexo II a mano y rellenar Asiste y Entrega con normalidad","Impedirle el examen hasta confirmar su identidad","Enviarlo a secretaría sin más trámite"],r:0},
+    {t:"Un estudiante no está en el listado y tampoco están sus etiquetas. ¿Qué se hace?",o:["Avisar por WhatsApp a los responsables y enviarlo a la secretaría de la sede","Permitirle hacer el examen con normalidad e imprimirle etiquetas genéricas","Negarse a atenderle hasta el siguiente tramo horario"],r:0},
+    {t:"Un estudiante llega de una sede equivocada y no da tiempo a que llegue a la suya. ¿Qué ocurre?",o:["Se le permite hacer el examen sin etiquetas y se registra como incidencia separada","Se cancela su examen de ese tramo","Se espera a que llegue a su sede aunque pierda tiempo"],r:0},
+    {t:"El resto de exámenes del estudiante que llegó a la sede equivocada, ¿dónde los realizará?",o:["En su sede correspondiente, donde estarán sus etiquetas","En la sede donde ya realizó el primero","Puede elegir libremente la sede para el resto de días"],r:0},
+    {t:"¿Cuántas etiquetas debe llevar cada cuadernillo de examen?",o:["3 etiquetas","2 etiquetas","4 etiquetas"],r:0},
+    {t:"¿Cómo se colocan las dos etiquetas de la primera página del cuadernillo?",o:["Una encima y otra debajo de la línea de corte","Ambas encima de la línea de corte","Ambas en la esquina superior derecha"],r:0},
+    {t:"¿Dónde se coloca la tercera etiqueta del cuadernillo?",o:["En la última página (del último cuadernillo si se usan varios)","En la portada interior del primer cuadernillo","En la contraportada"],r:0},
+    {t:"Si un estudiante usa más de un cuadernillo, ¿en qué página del conjunto se coloca la etiqueta final?",o:["En la última página del último cuadernillo","En la última página del primer cuadernillo","En la primera página del segundo cuadernillo"],r:0},
+    {t:"¿Es obligatorio pegar las etiquetas aunque el examen se entregue en blanco?",o:["Sí, siempre deben pegarse","No, si el examen va en blanco no son necesarias","Solo si el estudiante lo solicita expresamente"],r:0},
+    {t:"Si un estudiante usa más de un cuadernillo, ¿cómo se grapan?",o:["1 grapa encima de la línea de corte y 2 grapas debajo","2 grapas encima y 1 grapa debajo","3 grapas equidistantes a lo largo del margen"],r:0},
+    {t:"¿Está permitido grapar sobre la propia línea de corte del cuadernillo?",o:["No, está expresamente prohibido","Sí, es la posición recomendada","Solo si hay más de dos cuadernillos"],r:0},
+    {t:"¿Qué debe hacerse si faltan etiquetas o están deterioradas?",o:["Contactar con la sede para solucionar la incidencia","El estudiante escribe su nombre a mano en ese espacio","Se puede prescindir de ellas si hay causa justificada"],r:0},
+    {t:"¿Qué datos debe contener la cabecera de cada cuadernillo?",o:["Sede, materia, nombre y apellidos, instituto/colegio, DNI, fecha y firma","Solo nombre, DNI y materia","Nombre, DNI y número de aula"],r:0},
+    {t:"¿Con qué instrumento deben rellenarse los datos de la cabecera del cuadernillo?",o:["A bolígrafo","A lápiz para facilitar correcciones","Con cualquier instrumento de escritura"],r:0},
+    {t:"Si se usan varios cuadernillos, ¿en cuáles hay que rellenar la cabecera?",o:["En todos ellos","Solo en el primero","Solo en el último"],r:0},
+    {t:"¿Quiénes pueden acceder al aula durante la realización del examen?",o:["Estudiantes, vocales, responsables de sede y PTGAS de la PAU","Solo los estudiantes y el vocal responsable de aula","Cualquier profesor del centro sede acompañado por un vocal"],r:0},
+    {t:"¿Qué debe hacer el estudiante si se equivoca al escribir en el cuadernillo?",o:["Tachar el error; no puede pedir un cuadernillo nuevo","Pedir un cuadernillo nuevo al vocal","Hacer una nota aclaratoria al margen con firma"],r:0},
+    {t:"¿Puede el vocal aclarar dudas sobre el contenido del examen al estudiante?",o:["No; cualquier cuestión se comunica al responsable de sede","Sí, si la duda es sobre la interpretación del enunciado","Sí, en los primeros 10 minutos del examen"],r:0},
+    {t:"¿Qué registra el Anexo III?",o:["El número de estudiantes presentados por materia y aula","Las incidencias ocurridas durante el examen","El listado de vocales asignados por aula"],r:0},
+    {t:"¿Cuándo debe cumplimentarse el Anexo III?",o:["Antes de que transcurran 30 minutos desde el inicio del examen","Al finalizar el examen","Durante el descanso entre tramos horarios"],r:0},
+    {t:"¿Quién recoge físicamente el Anexo III del aula?",o:["Los responsables de sede pasan a recogerlo por las aulas","El vocal responsable lo lleva a secretaría al finalizar","Se deposita en el buzón habilitado en cada pasillo"],r:0},
+    {t:"¿Con qué dato del Anexo II debe coincidir el número de estudiantes del Anexo III?",o:["Con el número de marcas en la columna ASISTE","Con el número de etiquetas distribuidas","Con la lista oficial enviada por la universidad"],r:0},
+    {t:"Si se detecta a un estudiante copiando, ¿cuál es la primera acción del vocal?",o:["Avisar a los responsables de sede","Retirar el examen de inmediato","Expulsar al estudiante del aula sin más trámite"],r:0},
+    {t:"¿Qué documento se levanta cuando se detecta copia durante el examen?",o:["Un acta de incidencia","Un informe de amonestación","Una denuncia formal ante el Vicerrectorado"],r:0},
+    {t:"¿Quiénes deben firmar el acta por copia?",o:["Al menos 1 vocal corrector y el responsable de sede","Todos los vocales presentes en el aula","Solo el vocal responsable de aula"],r:0},
+    {t:"¿Qué consecuencia tiene para el estudiante la detección de copia?",o:["Abandona todas las pruebas","Recibe un aviso formal y puede continuar el examen","Se le califica con 0 pero permanece en el aula"],r:0},
+    {t:"En el caso de incidencia con calculadora, ¿quién debe firmar también el acta?",o:["El propio estudiante","El director del centro sede","Un testigo ajeno al tribunal"],r:0},
+    {t:"¿Qué documentación gráfica se recoge cuando hay una incidencia con calculadora?",o:["Una fotografía de la calculadora","Una copia del modelo de calculadora en el acta","No se requiere documentación gráfica"],r:0},
+    {t:"Si se detecta una calculadora sospechosa, ¿debe retirársela al estudiante?",o:["No, bajo ningún concepto","Sí, inmediatamente","Solo si el vocal responsable lo decide"],r:0},
+    {t:"¿Cómo debe actuarse ante una calculadora sospechosa para no interferir en la recogida de pruebas?",o:["Avisar a los responsables de sede con la mayor discreción posible","Fotografiarla y continuar la vigilancia sin avisar","Retirarla y levantar acta en ese mismo momento"],r:0},
+    {t:"¿Cuántos minutos antes del fin del examen se debe avisar a los estudiantes?",o:["5 minutos","10 minutos","2 minutos"],r:0},
+    {t:"¿Cómo entrega el examen un estudiante que termina antes de tiempo?",o:["Levanta la mano sin levantarse de su asiento","Se acerca al vocal con el cuadernillo en la mano","Deposita el examen en la mesa del vocal al salir"],r:0},
+    {t:"¿Quién marca la casilla 'Entrega' en el Anexo II al finalizar?",o:["El propio estudiante (nunca el vocal)","El vocal al recoger el examen","El vocal responsable al cerrar el tramo horario"],r:0},
+    {t:"¿Debe marcarse la casilla de entrega en el Anexo II aunque el examen esté en blanco?",o:["Sí, siempre debe marcarse","No, si no hay contenido no es necesario el registro","Solo si el responsable de sede lo indica"],r:0},
+    {t:"Una vez que el vocal recoge el examen de un estudiante, ¿qué norma rige su custodia?",o:["No debe soltarlo de la mano en ningún momento","Puede depositarlo sobre la mesa del vocal responsable","Lo apila ordenado por tramos para entregarlo al final"],r:0},
+    {t:"¿Puede el vocal pedir a un estudiante que le acerque el examen de otro compañero?",o:["No, bajo ningún concepto","Sí, si el aula es grande y los pupitres están alejados","Sí, si el estudiante lo hace de forma voluntaria"],r:0},
+    {t:"¿Qué ocurre con los borradores y el enunciado al finalizar el examen?",o:["Los recogen los vocales y los tiran después; no pueden salir del aula","El estudiante puede llevárselos si los quiere","Se guardan junto con los cuadernillos en el sobre de entrega"],r:0},
+    {t:"¿A quién entrega el vocal responsable el Anexo II al finalizar el examen?",o:["En la Secretaría de Sede","Al vocal corrector de referencia","Al responsable del instituto de origen de los estudiantes"],r:0},
+    {t:"¿Cuál es la materia del primer tramo horario (8:30–10:00) del primer día de PAU 2026?",o:["Lengua Castellana y Literatura II","Historia de España","Matemáticas II"],r:0},
+    {t:"¿En qué tramo horario se examina Historia de España el primer día?",o:["11:00 – 12:30","8:30 – 10:00","13:30 – 15:00"],r:0},
+    {t:"¿En qué tramo del primer día se realiza la Lengua Extranjera (Fase de Acceso)?",o:["13:30 – 15:00","11:00 – 12:30","8:30 – 10:00"],r:0},
+    {t:"¿Cuál es el formato correcto de un mensaje en el grupo de WhatsApp de la sede?",o:["Aula X: mensaje breve y concreto","Mensaje libre sin formato específico","Nombre del vocal seguido de los destinatarios"],r:0},
+    {t:"¿Para qué uso debe reservarse exclusivamente el grupo de WhatsApp de la sede?",o:["Solo para comunicaciones de la PEVAU","Para cualquier comunicación urgente del centro educativo","Para coordinación entre vocales de diferentes materias"],r:0},
+    {t:"¿En qué edificios de la sede IES María Zambrano se realizan las pruebas?",o:["Edificio A y Edificio B","Solo en el Edificio B","Edificio B y Edificio C"],r:0},
+    {t:"¿Qué caracteriza físicamente a las gafas utilizadas como elemento de copia?",o:["Patillas notablemente más gruesas, orificio de lente en esquina superior y luz LED que parpadea al grabar","Montura metálica muy delgada con espejo retrovisor interno","Cristales polarizados que ocultan el movimiento ocular"],r:0},
+    {t:"¿Qué características denotan una calculadora programable no permitida?",o:["Pantalla gráfica o a color, botones con letras A-Z y teclas PRGM, EXE o FILE","Pantalla pequeña y solo teclas numéricas básicas","Carcasa de color diferente al modelo estándar autorizado"],r:0},
+    {t:"¿Qué señal de comportamiento puede indicar el uso de un auricular intracanal para copiar?",o:["El estudiante se toca la oreja con frecuencia o lleva ropa que oculta un collar transmisor","Mantiene la cabeza girada hacia la pared durante todo el examen","Pide salir al baño en los primeros minutos"],r:0},
+  ];
+
+  /* ── STATE ────────────────────────────────────────────────────── */
+  let pool = [], idx = 0, score = 0, total = 0;
+  const LETTERS = ['A','B','C'];
+
+  /* ── DOM ──────────────────────────────────────────────────────── */
+  const startCard    = document.getElementById('start-card');
+  const quizCard     = document.getElementById('quiz-card');
+  const resultCard   = document.getElementById('result-card');
+  const numInput     = document.getElementById('num-input');
+  const startBtn     = document.getElementById('start-btn');
+  const nextBtn      = document.getElementById('next-btn');
+  const restartBtn   = document.getElementById('restart-btn');
+  const qCounter     = document.getElementById('q-counter');
+  const scoreLive    = document.getElementById('score-live');
+  const questionText = document.getElementById('question-text');
+  const optsCont     = document.getElementById('options-container');
+  const progressBar  = document.getElementById('progress-bar');
+
+  /* ── UTILS ────────────────────────────────────────────────────── */
+  function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  /* ── LOGIC ────────────────────────────────────────────────────── */
+  startBtn.addEventListener('click', () => {
+    let n = parseInt(numInput.value);
+    if (isNaN(n) || n < 1) n = 1;
+    if (n > PREGUNTAS.length) n = PREGUNTAS.length;
+    pool = shuffle(PREGUNTAS).slice(0, n);
+    total = n; idx = 0; score = 0;
+    startCard.style.display = 'none';
+    quizCard.style.display = 'block';
+    scoreLive.textContent = 0;
+    showQuestion();
+  });
+
+  function showQuestion() {
+    quizCard.style.animation = 'none';
+    void quizCard.offsetWidth;
+    quizCard.style.animation = 'fadeUp .35s ease both';
+
+    nextBtn.style.display = 'none';
+    optsCont.innerHTML = '';
+
+    const q = pool[idx];
+    const pct = Math.round(idx / total * 100);
+    progressBar.style.width = pct + '%';
+    qCounter.textContent = `Pregunta ${idx + 1} de ${total}`;
+    questionText.textContent = q.t;
+
+    // Shuffle option display order
+    const indices = shuffle([0, 1, 2]);
+    indices.forEach((oi, li) => {
+      const div = document.createElement('div');
+      div.className = 'option';
+      div.dataset.val = oi;
+      div.innerHTML = `<div class="option-letter">${LETTERS[li]}</div><span>${q.o[oi]}</span>`;
+      div.addEventListener('click', () => validate(div, q.r, indices));
+      optsCont.appendChild(div);
+    });
+  }
+
+  function validate(clicked, correct, indices) {
+    document.querySelectorAll('.option').forEach(o => o.classList.add('disabled'));
+    const chosen = parseInt(clicked.dataset.val);
+    if (chosen === correct) {
+      clicked.classList.add('correct');
+      score++;
+      scoreLive.textContent = score;
+    } else {
+      clicked.classList.add('incorrect');
+      document.querySelectorAll('.option').forEach(o => {
+        if (parseInt(o.dataset.val) === correct) o.classList.add('correct');
+      });
+    }
+    progressBar.style.width = Math.round((idx + 1) / total * 100) + '%';
+    nextBtn.style.display = 'block';
+  }
+
+  nextBtn.addEventListener('click', () => {
+    idx++;
+    if (idx < total) {
+      showQuestion();
+    } else {
+      showResults();
+    }
+  });
+
+  function showResults() {
+    quizCard.style.display = 'none';
+    resultCard.style.display = 'block';
+    const pct = Math.round(score / total * 100);
+    document.getElementById('result-ring').style.setProperty('--pct', pct + '%');
+    document.getElementById('result-pct').textContent = pct + '%';
+    document.getElementById('result-title').textContent =
+      pct >= 80 ? '¡Excelente preparación!' :
+      pct >= 60 ? 'Buen trabajo' : 'Sigue repasando';
+    document.getElementById('result-body').innerHTML =
+      `Has acertado <strong>${score} de ${total}</strong> preguntas (${pct}%).<br>
+       ${pct >= 80 ? 'Conoces el protocolo a la perfección. ¡Listo para la PAU!' :
+         pct >= 60 ? 'Buen nivel general, pero conviene repasar algunos procedimientos.' :
+         'Te recomendamos releer el protocolo y volver a intentarlo.'}`;
+  }
+
+  restartBtn.addEventListener('click', () => {
+    resultCard.style.display = 'none';
+    startCard.style.display = 'block';
+  });
+</script>
+</body>
+</html>
