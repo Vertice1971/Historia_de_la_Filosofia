@@ -184,6 +184,22 @@
       cursor: default;
     }
 
+    .boton-nuevo-examen {
+      flex: 1;
+      font-size: clamp(17px, 4.5vw, 22px);
+      padding: 12px 10px;
+      border: 1px solid #8fbce8;
+      border-radius: 10px;
+      background: #eef5ff;
+      cursor: pointer;
+      touch-action: manipulation;
+      font-weight: bold;
+    }
+
+    .boton-nuevo-examen:active {
+      background: #d8ecff;
+    }
+
     .boton-redondeo {
       width: 100%;
       margin-top: 18px;
@@ -250,7 +266,8 @@
         min-height: 42px;
       }
 
-      .boton-nav {
+      .boton-nav,
+      .boton-nuevo-examen {
         padding: 8px;
       }
 
@@ -281,13 +298,13 @@
         <h1>Pregunta 1</h1>
 
         <label for="nota0">Nota sobre 10</label>
-        <input type="text" id="nota0" value="5" placeholder="Ejemplo: 5" readonly inputmode="none">
+        <input type="text" id="nota0" value="" placeholder="" readonly inputmode="none">
 
         <div class="resultado">
           Valor sobre 2,5
           <span class="valor">
-            <span id="resultado0">1,25</span>
-            <span class="valor-redondeado" id="resultadoRedondeado0">(1,25)</span>
+            <span id="resultado0">0,00</span>
+            <span class="valor-redondeado" id="resultadoRedondeado0">(0,00)</span>
           </span>
         </div>
 
@@ -298,13 +315,13 @@
         <h1>Pregunta 2</h1>
 
         <label for="nota1">Nota sobre 10</label>
-        <input type="text" id="nota1" value="5" placeholder="Ejemplo: 5" readonly inputmode="none">
+        <input type="text" id="nota1" value="" placeholder="" readonly inputmode="none">
 
         <div class="resultado">
           Valor sobre 2,5
           <span class="valor">
-            <span id="resultado1">1,25</span>
-            <span class="valor-redondeado" id="resultadoRedondeado1">(1,25)</span>
+            <span id="resultado1">0,00</span>
+            <span class="valor-redondeado" id="resultadoRedondeado1">(0,00)</span>
           </span>
         </div>
 
@@ -315,13 +332,13 @@
         <h1>Pregunta 3</h1>
 
         <label for="nota2">Nota sobre 10</label>
-        <input type="text" id="nota2" value="5" placeholder="Ejemplo: 5" readonly inputmode="none">
+        <input type="text" id="nota2" value="" placeholder="" readonly inputmode="none">
 
         <div class="resultado">
           Valor sobre 2,5
           <span class="valor">
-            <span id="resultado2">1,25</span>
-            <span class="valor-redondeado" id="resultadoRedondeado2">(1,25)</span>
+            <span id="resultado2">0,00</span>
+            <span class="valor-redondeado" id="resultadoRedondeado2">(0,00)</span>
           </span>
         </div>
 
@@ -332,13 +349,13 @@
         <h1>Pregunta 4</h1>
 
         <label for="nota3">Nota sobre 10</label>
-        <input type="text" id="nota3" value="5" placeholder="Ejemplo: 5" readonly inputmode="none">
+        <input type="text" id="nota3" value="" placeholder="" readonly inputmode="none">
 
         <div class="resultado">
           Valor sobre 2,5
           <span class="valor">
-            <span id="resultado3">1,25</span>
-            <span class="valor-redondeado" id="resultadoRedondeado3">(1,25)</span>
+            <span id="resultado3">0,00</span>
+            <span class="valor-redondeado" id="resultadoRedondeado3">(0,00)</span>
           </span>
         </div>
 
@@ -350,7 +367,7 @@
 
         <div class="resultado">
           Total sobre 10
-          <span class="valor" id="notaFinal">5,00</span>
+          <span class="valor" id="notaFinal">0,00</span>
         </div>
 
         <button class="boton-redondeo" id="botonRedondeo" type="button">
@@ -399,9 +416,9 @@
     let redondeoActivado = false;
 
     const totalPaginas = 5;
-    const notas = [5, 5, 5, 5];
-    const valores = [1.25, 1.25, 1.25, 1.25];
-    const valoresRedondeados = [1.25, 1.25, 1.25, 1.25];
+    const notas = [0, 0, 0, 0];
+    const valores = [0, 0, 0, 0];
+    const valoresRedondeados = [0, 0, 0, 0];
     const errores = [false, false, false, false];
 
     const botonAnterior = document.getElementById("anterior");
@@ -524,15 +541,20 @@
       document.getElementById("pagina" + indice).classList.add("activa");
 
       botonAnterior.disabled = indice === 0;
-      botonSiguiente.disabled = indice === totalPaginas - 1;
 
       paginaActual = indice;
 
       if (indice < 4) {
         zonaTeclado.style.display = "block";
+        botonSiguiente.textContent = "Siguiente →";
+        botonSiguiente.className = "boton-nav";
+        botonSiguiente.disabled = false;
         document.getElementById("nota" + indice).focus();
       } else {
         zonaTeclado.style.display = "none";
+        botonSiguiente.textContent = "Nuevo examen";
+        botonSiguiente.className = "boton-nuevo-examen";
+        botonSiguiente.disabled = false;
       }
 
       actualizarNotaFinal();
@@ -600,6 +622,17 @@
       leerNota(paginaActual);
     }
 
+    function nuevoExamen() {
+      for (let i = 0; i < 4; i++) {
+        document.getElementById("nota" + i).value = "";
+        leerNota(i);
+      }
+
+      redondeoActivado = false;
+      actualizarNotaFinal();
+      mostrarPagina(0);
+    }
+
     teclas.forEach(function(tecla) {
       tecla.addEventListener("click", function() {
         insertar(tecla.dataset.valor);
@@ -618,6 +651,8 @@
     botonSiguiente.addEventListener("click", function() {
       if (paginaActual < totalPaginas - 1) {
         mostrarPagina(paginaActual + 1);
+      } else {
+        nuevoExamen();
       }
     });
 
@@ -650,6 +685,10 @@
 
       if (event.key === "ArrowRight" && paginaActual < totalPaginas - 1) {
         mostrarPagina(paginaActual + 1);
+      }
+
+      if (event.key === "Enter" && paginaActual === totalPaginas - 1) {
+        nuevoExamen();
       }
     });
 
