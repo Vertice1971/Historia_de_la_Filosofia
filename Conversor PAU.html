@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<!-- Autor: Tomás Cuesta -->
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Conversor PAU 0-10 a 0-2,5</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 460px;
+      margin: 60px auto;
+      padding: 24px;
+      background: #f4f4f4;
+      color: #222;
+    }
+
+    .contenedor {
+      background: white;
+      padding: 28px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+    }
+
+    h1 {
+      font-size: 22px;
+      margin-top: 0;
+      margin-bottom: 22px;
+      text-align: center;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      font-size: 26px;
+      padding: 10px;
+      box-sizing: border-box;
+      text-align: center;
+      border: 1px solid #bbb;
+      border-radius: 6px;
+    }
+
+    .resultado {
+      margin-top: 24px;
+      padding: 18px;
+      background: #eef5ff;
+      border: 1px solid #b8d4f0;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 22px;
+    }
+
+    .valor {
+      display: block;
+      margin-top: 8px;
+      font-size: 34px;
+      font-weight: bold;
+    }
+
+    #resultado05 {
+      font-size: 28px;
+      font-weight: normal;
+      margin-left: 8px;
+    }
+
+    .error {
+      margin-top: 14px;
+      color: #a00000;
+      font-size: 15px;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="contenedor">
+    <h1>Conversor PAU</h1>
+
+    <label for="nota10">Nota sobre 10</label>
+
+    <input
+      type="text"
+      id="nota10"
+      value="5"
+      placeholder="Ejemplo: 5"
+      autofocus
+    >
+
+    <div class="resultado">
+      Valor sobre 2,5
+      <span class="valor">
+        <span id="resultado">1,25</span>
+        <span id="resultado05">(1,25)</span>
+      </span>
+    </div>
+
+    <div class="error" id="error"></div>
+  </div>
+
+  <script>
+    const nota10 = document.getElementById("nota10");
+    const resultado = document.getElementById("resultado");
+    const resultado05 = document.getElementById("resultado05");
+    const error = document.getElementById("error");
+
+    function formatear(numero) {
+      return numero.toFixed(2).replace(".", ",");
+    }
+
+    function convertir() {
+      const texto = nota10.value.trim().replace(",", ".");
+      const valor = parseFloat(texto);
+
+      if (texto === "") {
+        resultado.textContent = "0,00";
+        resultado05.textContent = "(0,00)";
+        error.textContent = "";
+        return;
+      }
+
+      if (isNaN(valor)) {
+        resultado.textContent = "—";
+        resultado05.textContent = "";
+        error.textContent = "Introduce un número válido.";
+        return;
+      }
+
+      if (valor < 0 || valor > 10) {
+        resultado.textContent = "—";
+        resultado05.textContent = "";
+        error.textContent = "La nota debe estar entre 0 y 10.";
+        return;
+      }
+
+      const convertido = valor * 2.5 / 10;
+
+      const redondeadoCentésima = Math.round(convertido * 100) / 100;
+      const redondeado05 = Math.round(convertido / 0.05) * 0.05;
+
+      resultado.textContent = formatear(redondeadoCentésima);
+      resultado05.textContent = "(" + formatear(redondeado05) + ")";
+      error.textContent = "";
+    }
+
+    nota10.addEventListener("input", convertir);
+    convertir();
+  </script>
+
+</body>
+</html>
