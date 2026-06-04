@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<!-- Autor: Tomás Cuesta -->
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <title>Conversor PAU 0-10 a 0-2,5</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      color: #222;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+      padding: 10px;
+    }
+
+    .contenedor {
+      width: 100%;
+      max-width: 520px;
+      min-height: calc(100vh - 20px);
+      background: white;
+      padding: 20px;
+      border-radius: 14px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .zona-superior {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    h1 {
+      font-size: clamp(22px, 6vw, 32px);
+      margin: 0;
+      text-align: center;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      font-size: clamp(17px, 4.5vw, 22px);
+    }
+
+    input {
+      width: 100%;
+      font-size: clamp(34px, 11vw, 54px);
+      padding: 12px;
+      text-align: center;
+      border: 1px solid #bbb;
+      border-radius: 10px;
+      background: #fff;
+      color: #111;
+    }
+
+    input:focus {
+      outline: 2px solid #7aa7d9;
+    }
+
+    .resultado {
+      padding: 18px;
+      background: #eef5ff;
+      border: 1px solid #b8d4f0;
+      border-radius: 10px;
+      text-align: center;
+      font-size: clamp(21px, 5.5vw, 30px);
+    }
+
+    .valor {
+      display: block;
+      margin-top: 10px;
+      font-size: clamp(42px, 13vw, 66px);
+      font-weight: bold;
+      line-height: 1.1;
+    }
+
+    #resultado05 {
+      display: block;
+      margin-top: 6px;
+      font-size: clamp(24px, 7vw, 38px);
+      font-weight: normal;
+    }
+
+    .error {
+      min-height: 22px;
+      color: #a00000;
+      font-size: clamp(15px, 4vw, 18px);
+      text-align: center;
+    }
+
+    .teclado {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      width: 100%;
+      margin-top: 4px;
+    }
+
+    .tecla {
+      min-height: clamp(58px, 14vh, 86px);
+      border: none;
+      border-radius: 12px;
+      background: #e9e9e9;
+      color: #111;
+      font-size: clamp(28px, 8vw, 44px);
+      font-weight: bold;
+      cursor: pointer;
+      touch-action: manipulation;
+      user-select: none;
+    }
+
+    .tecla:active {
+      transform: scale(0.97);
+      background: #d6d6d6;
+    }
+
+    .tecla-borrar {
+      background: #f3dddd;
+    }
+
+    .tecla-limpiar {
+      background: #ddd;
+      font-size: clamp(20px, 5vw, 30px);
+    }
+
+    .autor {
+      text-align: center;
+      font-size: 13px;
+      color: #777;
+      margin-top: 2px;
+    }
+
+    @media (max-height: 620px) {
+      .contenedor {
+        padding: 12px;
+        gap: 10px;
+      }
+
+      .zona-superior {
+        gap: 10px;
+      }
+
+      .resultado {
+        padding: 12px;
+      }
+
+      .teclado {
+        gap: 7px;
+      }
+
+      .tecla {
+        min-height: 50px;
+      }
+
+      .autor {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="contenedor">
+
+    <div class="zona-superior">
+      <h1>Conversor PAU</h1>
+
+      <div>
+        <label for="nota10">Nota sobre 10</label>
+
+        <input
+          type="text"
+          id="nota10"
+          value="5"
+          placeholder="Ejemplo: 5"
+          readonly
+          inputmode="none"
+          aria-label="Nota sobre 10"
+        >
+      </div>
+
+      <div class="resultado">
+        Valor sobre 2,5
+        <span class="valor">
+          <span id="resultado">1,25</span>
+          <span id="resultado05">(1,25)</span>
+        </span>
+      </div>
+
+      <div class="error" id="error"></div>
+    </div>
+
+    <div>
+      <div class="teclado" aria-label="Teclado numérico">
+        <button class="tecla" data-valor="1">1</button>
+        <button class="tecla" data-valor="2">2</button>
+        <button class="tecla" data-valor="3">3</button>
+
+        <button class="tecla" data-valor="4">4</button>
+        <button class="tecla" data-valor="5">5</button>
+        <button class="tecla" data-valor="6">6</button>
+
+        <button class="tecla" data-valor="7">7</button>
+        <button class="tecla" data-valor="8">8</button>
+        <button class="tecla" data-valor="9">9</button>
+
+        <button class="tecla" data-valor=",">,</button>
+        <button class="tecla" data-valor="0">0</button>
+        <button class="tecla tecla-borrar" id="borrar">⌫</button>
+
+        <button class="tecla tecla-limpiar" id="limpiar">Limpiar</button>
+      </div>
+
+      <div class="autor">Autor: Tomás Cuesta</div>
+    </div>
+
+  </div>
+
+  <script>
+    const nota10 = document.getElementById("nota10");
+    const resultado = document.getElementById("resultado");
+    const resultado05 = document.getElementById("resultado05");
+    const error = document.getElementById("error");
+    const teclas = document.querySelectorAll(".tecla[data-valor]");
+    const borrar = document.getElementById("borrar");
+    const limpiar = document.getElementById("limpiar");
+
+    function formatear(numero) {
+      return numero.toFixed(2).replace(".", ",");
+    }
+
+    function convertir() {
+      const textoOriginal = nota10.value.trim();
+      const texto = textoOriginal.replace(",", ".");
+      const valor = parseFloat(texto);
+
+      if (textoOriginal === "") {
+        resultado.textContent = "0,00";
+        resultado05.textContent = "(0,00)";
+        error.textContent = "";
+        return;
+      }
+
+      if (isNaN(valor)) {
+        resultado.textContent = "—";
+        resultado05.textContent = "";
+        error.textContent = "Introduce un número válido.";
+        return;
+      }
+
+      if (valor < 0 || valor > 10) {
+        resultado.textContent = "—";
+        resultado05.textContent = "";
+        error.textContent = "La nota debe estar entre 0 y 10.";
+        return;
+      }
+
+      const convertido = valor * 2.5 / 10;
+      const redondeadoCentésima = Math.round(convertido * 100) / 100;
+      const redondeado05 = Math.round(convertido / 0.05) * 0.05;
+
+      resultado.textContent = formatear(redondeadoCentésima);
+      resultado05.textContent = "(" + formatear(redondeado05) + ")";
+      error.textContent = "";
+    }
+
+    function insertar(valor) {
+      let actual = nota10.value;
+
+      if (actual === "0" && valor !== ",") {
+        actual = "";
+      }
+
+      if (valor === "," && actual.includes(",")) {
+        return;
+      }
+
+      if (valor === "," && actual === "") {
+        actual = "0";
+      }
+
+      const nuevoTexto = actual + valor;
+      const numero = parseFloat(nuevoTexto.replace(",", "."));
+
+      if (!isNaN(numero) && numero > 10) {
+        error.textContent = "La nota debe estar entre 0 y 10.";
+        return;
+      }
+
+      if (nuevoTexto.length > 5) {
+        return;
+      }
+
+      nota10.value = nuevoTexto;
+      convertir();
+    }
+
+    teclas.forEach(function(tecla) {
+      tecla.addEventListener("click", function() {
+        insertar(tecla.dataset.valor);
+      });
+    });
+
+    borrar.addEventListener("click", function() {
+      nota10.value = nota10.value.slice(0, -1);
+      convertir();
+    });
+
+    limpiar.addEventListener("click", function() {
+      nota10.value = "";
+      convertir();
+    });
+
+    convertir();
+  </script>
+
+</body>
+</html>
