@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<!-- Autor: Tomás Cuesta -->
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <title>Conversor PAU por preguntas</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      color: #222;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+      padding: 8px;
+      overflow-x: hidden;
+    }
+
+    .contenedor {
+      width: 100%;
+      max-width: 560px;
+      min-height: calc(100dvh - 16px);
+      background: white;
+      padding: 18px;
+      border-radius: 14px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .zona-principal {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      min-height: 0;
+    }
+
+    h1 {
+      font-size: clamp(22px, 6vw, 32px);
+      margin: 0 0 8px 0;
+      text-align: center;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      font-size: clamp(17px, 4.4vw, 22px);
+    }
+
+    input {
+      width: 100%;
+      font-size: clamp(34px, 11vw, 56px);
+      padding: 10px;
+      text-align: center;
+      border: 1px solid #bbb;
+      border-radius: 10px;
+      background: #fff;
+      color: #111;
+    }
+
+    input:focus {
+      outline: 2px solid #7aa7d9;
+    }
+
+    .resultado {
+      padding: 16px;
+      background: #eef5ff;
+      border: 1px solid #b8d4f0;
+      border-radius: 10px;
+      text-align: center;
+      font-size: clamp(20px, 5.5vw, 30px);
+    }
+
+    .valor {
+      display: block;
+      margin-top: 8px;
+      font-size: clamp(40px, 13vw, 66px);
+      font-weight: bold;
+      line-height: 1.1;
+    }
+
+    .valor-redondeado {
+      display: block;
+      margin-top: 5px;
+      font-size: clamp(24px, 7vw, 38px);
+      font-weight: normal;
+    }
+
+    .error {
+      min-height: 22px;
+      color: #a00000;
+      font-size: clamp(14px, 4vw, 18px);
+      text-align: center;
+    }
+
+    .pagina {
+      display: none;
+    }
+
+    .pagina.activa {
+      display: block;
+    }
+
+    .teclado {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 9px;
+      width: 100%;
+    }
+
+    .tecla {
+      min-height: clamp(54px, 12dvh, 78px);
+      border: none;
+      border-radius: 12px;
+      background: #e9e9e9;
+      color: #111;
+      font-size: clamp(27px, 8vw, 42px);
+      font-weight: bold;
+      cursor: pointer;
+      touch-action: manipulation;
+      user-select: none;
+    }
+
+    .tecla:active {
+      transform: scale(0.97);
+      background: #d6d6d6;
+    }
+
+    .tecla-borrar {
+      background: #f3dddd;
+    }
+
+    .tecla-limpiar {
+      grid-column: span 3;
+      background: #ddd;
+      font-size: clamp(20px, 5vw, 28px);
+      min-height: clamp(48px, 9dvh, 64px);
+    }
+
+    .navegacion {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    button {
+      font-family: inherit;
+    }
+
+    .boton-nav {
+      flex: 1;
+      font-size: clamp(17px, 4.5vw, 22px);
+      padding: 12px 10px;
+      border: 1px solid #aaa;
+      border-radius: 10px;
+      background: #f7f7f7;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+
+    .boton-nav:active {
+      background: #e1e1e1;
+    }
+
+    .boton-nav:disabled {
+      opacity: 0.4;
+      cursor: default;
+    }
+
+    .boton-redondeo {
+      width: 100%;
+      margin-top: 18px;
+      font-size: clamp(18px, 5vw, 24px);
+      padding: 14px 10px;
+      border-radius: 10px;
+      background: #eef5ff;
+      border: 1px solid #8fbce8;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+
+    .boton-redondeo.activo {
+      background: #d8ecff;
+      border-color: #4d92d0;
+      font-weight: bold;
+    }
+
+    .detalle {
+      margin-top: 18px;
+      font-size: clamp(17px, 4.6vw, 23px);
+      line-height: 1.55;
+      text-align: center;
+    }
+
+    .autor {
+      text-align: center;
+      font-size: 13px;
+      color: #777;
+      margin-top: 2px;
+    }
+
+    @media (max-height: 700px) {
+      .contenedor {
+        padding: 12px;
+        gap: 8px;
+      }
+
+      .zona-principal {
+        gap: 8px;
+      }
+
+      h1 {
+        margin-bottom: 4px;
+      }
+
+      input {
+        padding: 7px;
+      }
+
+      .resultado {
+        padding: 10px;
+      }
+
+      .teclado {
+        gap: 6px;
+      }
+
+      .tecla {
+        min-height: 46px;
+      }
+
+      .tecla-limpiar {
+        min-height: 42px;
+      }
+
+      .boton-nav {
+        padding: 8px;
+      }
+
+      .autor {
+        display: none;
+      }
+    }
+
+    @media (max-height: 560px) {
+      body {
+        align-items: flex-start;
+      }
+
+      .contenedor {
+        min-height: auto;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="contenedor">
+
+    <div class="zona-principal">
+
+      <div class="pagina activa" id="pagina0">
+        <h1>Pregunta 1</h1>
+
+        <label for="nota0">Nota sobre 10</label>
+        <input type="text" id="nota0" value="5" placeholder="Ejemplo: 5" readonly inputmode="none">
+
+        <div class="resultado">
+          Valor sobre 2,5
+          <span class="valor">
+            <span id="resultado0">1,25</span>
+            <span class="valor-redondeado" id="resultadoRedondeado0">(1,25)</span>
+          </span>
+        </div>
+
+        <div class="error" id="error0"></div>
+      </div>
+
+      <div class="pagina" id="pagina1">
+        <h1>Pregunta 2</h1>
+
+        <label for="nota1">Nota sobre 10</label>
+        <input type="text" id="nota1" value="5" placeholder="Ejemplo: 5" readonly inputmode="none">
+
+        <div class="resultado">
+          Valor sobre 2,5
+          <span class="valor">
+            <span id="resultado1">1,25</span>
+            <span class="valor-redondeado" id="resultadoRedondeado1">(1,25)</span>
+          </span>
+        </div>
+
+        <div class="error" id="error1"></div>
+      </div>
+
+      <div class="pagina" id="pagina2">
+        <h1>Pregunta 3</h1>
+
+        <label for="nota2">Nota sobre 10</label>
+        <input type="text" id="nota2" value="5" placeholder="Ejemplo: 5" readonly inputmode="none">
+
+        <div class="resultado">
+          Valor sobre 2,5
+          <span class="valor">
+            <span id="resultado2">1,25</span>
+            <span class="valor-redondeado" id="resultadoRedondeado2">(1,25)</span>
+          </span>
+        </div>
+
+        <div class="error" id="error2"></div>
+      </div>
+
+      <div class="pagina" id="pagina3">
+        <h1>Pregunta 4</h1>
+
+        <label for="nota3">Nota sobre 10</label>
+        <input type="text" id="nota3" value="5" placeholder="Ejemplo: 5" readonly inputmode="none">
+
+        <div class="resultado">
+          Valor sobre 2,5
+          <span class="valor">
+            <span id="resultado3">1,25</span>
+            <span class="valor-redondeado" id="resultadoRedondeado3">(1,25)</span>
+          </span>
+        </div>
+
+        <div class="error" id="error3"></div>
+      </div>
+
+      <div class="pagina" id="pagina4">
+        <h1>Nota final</h1>
+
+        <div class="resultado">
+          Total sobre 10
+          <span class="valor" id="notaFinal">5,00</span>
+        </div>
+
+        <button class="boton-redondeo" id="botonRedondeo" type="button">
+          Activar redondeo
+        </button>
+
+        <div class="detalle" id="detalleFinal"></div>
+        <div class="error" id="errorFinal"></div>
+      </div>
+
+    </div>
+
+    <div id="zonaTeclado">
+      <div class="teclado" aria-label="Teclado numérico">
+        <button class="tecla" type="button" data-valor="1">1</button>
+        <button class="tecla" type="button" data-valor="2">2</button>
+        <button class="tecla" type="button" data-valor="3">3</button>
+
+        <button class="tecla" type="button" data-valor="4">4</button>
+        <button class="tecla" type="button" data-valor="5">5</button>
+        <button class="tecla" type="button" data-valor="6">6</button>
+
+        <button class="tecla" type="button" data-valor="7">7</button>
+        <button class="tecla" type="button" data-valor="8">8</button>
+        <button class="tecla" type="button" data-valor="9">9</button>
+
+        <button class="tecla" type="button" data-valor=",">,</button>
+        <button class="tecla" type="button" data-valor="0">0</button>
+        <button class="tecla tecla-borrar" type="button" id="borrar">⌫</button>
+
+        <button class="tecla tecla-limpiar" type="button" id="limpiar">Limpiar</button>
+      </div>
+    </div>
+
+    <div class="navegacion">
+      <button class="boton-nav" id="anterior" type="button">← Anterior</button>
+      <button class="boton-nav" id="siguiente" type="button">Siguiente →</button>
+    </div>
+
+    <div class="autor">Autor: Tomás Cuesta</div>
+
+  </div>
+
+  <script>
+    let paginaActual = 0;
+    let redondeoActivado = false;
+
+    const totalPaginas = 5;
+    const notas = [5, 5, 5, 5];
+    const valores = [1.25, 1.25, 1.25, 1.25];
+    const valoresRedondeados = [1.25, 1.25, 1.25, 1.25];
+    const errores = [false, false, false, false];
+
+    const botonAnterior = document.getElementById("anterior");
+    const botonSiguiente = document.getElementById("siguiente");
+    const botonRedondeo = document.getElementById("botonRedondeo");
+    const zonaTeclado = document.getElementById("zonaTeclado");
+    const borrar = document.getElementById("borrar");
+    const limpiar = document.getElementById("limpiar");
+    const teclas = document.querySelectorAll(".tecla[data-valor]");
+
+    function formatear(numero) {
+      return numero.toFixed(2).replace(".", ",");
+    }
+
+    function redondearCentésima(numero) {
+      return Math.round(numero * 100) / 100;
+    }
+
+    function redondearA05(numero) {
+      return Math.round(numero / 0.05) * 0.05;
+    }
+
+    function leerNota(indice) {
+      const input = document.getElementById("nota" + indice);
+      const resultado = document.getElementById("resultado" + indice);
+      const resultadoRedondeado = document.getElementById("resultadoRedondeado" + indice);
+      const error = document.getElementById("error" + indice);
+
+      const textoOriginal = input.value.trim();
+      const texto = textoOriginal.replace(",", ".");
+      const valor = parseFloat(texto);
+
+      if (textoOriginal === "") {
+        notas[indice] = 0;
+        valores[indice] = 0;
+        valoresRedondeados[indice] = 0;
+        errores[indice] = false;
+
+        resultado.textContent = "0,00";
+        resultadoRedondeado.textContent = "(0,00)";
+        error.textContent = "";
+        actualizarNotaFinal();
+        return;
+      }
+
+      if (isNaN(valor)) {
+        errores[indice] = true;
+        resultado.textContent = "—";
+        resultadoRedondeado.textContent = "";
+        error.textContent = "Introduce un número válido.";
+        actualizarNotaFinal();
+        return;
+      }
+
+      if (valor < 0 || valor > 10) {
+        errores[indice] = true;
+        resultado.textContent = "—";
+        resultadoRedondeado.textContent = "";
+        error.textContent = "La nota debe estar entre 0 y 10.";
+        actualizarNotaFinal();
+        return;
+      }
+
+      const convertido = valor * 2.5 / 10;
+      const convertidoCentésima = redondearCentésima(convertido);
+      const convertido05 = redondearA05(convertido);
+
+      notas[indice] = valor;
+      valores[indice] = convertidoCentésima;
+      valoresRedondeados[indice] = convertido05;
+      errores[indice] = false;
+
+      resultado.textContent = formatear(convertidoCentésima);
+      resultadoRedondeado.textContent = "(" + formatear(convertido05) + ")";
+      error.textContent = "";
+
+      actualizarNotaFinal();
+    }
+
+    function actualizarNotaFinal() {
+      const notaFinal = document.getElementById("notaFinal");
+      const detalleFinal = document.getElementById("detalleFinal");
+      const errorFinal = document.getElementById("errorFinal");
+
+      if (errores.some(Boolean)) {
+        notaFinal.textContent = "—";
+        detalleFinal.textContent = "";
+        errorFinal.textContent = "Hay alguna pregunta con una nota no válida.";
+        return;
+      }
+
+      const lista = redondeoActivado ? valoresRedondeados : valores;
+      const total = lista.reduce(function(suma, valor) {
+        return suma + valor;
+      }, 0);
+
+      notaFinal.textContent = formatear(redondearCentésima(total));
+      errorFinal.textContent = "";
+
+      detalleFinal.innerHTML =
+        "Pregunta 1: " + formatear(lista[0]) + "<br>" +
+        "Pregunta 2: " + formatear(lista[1]) + "<br>" +
+        "Pregunta 3: " + formatear(lista[2]) + "<br>" +
+        "Pregunta 4: " + formatear(lista[3]);
+
+      if (redondeoActivado) {
+        botonRedondeo.textContent = "Desactivar redondeo";
+        botonRedondeo.classList.add("activo");
+      } else {
+        botonRedondeo.textContent = "Activar redondeo";
+        botonRedondeo.classList.remove("activo");
+      }
+    }
+
+    function mostrarPagina(indice) {
+      for (let i = 0; i < totalPaginas; i++) {
+        document.getElementById("pagina" + i).classList.remove("activa");
+      }
+
+      document.getElementById("pagina" + indice).classList.add("activa");
+
+      botonAnterior.disabled = indice === 0;
+      botonSiguiente.disabled = indice === totalPaginas - 1;
+
+      paginaActual = indice;
+
+      if (indice < 4) {
+        zonaTeclado.style.display = "block";
+        document.getElementById("nota" + indice).focus();
+      } else {
+        zonaTeclado.style.display = "none";
+      }
+
+      actualizarNotaFinal();
+    }
+
+    function insertar(valor) {
+      if (paginaActual >= 4) {
+        return;
+      }
+
+      const input = document.getElementById("nota" + paginaActual);
+      let actual = input.value;
+
+      if (actual === "0" && valor !== ",") {
+        actual = "";
+      }
+
+      if (valor === "," && actual.includes(",")) {
+        return;
+      }
+
+      if (valor === "," && actual === "") {
+        actual = "0";
+      }
+
+      const nuevoTexto = actual + valor;
+
+      if (nuevoTexto.length > 5) {
+        return;
+      }
+
+      const partes = nuevoTexto.split(",");
+      if (partes.length > 1 && partes[1].length > 2) {
+        return;
+      }
+
+      const numero = parseFloat(nuevoTexto.replace(",", "."));
+
+      if (!isNaN(numero) && numero > 10) {
+        document.getElementById("error" + paginaActual).textContent = "La nota debe estar entre 0 y 10.";
+        return;
+      }
+
+      input.value = nuevoTexto;
+      leerNota(paginaActual);
+    }
+
+    function borrarUltimo() {
+      if (paginaActual >= 4) {
+        return;
+      }
+
+      const input = document.getElementById("nota" + paginaActual);
+      input.value = input.value.slice(0, -1);
+      leerNota(paginaActual);
+    }
+
+    function limpiarNota() {
+      if (paginaActual >= 4) {
+        return;
+      }
+
+      const input = document.getElementById("nota" + paginaActual);
+      input.value = "";
+      leerNota(paginaActual);
+    }
+
+    teclas.forEach(function(tecla) {
+      tecla.addEventListener("click", function() {
+        insertar(tecla.dataset.valor);
+      });
+    });
+
+    borrar.addEventListener("click", borrarUltimo);
+    limpiar.addEventListener("click", limpiarNota);
+
+    botonAnterior.addEventListener("click", function() {
+      if (paginaActual > 0) {
+        mostrarPagina(paginaActual - 1);
+      }
+    });
+
+    botonSiguiente.addEventListener("click", function() {
+      if (paginaActual < totalPaginas - 1) {
+        mostrarPagina(paginaActual + 1);
+      }
+    });
+
+    botonRedondeo.addEventListener("click", function() {
+      redondeoActivado = !redondeoActivado;
+      actualizarNotaFinal();
+    });
+
+    document.addEventListener("keydown", function(event) {
+      if (event.key >= "0" && event.key <= "9" && paginaActual < 4) {
+        insertar(event.key);
+      }
+
+      if ((event.key === "," || event.key === ".") && paginaActual < 4) {
+        insertar(",");
+      }
+
+      if (event.key === "Backspace" && paginaActual < 4) {
+        event.preventDefault();
+        borrarUltimo();
+      }
+
+      if (event.key === "Delete" && paginaActual < 4) {
+        limpiarNota();
+      }
+
+      if (event.key === "ArrowLeft" && paginaActual > 0) {
+        mostrarPagina(paginaActual - 1);
+      }
+
+      if (event.key === "ArrowRight" && paginaActual < totalPaginas - 1) {
+        mostrarPagina(paginaActual + 1);
+      }
+    });
+
+    for (let i = 0; i < 4; i++) {
+      leerNota(i);
+    }
+
+    mostrarPagina(0);
+  </script>
+
+</body>
+</html>
